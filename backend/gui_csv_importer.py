@@ -33,7 +33,7 @@ class CSV_Setup(QObject):
                 print(self.csv_columns)
                 print(self.csv_rows)
                 for x in self.csv_rows:
-                    print(x)
+                    print(x)wqrwr
                 self.csv_loaded.emit()  # Emit signal to notify CSV has loaded
 
             except Exception as e:
