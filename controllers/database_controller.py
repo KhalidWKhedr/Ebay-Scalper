@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QDialog
 from database.DatabaseService import DatabaseService
 from services.NotificationService import NotificationService
-from ui.gui_form_database import Ui_form_Database
+from gui.gui_form_database import Ui_form_Database
 from logger.LoggingService import LoggingService
-
+from utils.converter import Converter
 
 class DatabaseController(QDialog, Ui_form_Database):
     def __init__(self):
@@ -11,6 +11,8 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.setupUi(self)
         self.db_service = DatabaseService()
         self.notification_service = NotificationService()
+        self.checkbox_SSH.toggled.connect(self.toggle_ssh_options)
+        self.toggle_ssh_options(self.checkbox_SSH.isChecked())
         self.button_Connect.clicked.connect(self.connect_to_db)
 
     def connect_to_db(self):
@@ -21,7 +23,6 @@ class DatabaseController(QDialog, Ui_form_Database):
             message = self.db_service.connect(connection_details)
             LoggingService.log(f"Connection to database successful: {message}", level="info")
         except Exception as e:
-
             LoggingService.log(f"Failed to connect to database: {str(e)}", level="error")
 
         self.notification_service.show_message(self, message)
@@ -31,13 +32,25 @@ class DatabaseController(QDialog, Ui_form_Database):
         return {
             'use_ssh': self.checkbox_SSH.isChecked(),
             'host': self.text_Host.toPlainText(),
-            'port': int(self.text_Port.toPlainText()),
+            'port': Converter.safe_int_conversion(self.text_Port.toPlainText()) or None,
             'user': self.text_Username.toPlainText(),
             'password': self.text_Password.toPlainText(),
             'db_name': self.text_DbName.toPlainText(),
             'auth_source': self.text_AuthSource.toPlainText(),
             'ssh_host': self.text_SSH_Host.toPlainText(),
-            'ssh_port': int(self.text_SSH_Port.toPlainText()),
+            'ssh_port': Converter.safe_int_conversion(self.text_SSH_Port.toPlainText()) or None,
             'ssh_username': self.text_SSH_Username.toPlainText(),
             'ssh_password': self.text_SSH_Password.toPlainText(),
         }
+
+    def toggle_ssh_options(self, is_checked):
+        """Toggle the visibility of SSH-related options based on checkbox state."""
+        self.text_SSH_Host.setVisible(is_checked)
+        self.text_SSH_Port.setVisible(is_checked)
+        self.text_SSH_Username.setVisible(is_checked)
+        self.text_SSH_Password.setVisible(is_checked)
+        self.label_ssh_host.setVisible(is_checked)
+        self.label_ssh_port.setVisible(is_checked)
+        self.label_ssh_username.setVisible(is_checked)
+        self.label_ssh_password.setVisible(is_checked)
+        self.text_Host.setVisible(False if is_checked else True)

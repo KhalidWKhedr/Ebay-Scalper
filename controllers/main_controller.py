@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow
 from controllers.database_controller import DatabaseController
 from controllers.csv_controller import CsvController
-from ui.gui_form_main import Ui_form_MainWindow
+from gui.gui_form_main import Ui_form_MainWindow
 
 class MainController(QMainWindow, Ui_form_MainWindow):
     def __init__(self):

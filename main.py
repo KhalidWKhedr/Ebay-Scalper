@@ -3,8 +3,6 @@ import sys
 # from core import EbayItemFetcher
 from PySide6.QtWidgets import QApplication
 
-from controllers.database_controller import DatabaseController
-from controllers.csv_controller import CsvController
 from controllers.main_controller import MainController
 
 if __name__ == '__main__':

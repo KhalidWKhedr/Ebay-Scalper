@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui_mainwindowStFdRe.ui'
+## Form generated from reading UI file 'ui_mainwindowuumfEW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.1
 ##
@@ -17,8 +17,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QLabel,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QStatusBar, QWidget)
+    QListWidget, QListWidgetItem, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QWidget)
 
 class Ui_form_MainWindow(object):
     def setupUi(self, form_MainWindow):
@@ -55,6 +56,9 @@ class Ui_form_MainWindow(object):
 
         self.gridLayout.addWidget(self.button_EBAY, 2, 0, 1, 1)
 
+        self.listWidget = QListWidget(self.centralwidget)
+        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget.setGeometry(QRect(290, 50, 256, 192))
         form_MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(form_MainWindow)
         self.menubar.setObjectName(u"menubar")
