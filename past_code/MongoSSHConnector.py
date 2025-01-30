@@ -42,6 +42,7 @@ class MongoSSHConnector:
                 remote_bind_address=(self.MONGO_HOST, self.MONGO_PORT),
                 local_bind_address=("localhost", 27018)  # Local port for the SSH tunnel
             )
+            print(self.SSH_HOST, self.SSH_PORT, self.SSH_USER, self.SSH_PASSWORD, self.MONGO_HOST, self.MONGO_PORT)
             self.tunnel.start()
             print("SSH tunnel established.")
         except Exception as e:
@@ -56,6 +57,7 @@ class MongoSSHConnector:
             self.client = pymongo.MongoClient(self.mongo_uri, serverSelectionTimeoutMS=2000)
 
             # Test connection by listing databases
+            print(self.mongo_uri)
             print("Connected to MongoDB.")
             print("Databases:", self.client.list_database_names())
         except Exception as e:

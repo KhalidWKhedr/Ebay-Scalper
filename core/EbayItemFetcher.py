@@ -1,11 +1,10 @@
 import os
-import time
 import pandas as pd
 from dotenv import load_dotenv
 from ebaysdk.exception import ConnectionError
 from ebaysdk.finding import Connection
 from core.MongoDBOperations import MongoDBOperations  # Corrected class name
-from core.MongoSSHConnector import MongoSSHConnector
+from deprecated.base_mongo_connection import MongoSSHConnector
 from core.EbayJsonExtractor import EbayJsonExtractor
 load_dotenv('config/.env')
 
@@ -24,7 +23,12 @@ class EbayScraping:
     def connect_to_ebay(self):
         """Establish a connection to the eBay API."""
         try:
-            api = Connection(appid=self.app_id, config_file=None, domain='svcs.ebay.com')
+            api = Connection(
+                appid=self.app_id,
+                config_file=None,
+                domain='svcs.ebay.com',
+                siteid='EBAY-US'
+            )
             return api
         except ConnectionError as e:
             print(f"Error: Connection failed. Details: {e}")
