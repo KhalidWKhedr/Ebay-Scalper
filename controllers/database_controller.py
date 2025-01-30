@@ -31,16 +31,16 @@ class DatabaseController(QDialog, Ui_form_Database):
         """Collect and return all necessary connection details from the UI."""
         return {
             'use_ssh': self.checkbox_SSH.isChecked(),
-            'host': self.text_Host.toPlainText(),
+            'host': self.text_Host.toPlainText().strip(),
             'port': Converter.safe_int_conversion(self.text_Port.toPlainText()) or None,
-            'user': self.text_Username.toPlainText(),
-            'password': self.text_Password.toPlainText(),
-            'db_name': self.text_DbName.toPlainText(),
-            'auth_source': self.text_AuthSource.toPlainText(),
-            'ssh_host': self.text_SSH_Host.toPlainText(),
+            'user': self.text_Username.toPlainText().strip(),
+            'password': self.text_Password.toPlainText().strip(),
+            'db_name': self.text_DbName.toPlainText().strip(),
+            'auth_source': self.text_AuthSource.toPlainText().strip(),
+            'ssh_host': self.text_SSH_Host.toPlainText().strip(),
             'ssh_port': Converter.safe_int_conversion(self.text_SSH_Port.toPlainText()) or None,
-            'ssh_username': self.text_SSH_Username.toPlainText(),
-            'ssh_password': self.text_SSH_Password.toPlainText(),
+            'ssh_username': self.text_SSH_Username.toPlainText().strip(),
+            'ssh_password': self.text_SSH_Password.toPlainText().strip(),
         }
 
     def toggle_ssh_options(self, is_checked):
