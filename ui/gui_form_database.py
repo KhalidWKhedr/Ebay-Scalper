@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui_databaseiOBYFr.ui'
+## Form generated from reading UI file 'ui_databasebMRplk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.1
 ##
@@ -26,7 +26,7 @@ class Ui_form_Database(object):
         form_Database.resize(1039, 661)
         self.frame_MongoDB = QFrame(form_Database)
         self.frame_MongoDB.setObjectName(u"frame_MongoDB")
-        self.frame_MongoDB.setGeometry(QRect(170, 20, 441, 241))
+        self.frame_MongoDB.setGeometry(QRect(190, 200, 441, 241))
         self.frame_MongoDB.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_MongoDB.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_2 = QGridLayout(self.frame_MongoDB)
@@ -98,10 +98,10 @@ class Ui_form_Database(object):
 
         self.button_Connect = QPushButton(form_Database)
         self.button_Connect.setObjectName(u"button_Connect")
-        self.button_Connect.setGeometry(QRect(740, 580, 114, 36))
+        self.button_Connect.setGeometry(QRect(670, 490, 114, 36))
         self.frame_SSH = QFrame(form_Database)
         self.frame_SSH.setObjectName(u"frame_SSH")
-        self.frame_SSH.setGeometry(QRect(170, 260, 441, 181))
+        self.frame_SSH.setGeometry(QRect(190, 20, 441, 181))
         self.frame_SSH.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_SSH.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout = QGridLayout(self.frame_SSH)
@@ -205,7 +205,7 @@ class Ui_form_Database(object):
 
         self.button_TestConnection = QPushButton(form_Database)
         self.button_TestConnection.setObjectName(u"button_TestConnection")
-        self.button_TestConnection.setGeometry(QRect(170, 610, 161, 36))
+        self.button_TestConnection.setGeometry(QRect(160, 460, 161, 36))
 
         self.retranslateUi(form_Database)
 

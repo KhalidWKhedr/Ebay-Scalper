@@ -16,8 +16,8 @@
   <widget class="QFrame" name="frame_MongoDB">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>20</y>
+     <x>190</x>
+     <y>200</y>
      <width>441</width>
      <height>241</height>
     </rect>
@@ -101,8 +101,8 @@
   <widget class="QPushButton" name="button_Connect">
    <property name="geometry">
     <rect>
-     <x>740</x>
-     <y>580</y>
+     <x>670</x>
+     <y>490</y>
      <width>114</width>
      <height>36</height>
     </rect>
@@ -114,8 +114,8 @@
   <widget class="QFrame" name="frame_SSH">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>260</y>
+     <x>190</x>
+     <y>20</y>
      <width>441</width>
      <height>181</height>
     </rect>
@@ -260,8 +260,8 @@
   <widget class="QPushButton" name="button_TestConnection">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>610</y>
+     <x>160</x>
+     <y>460</y>
      <width>161</width>
      <height>36</height>
     </rect>
