@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui_ebaypYjjNV.ui'
+## Form generated from reading UI file 'ui_ebayrJdxwV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.1
 ##
@@ -23,7 +23,7 @@ class Ui_form_EbayAPI(object):
     def setupUi(self, form_EbayAPI):
         if not form_EbayAPI.objectName():
             form_EbayAPI.setObjectName(u"form_EbayAPI")
-        form_EbayAPI.resize(683, 353)
+        form_EbayAPI.resize(617, 331)
         self.frame = QFrame(form_EbayAPI)
         self.frame.setObjectName(u"frame")
         self.frame.setGeometry(QRect(120, 50, 451, 221))
@@ -34,27 +34,6 @@ class Ui_form_EbayAPI(object):
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
         self.comboBox_SITE_ID = QComboBox(self.frame)
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
-        self.comboBox_SITE_ID.addItem("")
         self.comboBox_SITE_ID.setObjectName(u"comboBox_SITE_ID")
 
         self.gridLayout.addWidget(self.comboBox_SITE_ID, 0, 2, 1, 1)
@@ -115,28 +94,6 @@ class Ui_form_EbayAPI(object):
 
     def retranslateUi(self, form_EbayAPI):
         form_EbayAPI.setWindowTitle(QCoreApplication.translate("form_EbayAPI", u"Ebay API Settings", None))
-        self.comboBox_SITE_ID.setItemText(0, QCoreApplication.translate("form_EbayAPI", u"EBAY-US", None))
-        self.comboBox_SITE_ID.setItemText(1, QCoreApplication.translate("form_EbayAPI", u"EBAY-ENCA", None))
-        self.comboBox_SITE_ID.setItemText(2, QCoreApplication.translate("form_EbayAPI", u"EBAY-GB", None))
-        self.comboBox_SITE_ID.setItemText(3, QCoreApplication.translate("form_EbayAPI", u"EBAY-AU", None))
-        self.comboBox_SITE_ID.setItemText(4, QCoreApplication.translate("form_EbayAPI", u"EBAY-AT", None))
-        self.comboBox_SITE_ID.setItemText(5, QCoreApplication.translate("form_EbayAPI", u"EBAY-FRBE", None))
-        self.comboBox_SITE_ID.setItemText(6, QCoreApplication.translate("form_EbayAPI", u"EBAY-FR", None))
-        self.comboBox_SITE_ID.setItemText(7, QCoreApplication.translate("form_EbayAPI", u"EBAY-DE", None))
-        self.comboBox_SITE_ID.setItemText(8, QCoreApplication.translate("form_EbayAPI", u"EBAY-MOTOR", None))
-        self.comboBox_SITE_ID.setItemText(9, QCoreApplication.translate("form_EbayAPI", u"EBAY-IT", None))
-        self.comboBox_SITE_ID.setItemText(10, QCoreApplication.translate("form_EbayAPI", u"EBAY-NLBE", None))
-        self.comboBox_SITE_ID.setItemText(11, QCoreApplication.translate("form_EbayAPI", u"EBAY-NL", None))
-        self.comboBox_SITE_ID.setItemText(12, QCoreApplication.translate("form_EbayAPI", u"EBAY-ES", None))
-        self.comboBox_SITE_ID.setItemText(13, QCoreApplication.translate("form_EbayAPI", u"EBAY-CH", None))
-        self.comboBox_SITE_ID.setItemText(14, QCoreApplication.translate("form_EbayAPI", u"EBAY-HK", None))
-        self.comboBox_SITE_ID.setItemText(15, QCoreApplication.translate("form_EbayAPI", u"EBAY-IE", None))
-        self.comboBox_SITE_ID.setItemText(16, QCoreApplication.translate("form_EbayAPI", u"EBAY-MY", None))
-        self.comboBox_SITE_ID.setItemText(17, QCoreApplication.translate("form_EbayAPI", u"EBAY-FRCA", None))
-        self.comboBox_SITE_ID.setItemText(18, QCoreApplication.translate("form_EbayAPI", u"EBAY-PH", None))
-        self.comboBox_SITE_ID.setItemText(19, QCoreApplication.translate("form_EbayAPI", u"EBAY-PL", None))
-        self.comboBox_SITE_ID.setItemText(20, QCoreApplication.translate("form_EbayAPI", u"EBAY-SG", None))
-
         self.button_IMPORT_CONFIG.setText(QCoreApplication.translate("form_EbayAPI", u"Import Config", None))
         self.label_domain.setText(QCoreApplication.translate("form_EbayAPI", u"DOMAIN:", None))
         self.label_site_id.setText(QCoreApplication.translate("form_EbayAPI", u"SITE ID:", None))
