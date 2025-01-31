@@ -15,6 +15,7 @@ class EbayConnectionManager:
 
     def connect_to_ebay(self):
         try:
+            self.check_app_id()
             api = Connection(
                 appid=self.api_id,
                 config_file=None,

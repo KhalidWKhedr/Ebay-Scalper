@@ -3,8 +3,7 @@ from services.ebay.EbayService import EbayService
 from services.NotificationService import NotificationService
 from gui.gui_form_ebay import Ui_form_EbayAPI
 from logger.LoggingService import LoggingService
-from services.ebay.EbaySites import EBAY_SITES  # Import the site mappings
-
+from services.ebay.EbaySites import SITE_DOMAIN_MAPPING
 
 class EbayApiController(QDialog, Ui_form_EbayAPI):
     def __init__(self):
@@ -13,17 +12,25 @@ class EbayApiController(QDialog, Ui_form_EbayAPI):
         self.ebay_service = EbayService()
         self.notification_service = NotificationService()
 
-        self.ebay_sites = EBAY_SITES
+        self.site_domain_mapping = SITE_DOMAIN_MAPPING
         self.initialize_ui()
 
     def initialize_ui(self):
         """Setup UI elements like the eBay site combo box."""
-        self.comboBox_SITE_ID.addItems(self.ebay_sites.keys())
+        self.comboBox_SITE_ID.addItems(self.site_domain_mapping.keys())
+        self.comboBox_SITE_ID.currentTextChanged.connect(self.update_domain_field)
         self.button_CONNECT.clicked.connect(self.connect_to_api)
+        self.text_Domain.setReadOnly(True)
+
+    def update_domain_field(self, selected_site_id):
+        """Update the domain field based on the selected site ID."""
+        site_info = self.site_domain_mapping.get(selected_site_id, {})
+        domain = site_info.get('domain', '')
+        self.text_Domain.setPlainText(domain)
 
     def get_site_code(self, site_name):
         """Retrieve eBay site code based on the selected site name."""
-        return self.ebay_sites.get(site_name, "")
+        return self.site_domain_mapping.get(site_name, {}).get('site', "")
 
     def connect_to_api(self):
         """Handle the API connection process."""
