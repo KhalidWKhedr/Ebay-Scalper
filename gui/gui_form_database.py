@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui_databasekyLBfL.ui'
+## Form generated from reading UI file 'ui_databaseZvCFDl.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.1
 ##
@@ -23,7 +23,7 @@ class Ui_form_Database(object):
     def setupUi(self, form_Database):
         if not form_Database.objectName():
             form_Database.setObjectName(u"form_Database")
-        form_Database.resize(1165, 466)
+        form_Database.resize(1165, 436)
         self.frame_Database = QFrame(form_Database)
         self.frame_Database.setObjectName(u"frame_Database")
         self.frame_Database.setGeometry(QRect(30, 20, 1101, 391))
@@ -50,10 +50,10 @@ class Ui_form_Database(object):
 
         self.gridLayout_7.addWidget(self.button_Connect, 1, 1, 1, 1)
 
-        self.plainTextEdit = QPlainTextEdit(self.widget)
-        self.plainTextEdit.setObjectName(u"plainTextEdit")
+        self.text_MongoUri = QPlainTextEdit(self.widget)
+        self.text_MongoUri.setObjectName(u"text_MongoUri")
 
-        self.gridLayout_7.addWidget(self.plainTextEdit, 0, 0, 1, 2)
+        self.gridLayout_7.addWidget(self.text_MongoUri, 0, 0, 1, 2)
 
         self.frame_AUTH = QFrame(self.frame_Database)
         self.frame_AUTH.setObjectName(u"frame_AUTH")
@@ -244,7 +244,7 @@ class Ui_form_Database(object):
         form_Database.setWindowTitle(QCoreApplication.translate("form_Database", u"Database Configuration Settings", None))
         self.button_TestConnection.setText(QCoreApplication.translate("form_Database", u"Test Connection", None))
         self.button_Connect.setText(QCoreApplication.translate("form_Database", u"Connect", None))
-        self.plainTextEdit.setPlainText(QCoreApplication.translate("form_Database", u"MONGO-URI:\n"
+        self.text_MongoUri.setPlainText(QCoreApplication.translate("form_Database", u"MONGO-URI:\n"
 "", None))
         self.radio_AWS.setText(QCoreApplication.translate("form_Database", u"M&ONGODB-AWS  ", None))
         self.radio_SHA256.setText(QCoreApplication.translate("form_Database", u"SCRAM-SHA-&256  ", None))

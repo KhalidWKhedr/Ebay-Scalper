@@ -15,6 +15,41 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.toggle_ssh_options(self.checkbox_SSH.isChecked())
         self.button_Connect.clicked.connect(self.connect_to_db)
 
+        self.text_SSH_Host.textChanged.connect(self.update_mongo_uri)
+        self.text_SSH_Port.textChanged.connect(self.update_mongo_uri)
+        self.text_SSH_Username.textChanged.connect(self.update_mongo_uri)
+        self.text_SSH_Password.textChanged.connect(self.update_mongo_uri)
+
+
+        self.text_Host.textChanged.connect(self.update_mongo_uri)
+        self.text_Port.textChanged.connect(self.update_mongo_uri)
+        self.text_Username.textChanged.connect(self.update_mongo_uri)
+        self.text_Password.textChanged.connect(self.update_mongo_uri)
+        self.text_DbName.textChanged.connect(self.update_mongo_uri)
+        self.text_AuthSource.textChanged.connect(self.update_mongo_uri)
+
+
+    def initialize_ui(self):
+        """Setup UI elements like the eBay site combo box."""
+        self.text_MongoUri.setReadOnly(True)
+        self.update_mongo_uri()
+
+    def update_mongo_uri(self):
+        """Generate and update the MongoDB URI dynamically."""
+        host = self.text_Host.toPlainText().strip()
+        port = self.text_Port.toPlainText().strip()
+        user = self.text_Username.toPlainText().strip()
+        password = self.text_Password.toPlainText().strip()
+        db_name = self.text_DbName.toPlainText().strip()
+        auth_source = self.text_AuthSource.toPlainText().strip()
+
+        escaped_user = user.replace("@", "%40")
+        escaped_password = password.replace("@", "%40")
+
+
+        uri = f"mongodb://{escaped_user}:{escaped_password}@{host}:{port}/{db_name}?authSource={auth_source}"
+        self.text_MongoUri.setPlainText(uri)
+
     def connect_to_db(self):
         connection_details = self.get_connection_details()
         LoggingService.log(f"Attempting to connect to database at host: {connection_details['host']}", level="info")
