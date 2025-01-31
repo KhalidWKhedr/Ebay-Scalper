@@ -1,6 +1,6 @@
 from urllib.parse import quote
 import pymongo
-from logger import LoggingService
+from logger import service_logging
 
 class NormalConnectionManager:
     def __init__(self, connection_details):

@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QDialog
 from database.DatabaseService import DatabaseService
-from services.NotificationService import NotificationService
+from services.service_notification import NotificationService
 from gui.gui_form_database import Ui_form_Database
-from logger.LoggingService import LoggingService
+from logger.service_logging import LoggingService
 from utils.converter import Converter
 
 class DatabaseController(QDialog, Ui_form_Database):

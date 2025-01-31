@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow
-from controllers.database_controller import DatabaseController
-from controllers.ebay_api_controller import EbayApiController
-from controllers.csv_controller import CsvController
+from controllers.controller_database import DatabaseController
+from controllers.controller_ebay_api import EbayApiController
+from controllers.controller_csv import CsvController
 from gui.gui_form_main import Ui_form_MainWindow
 
 class MainController(QMainWindow, Ui_form_MainWindow):

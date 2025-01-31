@@ -3,7 +3,7 @@ import sys
 # from core import EbayItemFetcher
 from PySide6.QtWidgets import QApplication
 
-from controllers.main_controller import MainController
+from controllers.controller_main import MainController
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)  # Create the application

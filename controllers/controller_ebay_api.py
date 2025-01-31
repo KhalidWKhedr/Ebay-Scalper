@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QDialog
-from services.ebay.EbayService import EbayService
-from services.NotificationService import NotificationService
+from services.ebay.service_ebay import EbayService
+from services.service_notification import NotificationService
 from gui.gui_form_ebay import Ui_form_EbayAPI
-from logger.LoggingService import LoggingService
-from services.ebay.EbaySiteDomain import SITE_DOMAIN_MAPPING
+from logger.service_logging import LoggingService
+from services.ebay.ebay_site_domain import SITE_DOMAIN_MAPPING
 
 class EbayApiController(QDialog, Ui_form_EbayAPI):
     def __init__(self):

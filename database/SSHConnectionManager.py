@@ -1,7 +1,7 @@
 from urllib.parse import quote
 import pymongo
 from sshtunnel import SSHTunnelForwarder
-from logger import LoggingService  # Update to reflect your actual import path for LoggingService
+from logger import service_logging  # Update to reflect your actual import path for LoggingService
 
 
 class SSHConnectionManager:

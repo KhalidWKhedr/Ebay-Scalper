@@ -1,6 +1,6 @@
 from database.NormalConnectionManager import NormalConnectionManager
 from database.SSHConnectionManager import SSHConnectionManager
-from logger.LoggingService import LoggingService
+from logger.service_logging import LoggingService
 
 
 class DatabaseService:

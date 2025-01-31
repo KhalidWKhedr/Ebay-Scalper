@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMessageBox
-from logger.LoggingService import LoggingService
+from logger.service_logging import LoggingService
 
 
 class NotificationService:

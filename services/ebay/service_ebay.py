@@ -1,5 +1,5 @@
-from services.ebay.EbayConnectionManager import EbayConnectionManager
-from logger.LoggingService import LoggingService
+from services.ebay.manager_ebay_connection import EbayConnectionManager
+from logger.service_logging import LoggingService
 
 class EbayService:
     def __init__(self):

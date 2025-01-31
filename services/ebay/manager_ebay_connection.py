@@ -1,4 +1,4 @@
-from logger import LoggingService
+from logger import service_logging
 from ebaysdk.exception import ConnectionError
 from ebaysdk.finding import Connection
 
@@ -24,5 +24,5 @@ class EbayConnectionManager:
             )
             return api
         except ConnectionError as e:
-            self.logger.log(f"Error: Connection failed. Details: {e}", level="error")
+            self.logger.LoggingService.log(f"Error: Connection failed. Details: {e}", level="error")
             raise

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QPushButton, QListWidgetItem
 
-from services.CsvSetup import CsvSetup
+from services.setup_csv import CsvSetup
 
 class CsvController:
     def __init__(self, main_ui):
