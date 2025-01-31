@@ -1,3 +1,6 @@
+#   https://pages.ebay.com/securitycenter/security_researchers_eligible_domains.html
+#   https://developer.ebay.com/devzone/merchandising/docs/concepts/siteidtoglobalid.html
+
 SITE_DOMAIN_MAPPING = {
     "EBAY-US": {"site": "eBay United States", "domain": "ebay.com"},
     "EBAY-ENCA": {"site": "eBay Canada (English)", "domain": "ebay.ca"},

@@ -3,7 +3,7 @@ from services.ebay.EbayService import EbayService
 from services.NotificationService import NotificationService
 from gui.gui_form_ebay import Ui_form_EbayAPI
 from logger.LoggingService import LoggingService
-from services.ebay.EbaySites import SITE_DOMAIN_MAPPING
+from services.ebay.EbaySiteDomain import SITE_DOMAIN_MAPPING
 
 class EbayApiController(QDialog, Ui_form_EbayAPI):
     def __init__(self):
