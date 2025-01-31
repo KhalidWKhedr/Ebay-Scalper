@@ -10,7 +10,7 @@ class NormalConnectionManager:
         self.mongo_password = connection_details['password']
         self.db_name = connection_details['db_name']
         self.auth_source = connection_details['auth_source']
-        self.logger = service_logging.LoggingService.get_logger()  # Get the logger instance
+        self.logger = service_logging.LoggingService.get_logger()
 
     def connect(self):
         """Handles the connection to MongoDB without SSH tunneling."""

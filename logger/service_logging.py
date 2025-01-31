@@ -27,7 +27,7 @@ class LoggingService:
             message = f"Invalid log level specified. Defaulting to INFO: {message}"
 
         logger = LoggingService.get_logger()
-        log_method = getattr(logger, level, logger.info)  # Default to info if level is invalid
+        log_method = getattr(logger, level, logger.info)
         log_method(message)
 
 

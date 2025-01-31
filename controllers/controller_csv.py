@@ -38,7 +38,7 @@ class CsvController:
         self.ui.listWidget.clear()
         for column in columns:
             button = QPushButton(column)
-            button.clicked.connect(lambda checked=False, col=column: self.on_column_button_clicked(col))  # Fix here
+            button.clicked.connect(lambda checked=False, col=column: self.on_column_button_clicked(col))
             list_item = QListWidgetItem(self.ui.listWidget)
             self.ui.listWidget.addItem(list_item)
             self.ui.listWidget.setItemWidget(list_item, button)
