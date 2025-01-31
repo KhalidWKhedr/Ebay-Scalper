@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>617</width>
-    <height>331</height>
+    <width>531</width>
+    <height>286</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,11 +16,23 @@
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>50</y>
-     <width>451</width>
-     <height>221</height>
+     <x>50</x>
+     <y>20</y>
+     <width>411</width>
+     <height>201</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>411</width>
+     <height>201</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>201</height>
+    </size>
    </property>
    <property name="frameShape">
     <enum>QFrame::Shape::StyledPanel</enum>
@@ -28,174 +40,187 @@
    <property name="frameShadow">
     <enum>QFrame::Shadow::Raised</enum>
    </property>
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="2">
-       <widget class="QComboBox" name="comboBox_SITE_ID">
-        <item>
-         <property name="text">
-          <string>EBAY-US</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-ENCA</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-GB</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-AU</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-AT</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-FRBE</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-FR</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-DE</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-MOTOR</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-IT</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-NLBE</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-NL</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-ES</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-CH</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-HK</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-IE</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-MY</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-FRCA</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-PH</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-PL</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>EBAY-SG</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QPushButton" name="button_IMPORT_CONFIG">
-        <property name="text">
-         <string>Import Config</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_domain">
-        <property name="text">
-         <string>DOMAIN:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_site_id">
-        <property name="text">
-         <string>SITE ID:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QTextEdit" name="text_Domain"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_app_id">
-        <property name="text">
-         <string>APP ID:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QPushButton" name="button_CONNECT">
-        <property name="text">
-         <string>Connect</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QLabel" name="label_config_file">
-        <property name="text">
-         <string>CONFIG FILE:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Test API</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QTextEdit" name="text_AppID"/>
-      </item>
-     </layout>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="1" colspan="2">
+     <widget class="QTextEdit" name="text_Domain">
+      <property name="minimumSize">
+       <size>
+        <width>269</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>34</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_app_id">
+      <property name="minimumSize">
+       <size>
+        <width>122</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>APP ID:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QLabel" name="label_site_id">
+      <property name="minimumSize">
+       <size>
+        <width>249</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>SITE ID:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_config_file">
+      <property name="minimumSize">
+       <size>
+        <width>122</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>CONFIG FILE:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QPushButton" name="button_CONNECT">
+      <property name="minimumSize">
+       <size>
+        <width>142</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Connect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QPushButton" name="pushButton">
+      <property name="minimumSize">
+       <size>
+        <width>122</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Test API</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_domain">
+      <property name="minimumSize">
+       <size>
+        <width>122</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>34</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>DOMAIN:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QTextEdit" name="text_AppID">
+      <property name="minimumSize">
+       <size>
+        <width>269</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>33</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QPushButton" name="button_IMPORT_CONFIG">
+      <property name="minimumSize">
+       <size>
+        <width>142</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Import Config</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QComboBox" name="comboBox_SITE_ID">
+      <property name="minimumSize">
+       <size>
+        <width>142</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>33</height>
+       </size>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
