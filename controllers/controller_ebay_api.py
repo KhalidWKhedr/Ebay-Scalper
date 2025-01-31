@@ -18,6 +18,7 @@ class EbayApiController(QDialog, Ui_form_EbayAPI):
     def initialize_ui(self):
         """Setup UI elements like the eBay site combo box."""
         self.comboBox_SITE_ID.addItems(self.site_domain_mapping.keys())
+        self.text_Domain.setPlainText(next(iter(self.site_domain_mapping.values()))["domain"])
         self.comboBox_SITE_ID.currentTextChanged.connect(self.update_domain_field)
         self.button_CONNECT.clicked.connect(self.connect_to_api)
         self.text_Domain.setReadOnly(True)
