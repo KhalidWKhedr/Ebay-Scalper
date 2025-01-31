@@ -7,7 +7,7 @@ class EbayConnectionManager:
         self.api_id = api_details['api_id']
         self.api_domain = api_details['api_domain']
         self.api_site_id = api_details['api_site_id']
-        self.logger = LoggingService
+        self.logger = service_logging
 
     def check_app_id(self):
         if not self.api_id:

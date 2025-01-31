@@ -1,7 +1,7 @@
 from urllib.parse import quote
 import pymongo
 from sshtunnel import SSHTunnelForwarder
-from logger import service_logging  # Update to reflect your actual import path for LoggingService
+from logger import service_logging
 
 
 class SSHConnectionManager:
@@ -16,7 +16,7 @@ class SSHConnectionManager:
         self.mongo_password = connection_details['password']
         self.db_name = connection_details['db_name']
         self.auth_source = connection_details['auth_source']
-        self.logger = LoggingService.LoggingService.get_logger()
+        self.logger = service_logging.LoggingService.get_logger()
 
     def connect(self):
         """Handles the SSH connection and the tunnel setup."""
