@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QDialog
-from database.DatabaseService import DatabaseService
+from database.service_database import DatabaseService
 from services.service_notification import NotificationService
 from gui.gui_form_database import Ui_form_Database
 from logger.service_logging import LoggingService
