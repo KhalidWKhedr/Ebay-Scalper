@@ -1,3 +1,5 @@
+import logging
+
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QPushButton, QListWidgetItem
 
 from services.CsvSetup import CsvSetup
@@ -30,7 +32,7 @@ class CsvController:
             QMessageBox.warning(None, "Error", "Failed to load CSV.")
             return
 
-        print("CSV Loaded:", columns, rows)
+        logging.info(f"CSV Loaded: {len(columns)} columns, {len(rows)} rows")
         self.populate_column_buttons(columns)
 
     def populate_column_buttons(self, columns):
@@ -38,7 +40,7 @@ class CsvController:
         self.ui.listWidget.clear()
         for column in columns:
             button = QPushButton(column)
-            button.clicked.connect(lambda _, col=column: self.on_column_button_clicked(col))
+            button.clicked.connect(lambda checked=False, col=column: self.on_column_button_clicked(col))  # Fix here
             list_item = QListWidgetItem(self.ui.listWidget)
             self.ui.listWidget.addItem(list_item)
             self.ui.listWidget.setItemWidget(list_item, button)

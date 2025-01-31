@@ -16,10 +16,21 @@ class CsvSetup(QObject):
             else:
                 raise ValueError("Unsupported file format.")
 
+            if df.empty:
+                raise ValueError("The file is empty or could not be read.")
+
             columns = df.columns.tolist()
             rows = df.values.tolist()
             self.csv_loaded.emit(columns, rows)
 
+        except pd.errors.EmptyDataError:
+            self.csv_loaded.emit([], [])
+            raise RuntimeError("The selected file is empty.")
+
+        except pd.errors.ParserError:
+            self.csv_loaded.emit([], [])
+            raise RuntimeError("Error parsing the file. Please check its format.")
+
         except Exception as e:
-            self.csv_loaded.emit([], [])  # Emit empty if error
-            raise RuntimeError(f"Error loading file: {e}")
+            self.csv_loaded.emit([], [])
+            raise RuntimeError(f"Unexpected error loading file: {e}")
