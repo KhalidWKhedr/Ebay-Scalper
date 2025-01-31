@@ -1,5 +1,3 @@
-import logging
-
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QPushButton, QListWidgetItem
 
 from services.CsvSetup import CsvSetup
@@ -32,7 +30,7 @@ class CsvController:
             QMessageBox.warning(None, "Error", "Failed to load CSV.")
             return
 
-        logging.info(f"CSV Loaded: {len(columns)} columns, {len(rows)} rows")
+        print("CSV Loaded:", columns, rows)
         self.populate_column_buttons(columns)
 
     def populate_column_buttons(self, columns):
