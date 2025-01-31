@@ -1,47 +1,34 @@
-from services.ebay.EbayConenctionManager import EbayConnectionManager
+from services.ebay.EbayConnectionManager import EbayConnectionManager
 from logger.LoggingService import LoggingService
-
 
 class EbayService:
     def __init__(self):
-        self.db_connection = None
-
-    def create_connection(self, connection_details):
-        """Creates a connection based on whether SSH is used."""
-        if connection_details['use_ssh']:
-            LoggingService.log(
-                f"Creating SSH connection to {connection_details['ssh_host']}:{connection_details['ssh_port']}",
-                level="info")
-            return SSHConnectionManager(connection_details)
-        else:
-            LoggingService.log(
-                f"Creating normal connection to {connection_details['host']}:{connection_details['port']}",
-                level="info")
-            return NormalConnectionManager(connection_details)
+        self.ebay_connection = None
 
     def connect(self, connection_details):
-        """Attempts to connect to MongoDB based on the provided details."""
+        """Attempts to connect to eBay API based on the provided details."""
         try:
-
             LoggingService.log(
-                f"Attempting to connect to database: {connection_details['db_name']} at {connection_details['host']}:{connection_details['port']}",
-                level="info")
+                f"Attempting to connect to eBay API: {connection_details['api_id']} at {connection_details['api_domain']}:{connection_details['api_site_id']}",
+                level="info"
+            )
 
-            self.db_connection = self.create_connection(connection_details)
-            success = self.db_connection.connect()
+            self.ebay_connection = EbayConnectionManager(connection_details)  # FIXED
+            api = self.ebay_connection.connect_to_ebay()
 
-            if not success:
-
+            if not api:
                 LoggingService.log(
-                    f"Could not connect to MongoDB at {connection_details['host']}:{connection_details['port']}",
-                    level="error")
-                return "Could not connect to MongoDB."
+                    f"Could not connect to eBay API at {connection_details['api_domain']}",
+                    level="error"
+                )
+                return "Could not connect to eBay API."
 
             LoggingService.log(
-                f"Successfully connected to MongoDB at {connection_details['host']}:{connection_details['port']}",
-                level="info")
-            return "Connected to MongoDB!"
+                f"Successfully connected to eBay API at {connection_details['api_domain']}",
+                level="info"
+            )
+            return "Connected to eBay API!"
 
         except Exception as e:
-            LoggingService.log(f"Error connecting to MongoDB: {str(e)}", level="error")
+            LoggingService.log(f"Error connecting to eBay API: {str(e)}", level="error")
             return f"Error: {str(e)}"
