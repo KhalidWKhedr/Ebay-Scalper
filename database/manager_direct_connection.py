@@ -18,7 +18,7 @@ class NormalConnectionManager:
         try:
             escaped_user = quote(self.mongo_user)
             escaped_password = quote(self.mongo_password)
-            uri = f"mongodb://{escaped_user}:{escaped_password}@{self.mongo_host}:{self.mongo_port}/{self.db_name}?authSource={self.auth_source}"
+            uri = f"mongodb://{escaped_user}:{escaped_password}@{self.mongo_host}:{self.mongo_port}:{self.mongo_port}/{self.db_name}?authSource={self.auth_source}"
 
 
             self.client = pymongo.MongoClient(uri, serverSelectionTimeoutMS=5000)

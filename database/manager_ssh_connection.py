@@ -59,8 +59,6 @@ class SSHConnectionManager:
                 self.logger.error("SSH tunnel is not active. Aborting MongoDB connection.")
                 return None
 
-            escaped_user = quote(self.mongo_user)
-            escaped_password = quote(self.mongo_password)
             print(self.uri)
             self.client = pymongo.MongoClient(self.uri, serverSelectionTimeoutMS=5000)
 

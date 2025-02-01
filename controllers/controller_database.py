@@ -88,4 +88,3 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.label_ssh_port.setVisible(is_checked)
         self.label_ssh_username.setVisible(is_checked)
         self.label_ssh_password.setVisible(is_checked)
-        self.text_Host.setVisible(False if is_checked else True)
