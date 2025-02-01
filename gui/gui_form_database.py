@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui_databasePvpExj.ui'
+## Form generated from reading UI file 'ui_databaseVydJdH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.1
 ##
@@ -24,60 +24,12 @@ class Ui_form_Database(object):
     def setupUi(self, form_Database):
         if not form_Database.objectName():
             form_Database.setObjectName(u"form_Database")
-        form_Database.resize(1221, 724)
+        form_Database.resize(1221, 462)
         self.frame_Database = QFrame(form_Database)
         self.frame_Database.setObjectName(u"frame_Database")
-        self.frame_Database.setGeometry(QRect(30, 20, 1141, 411))
+        self.frame_Database.setGeometry(QRect(30, 20, 1151, 401))
         self.frame_Database.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_Database.setFrameShadow(QFrame.Shadow.Raised)
-        self.frame_AUTH = QFrame(self.frame_Database)
-        self.frame_AUTH.setObjectName(u"frame_AUTH")
-        self.frame_AUTH.setGeometry(QRect(910, 10, 211, 221))
-        self.frame_AUTH.setMinimumSize(QSize(211, 0))
-        self.frame_AUTH.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_AUTH.setFrameShadow(QFrame.Shadow.Raised)
-        self.gridLayout_3 = QGridLayout(self.frame_AUTH)
-        self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.radio_X509 = QRadioButton(self.frame_AUTH)
-        self.radio_X509.setObjectName(u"radio_X509")
-
-        self.gridLayout_3.addWidget(self.radio_X509, 4, 0, 1, 1)
-
-        self.radio_LDAP = QRadioButton(self.frame_AUTH)
-        self.radio_LDAP.setObjectName(u"radio_LDAP")
-
-        self.gridLayout_3.addWidget(self.radio_LDAP, 3, 0, 1, 1)
-
-        self.radio_SHA256 = QRadioButton(self.frame_AUTH)
-        self.radio_SHA256.setObjectName(u"radio_SHA256")
-
-        self.gridLayout_3.addWidget(self.radio_SHA256, 2, 0, 1, 1)
-
-        self.radio_KERBEROS = QRadioButton(self.frame_AUTH)
-        self.radio_KERBEROS.setObjectName(u"radio_KERBEROS")
-
-        self.gridLayout_3.addWidget(self.radio_KERBEROS, 6, 0, 1, 1)
-
-        self.radio_SHA1 = QRadioButton(self.frame_AUTH)
-        self.radio_SHA1.setObjectName(u"radio_SHA1")
-
-        self.gridLayout_3.addWidget(self.radio_SHA1, 1, 0, 1, 1)
-
-        self.radio_AWS = QRadioButton(self.frame_AUTH)
-        self.radio_AWS.setObjectName(u"radio_AWS")
-
-        self.gridLayout_3.addWidget(self.radio_AWS, 5, 0, 1, 1)
-
-        self.radio_KERBEROS_2 = QRadioButton(self.frame_AUTH)
-        self.radio_KERBEROS_2.setObjectName(u"radio_KERBEROS_2")
-
-        self.gridLayout_3.addWidget(self.radio_KERBEROS_2, 7, 0, 1, 1)
-
-        self.label_authtypes = QLabel(self.frame_AUTH)
-        self.label_authtypes.setObjectName(u"label_authtypes")
-
-        self.gridLayout_3.addWidget(self.label_authtypes, 0, 0, 1, 1)
-
         self.frame_MONGODB = QFrame(self.frame_Database)
         self.frame_MONGODB.setObjectName(u"frame_MONGODB")
         self.frame_MONGODB.setGeometry(QRect(20, 10, 431, 251))
@@ -209,30 +161,77 @@ class Ui_form_Database(object):
 
         self.gridLayout.addWidget(self.text_SSH_Port, 2, 1, 1, 1)
 
-        self.widget = QWidget(self.frame_Database)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(21, 271, 1101, 121))
-        self.gridLayout_4 = QGridLayout(self.widget)
+        self.layoutWidget = QWidget(self.frame_Database)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(20, 270, 1111, 121))
+        self.gridLayout_4 = QGridLayout(self.layoutWidget)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.text_MongoUri = QPlainTextEdit(self.widget)
+        self.text_MongoUri = QPlainTextEdit(self.layoutWidget)
         self.text_MongoUri.setObjectName(u"text_MongoUri")
 
         self.gridLayout_4.addWidget(self.text_MongoUri, 0, 0, 1, 3)
-
-        self.button_TestConnection = QPushButton(self.widget)
-        self.button_TestConnection.setObjectName(u"button_TestConnection")
-
-        self.gridLayout_4.addWidget(self.button_TestConnection, 1, 0, 1, 1)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.gridLayout_4.addItem(self.horizontalSpacer, 1, 1, 1, 1)
 
-        self.button_Connect = QPushButton(self.widget)
+        self.button_TestConnection = QPushButton(self.layoutWidget)
+        self.button_TestConnection.setObjectName(u"button_TestConnection")
+
+        self.gridLayout_4.addWidget(self.button_TestConnection, 1, 0, 1, 1)
+
+        self.button_Connect = QPushButton(self.layoutWidget)
         self.button_Connect.setObjectName(u"button_Connect")
 
         self.gridLayout_4.addWidget(self.button_Connect, 1, 2, 1, 1)
+
+        self.frame = QFrame(self.frame_Database)
+        self.frame.setObjectName(u"frame")
+        self.frame.setGeometry(QRect(910, 10, 219, 209))
+        self.frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.gridLayout_3 = QGridLayout(self.frame)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.radio_SHA1 = QRadioButton(self.frame)
+        self.radio_SHA1.setObjectName(u"radio_SHA1")
+
+        self.gridLayout_3.addWidget(self.radio_SHA1, 2, 0, 1, 1)
+
+        self.radio_SHA256 = QRadioButton(self.frame)
+        self.radio_SHA256.setObjectName(u"radio_SHA256")
+
+        self.gridLayout_3.addWidget(self.radio_SHA256, 6, 0, 1, 1)
+
+        self.radio_KERBEROS = QRadioButton(self.frame)
+        self.radio_KERBEROS.setObjectName(u"radio_KERBEROS")
+
+        self.gridLayout_3.addWidget(self.radio_KERBEROS, 4, 0, 1, 1)
+
+        self.radio_X509 = QRadioButton(self.frame)
+        self.radio_X509.setObjectName(u"radio_X509")
+
+        self.gridLayout_3.addWidget(self.radio_X509, 7, 0, 1, 1)
+
+        self.radio_LDAP = QRadioButton(self.frame)
+        self.radio_LDAP.setObjectName(u"radio_LDAP")
+
+        self.gridLayout_3.addWidget(self.radio_LDAP, 8, 0, 1, 1)
+
+        self.radio_AWS = QRadioButton(self.frame)
+        self.radio_AWS.setObjectName(u"radio_AWS")
+
+        self.gridLayout_3.addWidget(self.radio_AWS, 5, 0, 1, 1)
+
+        self.radio_KERBEROS_2 = QRadioButton(self.frame)
+        self.radio_KERBEROS_2.setObjectName(u"radio_KERBEROS_2")
+
+        self.gridLayout_3.addWidget(self.radio_KERBEROS_2, 3, 0, 1, 1)
+
+        self.label = QLabel(self.frame)
+        self.label.setObjectName(u"label")
+
+        self.gridLayout_3.addWidget(self.label, 1, 0, 1, 1)
 
 
         self.retranslateUi(form_Database)
@@ -242,14 +241,6 @@ class Ui_form_Database(object):
 
     def retranslateUi(self, form_Database):
         form_Database.setWindowTitle(QCoreApplication.translate("form_Database", u"Database Configuration Settings", None))
-        self.radio_X509.setText(QCoreApplication.translate("form_Database", u"MONGODB-&X509  ", None))
-        self.radio_LDAP.setText(QCoreApplication.translate("form_Database", u"L&DAP", None))
-        self.radio_SHA256.setText(QCoreApplication.translate("form_Database", u"SCRAM-SHA-&256  ", None))
-        self.radio_KERBEROS.setText(QCoreApplication.translate("form_Database", u"&GSSAPI (Kerberos)  ", None))
-        self.radio_SHA1.setText(QCoreApplication.translate("form_Database", u"SCRAM-SHA-&1  ", None))
-        self.radio_AWS.setText(QCoreApplication.translate("form_Database", u"M&ONGODB-AWS  ", None))
-        self.radio_KERBEROS_2.setText(QCoreApplication.translate("form_Database", u"P&LAIN  ", None))
-        self.label_authtypes.setText(QCoreApplication.translate("form_Database", u"Authentication Types:", None))
         self.label_port.setText(QCoreApplication.translate("form_Database", u"PORT:", None))
         self.label_password.setText(QCoreApplication.translate("form_Database", u"PASSWORD:", None))
         self.label_authsource.setText(QCoreApplication.translate("form_Database", u"AUTH SOURCE:", None))
@@ -267,5 +258,13 @@ class Ui_form_Database(object):
 "", None))
         self.button_TestConnection.setText(QCoreApplication.translate("form_Database", u"Test Connection", None))
         self.button_Connect.setText(QCoreApplication.translate("form_Database", u"Connect", None))
+        self.radio_SHA1.setText(QCoreApplication.translate("form_Database", u"SCRAM-SHA-&1  ", None))
+        self.radio_SHA256.setText(QCoreApplication.translate("form_Database", u"SCRAM-SHA-&256  ", None))
+        self.radio_KERBEROS.setText(QCoreApplication.translate("form_Database", u"&GSSAPI (Kerberos)  ", None))
+        self.radio_X509.setText(QCoreApplication.translate("form_Database", u"MONGODB-&X509  ", None))
+        self.radio_LDAP.setText(QCoreApplication.translate("form_Database", u"L&DAP", None))
+        self.radio_AWS.setText(QCoreApplication.translate("form_Database", u"M&ONGODB-AWS  ", None))
+        self.radio_KERBEROS_2.setText(QCoreApplication.translate("form_Database", u"P&LAIN  ", None))
+        self.label.setText(QCoreApplication.translate("form_Database", u"Authentication Types:", None))
     # retranslateUi
 

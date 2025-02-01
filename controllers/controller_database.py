@@ -4,6 +4,7 @@ from services.service_notification import NotificationService
 from gui.gui_form_database import Ui_form_Database
 from logger.service_logging import LoggingService
 from utils.converter import Converter
+
 class DatabaseController(QDialog, Ui_form_Database):
     def __init__(self):
         super().__init__()
@@ -59,6 +60,24 @@ class DatabaseController(QDialog, Ui_form_Database):
 
     def get_connection_details(self):
         """Collect and return all necessary connection details from the UI."""
+        if self.radio_X509.isChecked():
+            auth_type = "MONGODB-X509"
+        elif self.radio_SHA1.isChecked():
+            auth_type = "SCRAM-SHA-1"
+        elif self.radio_AWS.isChecked():
+            auth_type = "MONGODB-AWS"
+        elif self.radio_KERBEROS_2.isChecked():
+            auth_type = "PLAIN"
+        elif self.radio_SHA256.isChecked():
+            auth_type = "SCRAM-SHA-256"
+        elif self.radio_KERBEROS.isChecked():
+            auth_type = "GSSAPI (Kerberos)"
+        elif self.radio_LDAP.isChecked():
+            auth_type = "LDAP"
+        else:
+            LoggingService.log("No authentication type selected")
+            auth_type = None
+
         return {
             'use_ssh': self.checkbox_SSH.isChecked(),
             'host': self.text_Host.toPlainText().strip(),
@@ -71,8 +90,8 @@ class DatabaseController(QDialog, Ui_form_Database):
             'ssh_port': Converter.safe_int_conversion(self.text_SSH_Port.toPlainText()) or None,
             'ssh_username': self.text_SSH_Username.toPlainText().strip(),
             'ssh_password': self.text_SSH_Password.toPlainText().strip(),
+            'auth_type': auth_type,
         }
-
 
     def toggle_ssh_options(self, is_checked):
         """Toggle the visibility of SSH-related options based on checkbox state."""

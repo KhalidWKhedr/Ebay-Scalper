@@ -9,15 +9,16 @@ class MongoConnectionManager:
     def __init__(self, connection_details):
         self.ssh_checked = connection_details['use_ssh']
         self.ssh_host = connection_details.get('ssh_host', None)
-        self.ssh_port = int(connection_details.get('ssh_port', 22)) if self.ssh_checked else None
+        self.ssh_port = connection_details.get('ssh_port') if self.ssh_checked else None
         self.ssh_username = connection_details.get('ssh_username', None) if self.ssh_checked else None
         self.ssh_password = connection_details.get('ssh_password', None) if self.ssh_checked else None
         self.mongo_host = connection_details['host']
-        self.mongo_port = int(connection_details['port'])
+        self.mongo_port = connection_details['port']
         self.mongo_user = connection_details['user']
         self.mongo_password = connection_details['password']
         self.db_name = connection_details['db_name']
         self.auth_source = connection_details['auth_source']
+        self.auth_type = connection_details['auth_type']
         self.uri = f"mongodb://{quote(self.mongo_user)}:{quote(self.mongo_password)}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism=SCRAM-SHA-1"
 
         self.logger = service_logging.LoggingService.get_logger()
@@ -61,7 +62,7 @@ class MongoConnectionManager:
                     return None
 
                 self.uri = f"mongodb://{quote(self.mongo_user)}:{quote(self.mongo_password)}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism=SCRAM-SHA-1"
-
+                print(self.uri, self.auth_type)
             self.client = pymongo.MongoClient(self.uri, serverSelectionTimeoutMS=5000)
 
             self.client.admin.command("ping")
