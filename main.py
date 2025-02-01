@@ -5,8 +5,6 @@ from PySide6.QtWidgets import QApplication
 from sshtunnel import SSHTunnelForwarder
 
 from controllers.controller_main import MainController
-from deprecated.past_code.MongoSSHConnector import MongoSSHConnector
-
 
 def create_tunnel():
     """Creates the SSH tunnel."""
