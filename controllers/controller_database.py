@@ -19,7 +19,6 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.text_SSH_Username.textChanged.connect(self.update_mongo_uri)
         self.text_SSH_Password.textChanged.connect(self.update_mongo_uri)
 
-
         self.text_Host.textChanged.connect(self.update_mongo_uri)
         self.text_Port.textChanged.connect(self.update_mongo_uri)
         self.text_Username.textChanged.connect(self.update_mongo_uri)
@@ -37,16 +36,12 @@ class DatabaseController(QDialog, Ui_form_Database):
         """Generate and update the MongoDB URI dynamically."""
         host = self.text_Host.toPlainText().strip()
         port = self.text_Port.toPlainText().strip()
-        user = self.text_Username.toPlainText().strip()
-        password = self.text_Password.toPlainText().strip()
+        user = self.text_Username.toPlainText().strip().replace("@", "%40")
+        password = self.text_Password.toPlainText().strip().replace("@", "%40")
         db_name = self.text_DbName.toPlainText().strip()
         auth_source = self.text_AuthSource.toPlainText().strip()
 
-        escaped_user = user.replace("@", "%40")
-        escaped_password = password.replace("@", "%40")
-
-
-        uri = f"mongodb://{escaped_user}:{escaped_password}@{host}:{port}/{db_name}?authSource={auth_source}"
+        uri = f"mongodb://{user}:{password}@{host}:{port}/{db_name}?authSource={auth_source}"
         self.text_MongoUri.setPlainText(uri)
 
     def connect_to_db(self):

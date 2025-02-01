@@ -1,5 +1,5 @@
-from database.manager_direct_connection import NormalConnectionManager
-from database.manager_ssh_connection import SSHConnectionManager
+from deprecated.manager_direct_connection import NormalConnectionManager
+from deprecated.manager_ssh_connection import SSHConnectionManager
 from logger.service_logging import LoggingService
 from utils.manager_secure_config import SecureConfigManager
 

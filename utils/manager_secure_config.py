@@ -29,7 +29,6 @@ class SecureConfigManager:
             with open(self.env_file, "w") as f:
                 f.write("# .env file for storing encrypted configuration settings\n")
 
-
     def encrypt(self, value):
         """Encrypt a value."""
         return self.fernet.encrypt(value.encode()).decode()
