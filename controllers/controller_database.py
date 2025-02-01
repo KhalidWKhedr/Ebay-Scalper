@@ -4,7 +4,6 @@ from services.service_notification import NotificationService
 from gui.gui_form_database import Ui_form_Database
 from logger.service_logging import LoggingService
 from utils.converter import Converter
-
 class DatabaseController(QDialog, Ui_form_Database):
     def __init__(self):
         super().__init__()
@@ -56,6 +55,7 @@ class DatabaseController(QDialog, Ui_form_Database):
 
         try:
             message = self.db_service.connect(connection_details)
+            self.db_service.save_connection_settings(connection_details)
             LoggingService.log(f"Connection to database successful: {message}", level="info")
         except Exception as e:
             LoggingService.log(f"Failed to connect to database: {str(e)}", level="error")
@@ -77,6 +77,7 @@ class DatabaseController(QDialog, Ui_form_Database):
             'ssh_username': self.text_SSH_Username.toPlainText().strip(),
             'ssh_password': self.text_SSH_Password.toPlainText().strip(),
         }
+
 
     def toggle_ssh_options(self, is_checked):
         """Toggle the visibility of SSH-related options based on checkbox state."""

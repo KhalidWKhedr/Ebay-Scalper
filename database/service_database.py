@@ -1,11 +1,23 @@
 from database.manager_direct_connection import NormalConnectionManager
 from database.manager_ssh_connection import SSHConnectionManager
 from logger.service_logging import LoggingService
-
+from utils.manager_secure_config import SecureConfigManager
 
 class DatabaseService:
     def __init__(self):
         self.db_connection = None
+        self.config = SecureConfigManager(env_file="config/.env", key_file="config/.key", connection_details=None)
+
+    def save_connection_settings(self, connection_details):
+        """Save encrypted database connection details."""
+        print(connection_details)
+        for key, value in connection_details.items():
+            if value:
+                self.config.write(key, value)
+
+    def get_connection_settings(self):
+        """Retrieve and decrypt database connection details."""
+        return self.config.get_all()
 
     def create_connection(self, connection_details):
         """Creates a connection based on whether SSH is used."""
