@@ -10,16 +10,16 @@ from logger import service_logging
 class SSHConnectionManager:
     def __init__(self, connection_details):
         self.ssh_host = connection_details['ssh_host']
-        self.ssh_port = connection_details['ssh_port']
-        self.ssh_username = quote(connection_details['ssh_username'])
-        self.ssh_password = quote(connection_details['ssh_password'])
+        self.ssh_port = int(connection_details['ssh_port'])
+        self.ssh_username = (connection_details['ssh_username'])
+        self.ssh_password = (connection_details['ssh_password'])
         self.mongo_host = connection_details['host']
         self.mongo_port = int(connection_details['port'])
         self.mongo_user = connection_details['user']
         self.mongo_password = connection_details['password']
         self.db_name = connection_details['db_name']
         self.auth_source = connection_details['auth_source']
-        self.uri = f"mongodb://{self.ssh_username}:{self.ssh_password}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism=SCRAM-SHA-1"
+        self.uri = f"mongodb://{quote(self.ssh_username)}:{quote(self.ssh_password)}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism=SCRAM-SHA-1"
 
         self.logger = service_logging.LoggingService.get_logger()
 
@@ -29,12 +29,12 @@ class SSHConnectionManager:
     def _create_tunnel(self):
         """Creates the SSH tunnel."""
         try:
-            tunnel = SSHTunnelForwarder(
-                ('192.168.120', 22),
-                ssh_username='Khalid',
-                ssh_password='Fuckrtu@1',
-                remote_bind_address=('localhost', 27017),
-                local_bind_address=("localhost", 27018)  # Local port for the SSH tunnel
+            self.tunnel = SSHTunnelForwarder(
+                (self.ssh_host, self.ssh_port),
+                ssh_username=self.ssh_username,
+                ssh_password=self.ssh_password,
+                remote_bind_address=(self.mongo_host, self.mongo_port),
+                local_bind_address=(self.mongo_host, 27018)
             )
             self.tunnel.start()
             local_port = self.tunnel.local_bind_port
