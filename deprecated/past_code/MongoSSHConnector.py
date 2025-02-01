@@ -29,10 +29,11 @@ class MongoSSHConnector:
 
         # MongoDB URI (connection string)
         self.mongo_uri = f"mongodb://{self.MONGO_USER}:{self.MONGO_PASSWORD}@localhost:27018/{self.MONGO_DB}?authSource={self.AUTH_DB}&authMechanism=SCRAM-SHA-1"
+        print(self.mongo_uri)
         self.client = None
         self.tunnel = None
 
-    def _create_tunnel(self):
+    def create_tunnel(self):
         """Creates the SSH tunnel."""
         try:
             self.tunnel = SSHTunnelForwarder(
@@ -50,7 +51,7 @@ class MongoSSHConnector:
 
     def connect(self):
         """Connect to MongoDB via the SSH tunnel."""
-        self._create_tunnel()
+        self.create_tunnel()
 
         try:
             # Connect to MongoDB via the SSH tunnel

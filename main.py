@@ -4,7 +4,6 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from controllers.controller_main import MainController
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)  # Create the application
     window = MainController()  # Create the window
