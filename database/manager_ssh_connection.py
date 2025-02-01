@@ -18,29 +18,48 @@ class SSHConnectionManager:
         self.auth_source = connection_details['auth_source']
         self.logger = service_logging.LoggingService.get_logger()
 
+        self.tunnel = None
+        self.client = None
+
     def connect(self):
-        """Handles the SSH connection and the tunnel setup."""
+        """Handles the SSH connection and MongoDB tunnel setup."""
         try:
-            with SSHTunnelForwarder(
-                    (self.ssh_host, self.ssh_port),
-                    ssh_username=self.ssh_username,
-                    ssh_password=self.ssh_password,
-                    remote_bind_address=(self.mongo_host, self.mongo_port)) as tunnel:
+            self.tunnel = SSHTunnelForwarder(
+                (self.ssh_host, self.ssh_port),
+                ssh_username=self.ssh_username,
+                ssh_password=self.ssh_password,
+                remote_bind_address=(self.mongo_host, self.mongo_port),
+                local_bind_address=("localhost", 27018)
+            )
+            self.tunnel.start()
 
-                self.logger.info(f"Successfully established SSH tunnel to {self.ssh_host}:{self.ssh_port}.")
+            local_port = self.tunnel.local_bind_port
+            self.logger.info(f"Successfully established SSH tunnel to {self.ssh_host}:{self.ssh_port}, forwarding to local port {local_port}.")
 
-                escaped_user = quote(self.mongo_user)
-                escaped_password = quote(self.mongo_password)
-                uri = f"mongodb://{escaped_user}:{escaped_password}@127.0.0.1:{tunnel.local_bind_port}/{self.db_name}?authSource={self.auth_source}"
-                client = pymongo.MongoClient(uri)
+            escaped_user = quote(self.mongo_user)
+            escaped_password = quote(self.mongo_password)
+            uri = f"mongodb://{escaped_user}:{escaped_password}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism=SCRAM-SHA-1"
+            print(uri)
+            self.client = pymongo.MongoClient(uri, serverSelectionTimeoutMS=5000)
+            self.client.admin.command("ping")
 
-                self.logger.info(
-                    f"Successfully connected to MongoDB at {self.mongo_host}:{self.mongo_port}, database: {self.db_name} via SSH tunnel.")
-
-                return True
+            self.logger.info(f"Successfully connected to MongoDB at {self.mongo_host}:{self.mongo_port}, database: {self.db_name} via SSH tunnel.")
+            return self.client
 
         except Exception as e:
-            # Log the exception in case of an error
             self.logger.error(
-                f"Failed to connect via SSH to {self.ssh_host}:{self.ssh_port} or MongoDB at {self.mongo_host}:{self.mongo_port}. Error: {str(e)}")
-            return False
+                f"Failed to connect via SSH to {self.ssh_host}:{self.ssh_port} or MongoDB at {self.mongo_host}:{self.mongo_port}. Error: {repr(e)}"
+            )
+            self.close()
+            return None
+
+    def close(self):
+        """Closes the SSH tunnel and MongoDB connection."""
+        if self.client:
+            self.client.close()
+            self.logger.info("MongoDB connection closed.")
+            self.client = None
+        if self.tunnel:
+            self.tunnel.stop()
+            self.logger.info("SSH tunnel closed.")
+            self.tunnel = None

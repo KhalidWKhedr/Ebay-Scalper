@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1165</width>
-    <height>436</height>
+    <width>1221</width>
+    <height>724</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>1101</width>
-     <height>391</height>
+     <width>1141</width>
+     <height>411</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -28,61 +28,11 @@
    <property name="frameShadow">
     <enum>QFrame::Shadow::Raised</enum>
    </property>
-   <widget class="QFrame" name="frame_URI">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>247</y>
-      <width>1101</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
-    </property>
-    <widget class="QWidget" name="">
-     <property name="geometry">
-      <rect>
-       <x>6</x>
-       <y>6</y>
-       <width>1091</width>
-       <height>131</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <item row="1" column="0">
-       <widget class="QPushButton" name="button_TestConnection">
-        <property name="text">
-         <string>Test Connection</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="button_Connect">
-        <property name="text">
-         <string>Connect</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QPlainTextEdit" name="text_MongoUri">
-        <property name="plainText">
-         <string>MONGO-URI:
-</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
    <widget class="QFrame" name="frame_AUTH">
     <property name="geometry">
      <rect>
-      <x>890</x>
-      <y>0</y>
+      <x>910</x>
+      <y>10</y>
       <width>211</width>
       <height>221</height>
      </rect>
@@ -100,27 +50,6 @@
      <enum>QFrame::Shadow::Raised</enum>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="5" column="0">
-      <widget class="QRadioButton" name="radio_AWS">
-       <property name="text">
-        <string>M&amp;ONGODB-AWS  </string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QRadioButton" name="radio_SHA256">
-       <property name="text">
-        <string>SCRAM-SHA-&amp;256  </string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QRadioButton" name="radio_SHA1">
-       <property name="text">
-        <string>SCRAM-SHA-&amp;1  </string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="0">
       <widget class="QRadioButton" name="radio_X509">
        <property name="text">
@@ -135,17 +64,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_authtypes">
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="radio_SHA256">
        <property name="text">
-        <string>Authentication Types:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="0">
-      <widget class="QRadioButton" name="radio_KERBEROS_2">
-       <property name="text">
-        <string>P&amp;LAIN  </string>
+        <string>SCRAM-SHA-&amp;256  </string>
        </property>
       </widget>
      </item>
@@ -156,13 +78,41 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="radio_SHA1">
+       <property name="text">
+        <string>SCRAM-SHA-&amp;1  </string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QRadioButton" name="radio_AWS">
+       <property name="text">
+        <string>M&amp;ONGODB-AWS  </string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QRadioButton" name="radio_KERBEROS_2">
+       <property name="text">
+        <string>P&amp;LAIN  </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_authtypes">
+       <property name="text">
+        <string>Authentication Types:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QFrame" name="frame_MONGODB">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>20</x>
+      <y>10</y>
       <width>431</width>
       <height>251</height>
      </rect>
@@ -180,6 +130,12 @@
      <enum>QFrame::Shadow::Raised</enum>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="6" column="1">
+      <widget class="QTextEdit" name="text_DbName"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QTextEdit" name="text_AuthSource"/>
+     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_port">
        <property name="text">
@@ -190,10 +146,10 @@
      <item row="1" column="1">
       <widget class="QTextEdit" name="text_Host"/>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_host">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_password">
        <property name="text">
-        <string>HOST:</string>
+        <string>PASSWORD:</string>
        </property>
       </widget>
      </item>
@@ -210,30 +166,17 @@
      <item row="3" column="1">
       <widget class="QTextEdit" name="text_Username"/>
      </item>
-     <item row="6" column="1">
-      <widget class="QTextEdit" name="text_DbName"/>
-     </item>
-     <item row="5" column="1">
-      <widget class="QTextEdit" name="text_AuthSource"/>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_host">
+       <property name="text">
+        <string>HOST:</string>
+       </property>
+      </widget>
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="label_dbname">
        <property name="text">
         <string>DB NAME:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_password">
-       <property name="text">
-        <string>PASSWORD:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_mongocredentials">
-       <property name="text">
-        <string>MongoDB Credentials:</string>
        </property>
       </widget>
      </item>
@@ -247,13 +190,20 @@
      <item row="2" column="1">
       <widget class="QTextEdit" name="text_Port"/>
      </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_mongocredentials">
+       <property name="text">
+        <string>MongoDB Credentials:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QFrame" name="frame_SSH">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>0</y>
+      <x>470</x>
+      <y>10</y>
       <width>421</width>
       <height>181</height>
      </rect>
@@ -271,44 +221,10 @@
      <enum>QFrame::Shadow::Raised</enum>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="1">
-      <widget class="QTextEdit" name="text_SSH_Host"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QTextEdit" name="text_SSH_Port"/>
-     </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_ssh_password">
        <property name="text">
         <string>SSH PASSWORD:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_ssh_username">
-       <property name="text">
-        <string>SSH USERNAME:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_ssh_port">
-       <property name="text">
-        <string>SSH PORT:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_ssh_host">
-       <property name="text">
-        <string>SSH HOST:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_sshcredentials">
-       <property name="text">
-        <string>SSH Credentials</string>
        </property>
       </widget>
      </item>
@@ -322,8 +238,89 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_sshcredentials">
+       <property name="text">
+        <string>SSH Credentials</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_ssh_host">
+       <property name="text">
+        <string>SSH HOST:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_ssh_port">
+       <property name="text">
+        <string>SSH PORT:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_ssh_username">
+       <property name="text">
+        <string>SSH USERNAME:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QTextEdit" name="text_SSH_Host"/>
+     </item>
      <item row="4" column="1">
       <widget class="QTextEdit" name="text_SSH_Password"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QTextEdit" name="text_SSH_Port"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>271</y>
+      <width>1101</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0" colspan="3">
+      <widget class="QPlainTextEdit" name="text_MongoUri">
+       <property name="plainText">
+        <string>MONGO-URI:
+</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="button_TestConnection">
+       <property name="text">
+        <string>Test Connection</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="button_Connect">
+       <property name="text">
+        <string>Connect</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
