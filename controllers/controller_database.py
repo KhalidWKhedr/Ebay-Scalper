@@ -11,15 +11,16 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.setupUi(self)
         self.db_service = DatabaseService()
         self.notification_service = NotificationService()
+
+        # Radio button connections
         self.checkbox_SSH.toggled.connect(self.toggle_ssh_options)
-        self.toggle_ssh_options(self.checkbox_SSH.isChecked())
         self.button_Connect.clicked.connect(self.connect_to_db)
 
+        # Connect UI elements for textChanged
         self.text_SSH_Host.textChanged.connect(self.update_mongo_uri)
         self.text_SSH_Port.textChanged.connect(self.update_mongo_uri)
         self.text_SSH_Username.textChanged.connect(self.update_mongo_uri)
         self.text_SSH_Password.textChanged.connect(self.update_mongo_uri)
-
         self.text_Host.textChanged.connect(self.update_mongo_uri)
         self.text_Port.textChanged.connect(self.update_mongo_uri)
         self.text_Username.textChanged.connect(self.update_mongo_uri)
@@ -27,6 +28,16 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.text_DbName.textChanged.connect(self.update_mongo_uri)
         self.text_AuthSource.textChanged.connect(self.update_mongo_uri)
 
+        # Connect radio buttons to update auth type dynamically
+        self.radio_X509.toggled.connect(self.update_mongo_uri)
+        self.radio_SHA1.toggled.connect(self.update_mongo_uri)
+        self.radio_AWS.toggled.connect(self.update_mongo_uri)
+        self.radio_KERBEROS_2.toggled.connect(self.update_mongo_uri)
+        self.radio_SHA256.toggled.connect(self.update_mongo_uri)
+        self.radio_KERBEROS.toggled.connect(self.update_mongo_uri)
+        self.radio_LDAP.toggled.connect(self.update_mongo_uri)
+
+        self.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
     def initialize_ui(self):
         """Setup UI elements like the eBay site combo box."""
@@ -42,7 +53,26 @@ class DatabaseController(QDialog, Ui_form_Database):
         db_name = self.text_DbName.toPlainText().strip()
         auth_source = self.text_AuthSource.toPlainText().strip()
 
+        auth_map = {
+            self.radio_X509: "MONGODB-X509",
+            self.radio_SHA1: "SCRAM-SHA-1",
+            self.radio_AWS: "MONGODB-AWS",
+            self.radio_KERBEROS_2: "PLAIN",
+            self.radio_SHA256: "SCRAM-SHA-256",
+            self.radio_KERBEROS: "GSSAPI (Kerberos)",
+            self.radio_LDAP: "LDAP"
+        }
+
+        auth_type = None
+        for radio_button, auth_value in auth_map.items():
+            if radio_button.isChecked():
+                auth_type = auth_value
+                break
+
         uri = f"mongodb://{user}:{password}@{host}:{port}/{db_name}?authSource={auth_source}"
+        if auth_type:
+            uri += f"&authMechanism={auth_type}"
+
         self.text_MongoUri.setPlainText(uri)
 
     def connect_to_db(self):
@@ -60,23 +90,7 @@ class DatabaseController(QDialog, Ui_form_Database):
 
     def get_connection_details(self):
         """Collect and return all necessary connection details from the UI."""
-        if self.radio_X509.isChecked():
-            auth_type = "MONGODB-X509"
-        elif self.radio_SHA1.isChecked():
-            auth_type = "SCRAM-SHA-1"
-        elif self.radio_AWS.isChecked():
-            auth_type = "MONGODB-AWS"
-        elif self.radio_KERBEROS_2.isChecked():
-            auth_type = "PLAIN"
-        elif self.radio_SHA256.isChecked():
-            auth_type = "SCRAM-SHA-256"
-        elif self.radio_KERBEROS.isChecked():
-            auth_type = "GSSAPI (Kerberos)"
-        elif self.radio_LDAP.isChecked():
-            auth_type = "LDAP"
-        else:
-            LoggingService.log("No authentication type selected")
-            auth_type = None
+        auth_type = self.get_selected_auth_type()
 
         return {
             'use_ssh': self.checkbox_SSH.isChecked(),
@@ -92,6 +106,24 @@ class DatabaseController(QDialog, Ui_form_Database):
             'ssh_password': self.text_SSH_Password.toPlainText().strip(),
             'auth_type': auth_type,
         }
+
+    def get_selected_auth_type(self):
+        """Get the selected authentication type from the radio buttons."""
+        auth_map = {
+            self.radio_X509: "MONGODB-X509",
+            self.radio_SHA1: "SCRAM-SHA-1",
+            self.radio_AWS: "MONGODB-AWS",
+            self.radio_KERBEROS_2: "PLAIN",
+            self.radio_SHA256: "SCRAM-SHA-256",
+            self.radio_KERBEROS: "GSSAPI (Kerberos)",
+            self.radio_LDAP: "LDAP"
+        }
+
+        for radio_button, auth_value in auth_map.items():
+            if radio_button.isChecked():
+                return auth_value
+
+        return None
 
     def toggle_ssh_options(self, is_checked):
         """Toggle the visibility of SSH-related options based on checkbox state."""
