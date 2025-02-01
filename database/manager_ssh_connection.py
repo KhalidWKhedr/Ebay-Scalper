@@ -14,7 +14,7 @@ class SSHConnectionManager:
         self.ssh_username = quote(connection_details['ssh_username'])
         self.ssh_password = quote(connection_details['ssh_password'])
         self.mongo_host = connection_details['host']
-        self.mongo_port = connection_details['port']
+        self.mongo_port = int(connection_details['port'])
         self.mongo_user = connection_details['user']
         self.mongo_password = connection_details['password']
         self.db_name = connection_details['db_name']
@@ -27,14 +27,14 @@ class SSHConnectionManager:
         self.client = None
 
     def _create_tunnel(self):
-        """Handles the SSH connection and MongoDB tunnel setup."""
+        """Creates the SSH tunnel."""
         try:
-            self.tunnel = SSHTunnelForwarder(
-                (self.ssh_host, self.ssh_port),
-                ssh_username=self.ssh_username,
-                ssh_password=self.ssh_password,
-                remote_bind_address=(self.mongo_host, self.mongo_port),
-                local_bind_address=("localhost", 27018)
+            tunnel = SSHTunnelForwarder(
+                ('192.168.120', 22),
+                ssh_username='Khalid',
+                ssh_password='Fuckrtu@1',
+                remote_bind_address=('localhost', 27017),
+                local_bind_address=("localhost", 27018)  # Local port for the SSH tunnel
             )
             self.tunnel.start()
             local_port = self.tunnel.local_bind_port
@@ -52,6 +52,7 @@ class SSHConnectionManager:
 
     def connect(self):
         """Connect to MongoDB via the SSH tunnel."""
+        print("hi")
         try:
             self._create_tunnel()
 
