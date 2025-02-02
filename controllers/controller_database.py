@@ -38,7 +38,6 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.radio_SHA256.toggled.connect(self.update_mongo_uri)
         self.radio_KERBEROS.toggled.connect(self.update_mongo_uri)
         self.radio_LDAP.toggled.connect(self.update_mongo_uri)
-        self.uri = f"mongodb://{self.text_Username}:{self.text_Password}@{self.text_Host}:{self.text_Port}/{self.text_DbName}?authSource={self.set_authentication_radio}"
 
         self.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
