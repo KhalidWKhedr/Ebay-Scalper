@@ -38,6 +38,7 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.radio_SHA256.toggled.connect(self.update_mongo_uri)
         self.radio_KERBEROS.toggled.connect(self.update_mongo_uri)
         self.radio_LDAP.toggled.connect(self.update_mongo_uri)
+        self.uri = f"mongodb://{self.text_Username}:{self.text_Password}@{self.text_Host}:{self.text_Port}/{self.text_DbName}?authSource={self.set_authentication_radio}"
 
         self.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
@@ -66,6 +67,15 @@ class DatabaseController(QDialog, Ui_form_Database):
             self.text_DbName.setPlainText("test_db")
             self.text_AuthSource.setPlainText("admin")
 
+        self.set_authentication_radio(connection_settings['auth_type'])
+
+        self.text_MongoUri.setPlainText(
+            f"mongodb://{connection_settings['user'].replace('@', '%40')}:"
+            f"{connection_settings['password'].replace('@', '%40')}@"
+            f"{connection_settings['host']}:{connection_settings['port']}/"
+            f"{connection_settings['db_name']}?"
+            f"authSource={connection_settings['auth_source']}&authMechanism={connection_settings['auth_type']}"
+        )
 
     def set_authentication_radio(self, auth_type):
         """Set the appropriate radio button based on the saved authentication type."""
