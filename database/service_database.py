@@ -6,14 +6,13 @@ from utils.manager_secure_config import SecureConfigManager
 class DatabaseService:
     def __init__(self):
         self.db_connection = None
-        self.config = SecureConfigManager(env_file="config/.env", key_file="config/.key", connection_details=None)
+        self.config = SecureConfigManager(connection_details=None)
 
     def save_connection_settings(self, connection_details):
         """Save encrypted database connection details."""
-        print(connection_details)
         for key, value in connection_details.items():
-            if value:
-                self.config.write(key, value)
+            if value is not None:
+                self.config.write(key, str(value))
 
     def get_connection_settings(self):
         """Retrieve and decrypt database connection details."""
@@ -58,3 +57,5 @@ class DatabaseService:
         except Exception as e:
             LoggingService.log(f"Error connecting to MongoDB: {str(e)}", level="error")
             return f"Error: {str(e)}"
+
+

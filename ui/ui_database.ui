@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1221</width>
-    <height>462</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -244,7 +244,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QFrame" name="frame">
+   <widget class="QFrame" name="frame_AUTHTYPES">
     <property name="geometry">
      <rect>
       <x>910</x>
@@ -310,7 +310,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="label_authtypes">
        <property name="text">
         <string>Authentication Types:</string>
        </property>

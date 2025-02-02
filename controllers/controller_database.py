@@ -12,6 +12,8 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.db_service = DatabaseService()
         self.notification_service = NotificationService()
 
+        self.initialize_ui()
+
         # Radio button connections
         self.checkbox_SSH.toggled.connect(self.toggle_ssh_options)
         self.button_Connect.clicked.connect(self.connect_to_db)
@@ -40,9 +42,48 @@ class DatabaseController(QDialog, Ui_form_Database):
         self.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
     def initialize_ui(self):
-        """Setup UI elements like the eBay site combo box."""
-        self.text_MongoUri.setReadOnly(True)
-        self.update_mongo_uri()
+        """Setup UI elements based on saved connection settings."""
+        connection_settings = self.db_service.get_connection_settings()
+
+        if connection_settings:
+            self.text_Host.setPlainText(connection_settings['host'])
+            self.text_Port.setPlainText(str(connection_settings['port']))
+            self.text_Username.setPlainText(connection_settings['user'])
+            self.text_Password.setPlainText(connection_settings['password'])
+            self.text_DbName.setPlainText(connection_settings['db_name'])
+            self.text_AuthSource.setPlainText(connection_settings['auth_source'])
+            self.text_SSH_Host.setPlainText(connection_settings['ssh_host'])
+            self.text_SSH_Port.setPlainText(str(connection_settings['ssh_port']))
+            self.text_SSH_Username.setPlainText(connection_settings['ssh_username'])
+            self.text_SSH_Password.setPlainText(connection_settings['ssh_password'])
+            self.set_authentication_radio(connection_settings['auth_type'])
+
+        else:
+            self.text_Host.setPlainText("localhost")
+            self.text_Port.setPlainText("27017")
+            self.text_Username.setPlainText("")
+            self.text_Password.setPlainText("")
+            self.text_DbName.setPlainText("test_db")
+            self.text_AuthSource.setPlainText("admin")
+
+
+    def set_authentication_radio(self, auth_type):
+        """Set the appropriate radio button based on the saved authentication type."""
+        auth_map = {
+            "MONGODB-X509": self.radio_X509,
+            "SCRAM-SHA-1": self.radio_SHA1,
+            "MONGODB-AWS": self.radio_AWS,
+            "PLAIN": self.radio_KERBEROS_2,
+            "SCRAM-SHA-256": self.radio_SHA256,
+            "GSSAPI (Kerberos)": self.radio_KERBEROS,
+            "LDAP": self.radio_LDAP
+        }
+
+        for radio_button in auth_map.values():
+            radio_button.setChecked(False)
+
+        if auth_type and auth_type in auth_map:
+            auth_map[auth_type].setChecked(True)
 
     def update_mongo_uri(self):
         """Generate and update the MongoDB URI dynamically."""
@@ -82,6 +123,8 @@ class DatabaseController(QDialog, Ui_form_Database):
         try:
             message = self.db_service.connect(connection_details)
             self.db_service.save_connection_settings(connection_details)
+            data = self.db_service.get_connection_settings()
+
             LoggingService.log(f"Connection to database successful: {message}", level="info")
         except Exception as e:
             LoggingService.log(f"Failed to connect to database: {str(e)}", level="error")

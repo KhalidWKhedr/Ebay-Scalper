@@ -4,9 +4,12 @@ from dotenv import dotenv_values, set_key
 
 
 class SecureConfigManager:
-    def __init__(self, env_file=".env", key_file=".key", connection_details=None):
-        self.env_file = env_file
-        self.key_file = key_file
+    ENV_FILE = "config/.env"
+    KEY_FILE = "config/.key"
+
+    def __init__(self, connection_details=None):
+        self.env_file = self.ENV_FILE
+        self.key_file = self.KEY_FILE
         self.fernet = self.load_or_generate_key()
         self.create_env()
         self.connection_details = connection_details

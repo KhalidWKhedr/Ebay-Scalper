@@ -52,7 +52,6 @@ class SSHConnectionManager:
 
     def connect(self):
         """Connect to MongoDB via the SSH tunnel."""
-        print("hi")
         try:
             self._create_tunnel()
 
