@@ -1,12 +1,15 @@
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QPushButton, QListWidgetItem
-
 from services.setup_csv import CsvSetup
+from services.service_notification import NotificationService
 
 class CsvController:
-    def __init__(self, main_ui):
+    def __init__(self, main_ui, csv_setup: CsvSetup, notification_service: NotificationService):
         self.ui = main_ui
-        self.csv_setup = CsvSetup()
+        self.csv_setup = csv_setup
+        self.notification_service = notification_service
+
         self.csv_setup.csv_loaded.connect(self.on_csv_loaded)
+
         self.ui.actionImport_CSV.triggered.connect(self.open_file_dialog)
 
     def open_file_dialog(self):
@@ -22,12 +25,12 @@ class CsvController:
         try:
             self.csv_setup.load_csv(file_path)
         except RuntimeError as e:
-            QMessageBox.critical(None, "Error", str(e))
+            self.notification_service.show_message(self.ui, f"Error: {str(e)}")
 
     def on_csv_loaded(self, columns, rows):
         """Handles UI update when CSV is loaded."""
         if not columns:
-            QMessageBox.warning(None, "Error", "Failed to load CSV.")
+            self.notification_service.show_message(self.ui, "Failed to load CSV.")
             return
 
         print("CSV Loaded:", columns, rows)

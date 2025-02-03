@@ -1,18 +1,22 @@
 from PySide6.QtWidgets import QMainWindow
+
+from gui.gui_form_main import Ui_form_MainWindow
+
+from controllers.controller_csv import CsvController
 from controllers.controller_database import DatabaseController
 from controllers.controller_ebay_api import EbayApiController
-from controllers.controller_csv import CsvController
-from gui.gui_form_main import Ui_form_MainWindow
 from database.service_database import DatabaseService
+from logger.service_logging import LoggingService
 from services.ebay.service_ebay import EbayService
 from services.service_notification import NotificationService
-from logger.service_logging import LoggingService
+from services.setup_csv import CsvSetup
 from utils.converter import Converter
+
 
 class MainController(QMainWindow, Ui_form_MainWindow):
     def __init__(self, db_service: DatabaseService, logger: LoggingService,
                  converter: Converter, notification_service: NotificationService,
-                 ebay_service: EbayService):
+                 ebay_service: EbayService, csv_setup: CsvSetup):
         super().__init__()
         self.setupUi(self)
 
@@ -22,9 +26,10 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         self.converter = converter
         self.notification_service = notification_service
         self.ebay_service = ebay_service
+        self.csv_setup = csv_setup
 
-        # Instantiate CSV Controller (Pass UI reference)
-        self.csv_controller = CsvController(self)
+        # Instantiate CSV Controller (Pass UI reference and required services)
+        self.csv_controller = CsvController(self, self.csv_setup, self.notification_service)
 
         # Button connections for opening other windows
         self.button_DATABASE.clicked.connect(self.open_database_window)

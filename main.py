@@ -9,20 +9,23 @@ from logger.service_logging import LoggingService
 from services.ebay.service_ebay import EbayService
 from services.service_notification import NotificationService
 from utils.converter import Converter
+from services.setup_csv import CsvSetup
 
 db_service = DatabaseService()
 logger = LoggingService()
 converter = Converter()
 notification_service = NotificationService()
 ebay_service = EbayService()
+csv_service = CsvSetup()
 if __name__ == '__main__':
     app = QApplication(sys.argv)  # Create the application
     window = MainController(
-    db_service=db_service,
-    logger=logger,
-    converter=converter,
-    notification_service=notification_service,
-    ebay_service=ebay_service)  # Create the window
+            db_service=db_service,
+            logger=logger,
+            converter=converter,
+            notification_service=notification_service,
+            ebay_service=ebay_service,
+            csv_setup = csv_service)  # Create the window
     window.show()  # Show the window
     sys.exit(app.exec())  # Start the application event loop
     # EbayScrapper = EbayItemFetcher.EbayScraping()
