@@ -5,14 +5,17 @@ from gui.gui_form_ebay import Ui_form_EbayAPI
 from logger.service_logging import LoggingService
 from services.ebay.ebay_site_domain import SITE_DOMAIN_MAPPING
 
+
 class EbayApiController(QDialog, Ui_form_EbayAPI):
-    def __init__(self):
+    def __init__(self, ebay_service: EbayService, notification_service: NotificationService,
+                 site_domain_mapping: dict = SITE_DOMAIN_MAPPING):
         super().__init__()
         self.setupUi(self)
-        self.ebay_service = EbayService()
-        self.notification_service = NotificationService()
 
-        self.site_domain_mapping = SITE_DOMAIN_MAPPING
+        self.ebay_service = ebay_service
+        self.notification_service = notification_service
+        self.site_domain_mapping = site_domain_mapping
+
         self.initialize_ui()
 
     def initialize_ui(self):

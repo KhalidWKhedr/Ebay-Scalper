@@ -4,23 +4,27 @@ from controllers.controller_ebay_api import EbayApiController
 from controllers.controller_csv import CsvController
 from gui.gui_form_main import Ui_form_MainWindow
 from database.service_database import DatabaseService
+from services.ebay.service_ebay import EbayService
 from services.service_notification import NotificationService
 from logger.service_logging import LoggingService
 from utils.converter import Converter
 
 class MainController(QMainWindow, Ui_form_MainWindow):
-    def __init__(self):
+    def __init__(self, db_service: DatabaseService, logger: LoggingService,
+                 converter: Converter, notification_service: NotificationService,
+                 ebay_service: EbayService):
         super().__init__()
         self.setupUi(self)
 
+        # Injected dependencies
+        self.db_service = db_service
+        self.logger = logger
+        self.converter = converter
+        self.notification_service = notification_service
+        self.ebay_service = ebay_service
+
         # Instantiate CSV Controller (Pass UI reference)
         self.csv_controller = CsvController(self)
-
-        # Initialize your services (can be injected later)
-        self.db_service = DatabaseService()
-        self.logger = LoggingService()
-        self.converter = Converter()
-        self.notification_service = NotificationService()
 
         # Button connections for opening other windows
         self.button_DATABASE.clicked.connect(self.open_database_window)
@@ -43,5 +47,8 @@ class MainController(QMainWindow, Ui_form_MainWindow):
 
     def open_ebay_window(self):
         if not self.ebay_window:
-            self.ebay_window = EbayApiController()
+            self.ebay_window = EbayApiController(
+                self.ebay_service,
+                self.notification_service
+            )
         self.ebay_window.show()
