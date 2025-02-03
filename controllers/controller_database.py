@@ -1,16 +1,19 @@
 from PySide6.QtWidgets import QDialog
+
 from database.service_database import DatabaseService
-from services.service_notification import NotificationService
 from gui.gui_form_database import Ui_form_Database
 from logger.service_logging import LoggingService
+from services.service_notification import NotificationService
 from utils.converter import Converter
 
 class DatabaseController(QDialog, Ui_form_Database):
-    def __init__(self):
+    def __init__(self, db_service: DatabaseService, logger: LoggingService, converter: Converter, notification_service: NotificationService):
         super().__init__()
         self.setupUi(self)
-        self.db_service = DatabaseService()
-        self.notification_service = NotificationService()
+        self.db_service = db_service
+        self.logger = logger
+        self.converter = converter
+        self.notification_service = notification_service
         self.initialize_ui()
 
         # Connect UI elements to methods
