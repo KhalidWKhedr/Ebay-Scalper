@@ -13,8 +13,8 @@ class EbayApiController(QDialog, Ui_form_EbayAPI):
         self.setupUi(self)
 
         self.ebay_service = ebay_service
-        self.notification_service = notification_service
         self.site_domain_mapping = site_domain_mapping
+        self.notification_service = notification_service
 
         self.initialize_ui()
 
