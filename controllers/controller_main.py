@@ -7,6 +7,7 @@ from controllers.controller_database import DatabaseController
 from controllers.controller_ebay_api import EbayApiController
 from database.service_database import DatabaseService
 from logger.service_logging import LoggingService
+from schemas.schema_connection_details import SchemaConnectionDetails
 from services.ebay.service_ebay import EbayService
 from services.service_notification import NotificationService
 from services.service_csv import CsvService
@@ -16,7 +17,7 @@ from utils.converter import Converter
 class MainController(QMainWindow, Ui_form_MainWindow):
     def __init__(self, db_service: DatabaseService, logger: LoggingService,
                  converter: Converter, notification_service: NotificationService,
-                 ebay_service: EbayService, csv_service: CsvService):
+                 ebay_service: EbayService, csv_service: CsvService, schema_connection_details : SchemaConnectionDetails):
         super().__init__()
         self.setupUi(self)
 
@@ -27,7 +28,7 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         self.notification_service = notification_service
         self.ebay_service = ebay_service
         self.csv_service = csv_service
-
+        self.schema_connection_details = schema_connection_details
         # Instantiate CSV Controller (Pass UI reference and required services)
         self.csv_controller = CsvController(self, self.csv_service, self.notification_service)
 
@@ -46,7 +47,8 @@ class MainController(QMainWindow, Ui_form_MainWindow):
                 self.db_service,
                 self.logger,
                 self.converter,
-                self.notification_service
+                self.notification_service,
+                self.schema_connection_details
             )
         self.database_window.show()
 

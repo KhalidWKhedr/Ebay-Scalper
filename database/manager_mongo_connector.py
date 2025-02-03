@@ -6,24 +6,25 @@ from sshtunnel import SSHTunnelForwarder
 
 class MongoConnectionManager:
     def __init__(self, connection_details):
-        # Initialization logic for connection details, SSH settings, and MongoDB settings
-        self.ssh_checked = connection_details['use_ssh']
-        self.ssh_host = connection_details.get('ssh_host', None) if self.ssh_checked else None
-        self.ssh_port = connection_details.get('ssh_port', None) if self.ssh_checked else None
-        self.ssh_username = connection_details.get('ssh_username', None) if self.ssh_checked else None
-        self.ssh_password = connection_details.get('ssh_password', None) if self.ssh_checked else None
-        self.mongo_host = connection_details['host']
-        self.mongo_port = connection_details['port']
-        self.mongo_user = connection_details['user']
-        self.mongo_password = connection_details['password']
-        self.db_name = connection_details['db_name']
-        self.auth_source = connection_details['auth_source']
-        self.auth_type = connection_details['auth_type']
+        # Access connection details using dot notation (assuming SchemaConnectionDetails object)
+        self.ssh_checked = connection_details.use_ssh
+        self.ssh_host = connection_details.ssh_host if self.ssh_checked else None
+        self.ssh_port = connection_details.ssh_port if self.ssh_checked else None
+        self.ssh_username = connection_details.ssh_username if self.ssh_checked else None
+        self.ssh_password = connection_details.ssh_password if self.ssh_checked else None
+        self.mongo_host = connection_details.host
+        self.mongo_port = connection_details.port
+        self.mongo_user = connection_details.user
+        self.mongo_password = connection_details.password
+        self.db_name = connection_details.db_name
+        self.auth_source = connection_details.auth_source
+        self.auth_type = connection_details.auth_type
         self.uri = f"mongodb://{quote(self.mongo_user)}:{quote(self.mongo_password)}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism={self.auth_type}"
 
         # Additional initialization
         self.tunnel = None
         self.client = None
+        print(connection_details)
 
     def _create_tunnel(self):
         """Creates the SSH tunnel."""

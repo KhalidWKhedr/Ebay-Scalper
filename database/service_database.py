@@ -22,7 +22,7 @@ class DatabaseService:
         """Attempts to connect to MongoDB based on the provided details."""
         try:
             LoggingService.log(
-                f"Attempting to connect to database: {connection_details['db_name']} at {connection_details['host']}:{connection_details['port']}",
+                f"Attempting to connect to database: {connection_details.db_name} at {connection_details.host}:{connection_details.port}",
                 level="info")
 
             mongo_manager = MongoConnectionManager(connection_details)
@@ -30,12 +30,12 @@ class DatabaseService:
 
             if not self.db_connection:
                 LoggingService.log(
-                    f"Could not connect to MongoDB at {connection_details['host']}:{connection_details['port']}",
+                    f"Could not connect to MongoDB at {connection_details.db_name}:{connection_details.port}",
                     level="error")
                 return "Could not connect to MongoDB."
 
             LoggingService.log(
-                f"Successfully connected to MongoDB at {connection_details['host']}:{connection_details['port']}",
+                f"Successfully connected to MongoDB at {connection_details.host}:{connection_details.port}",
                 level="info")
             return "Connected to MongoDB!"
 

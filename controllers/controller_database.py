@@ -2,19 +2,21 @@ from PySide6.QtWidgets import QDialog
 from database.service_database import DatabaseService
 from gui.gui_form_database import Ui_form_Database
 from logger.service_logging import LoggingService
+from schemas.schema_connection_details import SchemaConnectionDetails
 from services.service_notification import NotificationService
 from utils.converter import Converter
 
 
 class DatabaseController(QDialog, Ui_form_Database):
     def __init__(self, database_service: DatabaseService, logger: LoggingService,
-                 converter: Converter, notification_service: NotificationService):
+                 converter: Converter, notification_service: NotificationService, schema_connection_details: SchemaConnectionDetails):
         super().__init__()
         self.setupUi(self)
         self.logger = logger
         self.converter = converter
         self.database_service = database_service
         self.notification_service = notification_service
+        self.schema_connection_details = schema_connection_details
         self.initialize_ui()
 
     def initialize_ui(self):
@@ -25,7 +27,7 @@ class DatabaseController(QDialog, Ui_form_Database):
         else:
             self.set_default_ui()
 
-        self.set_authentication_radio(connection_settings.get('auth_type'))
+        self.set_authentication_radio(self.schema_connection_details.auth_type)
         self.update_mongo_uri()
         self.setup_connections()
 
@@ -100,35 +102,36 @@ class DatabaseController(QDialog, Ui_form_Database):
 
     def update_mongo_uri(self):
         """Generate Mongo URI based on user input."""
-        connection_details = self.get_connection_details()
-        uri = self.build_mongo_uri(connection_details)
+        uri = self.build_mongo_uri()
         self.text_MongoUri.setPlainText(uri)
 
-    def build_mongo_uri(self, connection_details):
-        """Build Mongo URI from the connection details."""
-        uri = f"mongodb://{connection_details['user']}:{connection_details['password']}@" \
-              f"{connection_details['host']}:{connection_details['port']}/" \
-              f"{connection_details['db_name']}?authSource={connection_details['auth_source']}"
-        if connection_details['auth_type']:
-            uri += f"&authMechanism={connection_details['auth_type']}"
+    def build_mongo_uri(self):
+        """Build Mongo URI from the connection details stored in schema."""
+        connection_details = self.schema_connection_details
+        uri = f"mongodb://{connection_details.user}:{connection_details.password}@" \
+              f"{connection_details.host}:{connection_details.port}/" \
+              f"{connection_details.db_name}?authSource={connection_details.auth_source}"
+        if connection_details.auth_type:
+            uri += f"&authMechanism={connection_details.auth_type}"
         return uri
 
-    def get_connection_details(self):
-        """Get all necessary connection details from the UI."""
-        return {
-            'use_ssh': self.checkbox_SSH.isChecked(),
-            'host': self.text_Host.toPlainText().strip(),
-            'port': self.converter.safe_int_conversion(self.text_Port.toPlainText()) or None,
-            'user': self.text_Username.toPlainText().strip(),
-            'password': self.text_Password.toPlainText().strip(),
-            'db_name': self.text_DbName.toPlainText().strip(),
-            'auth_source': self.text_AuthSource.toPlainText().strip(),
-            'ssh_host': self.text_SSH_Host.toPlainText().strip(),
-            'ssh_port': self.converter.safe_int_conversion(self.text_SSH_Port.toPlainText()) or None,
-            'ssh_username': self.text_SSH_Username.toPlainText().strip(),
-            'ssh_password': self.text_SSH_Password.toPlainText().strip(),
-            'auth_type': self.get_selected_auth_type(),
-        }
+    def get_connection_details(self) -> SchemaConnectionDetails:
+        """Extract UI data and create a Pydantic model."""
+        return SchemaConnectionDetails(
+            use_ssh=self.checkbox_SSH.isChecked(),
+            host=self.text_Host.toPlainText().strip(),
+            port=self.text_Port.toPlainText().strip(),
+            user=self.text_Username.toPlainText().strip(),
+            password=self.text_Password.toPlainText().strip(),
+            db_name=self.text_DbName.toPlainText().strip(),
+            auth_source=self.text_AuthSource.toPlainText().strip(),
+            ssh_host=self.text_SSH_Host.toPlainText().strip(),
+            ssh_port=self.text_SSH_Port.toPlainText().strip(),
+            ssh_username=self.text_SSH_Username.toPlainText().strip(),
+            ssh_password=self.text_SSH_Password.toPlainText().strip(),
+            auth_type=self.get_selected_auth_type(),
+        )
+
 
     def get_selected_auth_type(self):
         """Get the selected authentication type from radio buttons."""
@@ -148,21 +151,6 @@ class DatabaseController(QDialog, Ui_form_Database):
 
         return None
 
-    def connect_to_db(self):
-        """Attempt to connect to the database."""
-        connection_details = self.get_connection_details()
-        LoggingService.log(f"Attempting to connect to database at host: {connection_details['host']}", level="info")
-
-        try:
-            message = self.database_service.connect(connection_details)
-            self.database_service.save_connection_settings(connection_details)
-            LoggingService.log(f"Connection to database successful: {message}", level="info")
-        except Exception as e:
-            message = f"Failed to connect to database: {str(e)}"
-            LoggingService.log(message, level="error")
-
-        self.notification_service.show_message(self, message)
-
     def toggle_ssh_options(self, is_checked):
         """Toggle visibility of SSH options based on checkbox."""
         ssh_elements = [
@@ -172,3 +160,26 @@ class DatabaseController(QDialog, Ui_form_Database):
         ]
         for element in ssh_elements:
             element.setVisible(is_checked)
+
+    def connect_to_db(self):
+        """Attempt to connect to the database."""
+
+        updated_connection_details = self.get_connection_details()
+
+        # Directly assign the updated details to schema_connection_details
+        self.schema_connection_details = updated_connection_details
+
+        LoggingService.log(f"Attempting to connect to database at host: {self.schema_connection_details.host}",
+                           level="info")
+
+        try:
+            message = self.database_service.connect(self.schema_connection_details)
+           #self.database_service.save_connection_settings(self.schema_connection_details)
+            LoggingService.log(f"Connection to database successful: {message}", level="info")
+        except Exception as e:
+            message = f"Failed to connect to database: {str(e)}"
+            LoggingService.log(message, level="error")
+
+        self.notification_service.show_message(self, message)
+
+
