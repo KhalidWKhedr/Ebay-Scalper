@@ -7,13 +7,13 @@ from services.service_notification import NotificationService
 from utils.converter import Converter
 
 class DatabaseController(QDialog, Ui_form_Database):
-    def __init__(self, db_service: DatabaseService, logger: LoggingService,
+    def __init__(self, database_service: DatabaseService, logger: LoggingService,
                  converter: Converter, notification_service: NotificationService):
         super().__init__()
         self.setupUi(self)
-        self.db_service = db_service
         self.logger = logger
         self.converter = converter
+        self.database_service = database_service
         self.notification_service = notification_service
         self.initialize_ui()
 
@@ -22,7 +22,7 @@ class DatabaseController(QDialog, Ui_form_Database):
 
     def initialize_ui(self):
         """Initialize the UI based on saved connection settings."""
-        connection_settings = self.db_service.get_connection_settings()
+        connection_settings = self.database_service.get_connection_settings()
 
         if connection_settings:
             self.set_ui_from_connection_settings(connection_settings)
@@ -161,8 +161,8 @@ class DatabaseController(QDialog, Ui_form_Database):
         LoggingService.log(f"Attempting to connect to database at host: {connection_details['host']}", level="info")
 
         try:
-            message = self.db_service.connect(connection_details)
-            self.db_service.save_connection_settings(connection_details)
+            message = self.database_service.connect(connection_details)
+            self.database_service.save_connection_settings(connection_details)
             LoggingService.log(f"Connection to database successful: {message}", level="info")
         except Exception as e:
             message = f"Failed to connect to database: {str(e)}"
