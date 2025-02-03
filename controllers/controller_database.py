@@ -7,7 +7,8 @@ from services.service_notification import NotificationService
 from utils.converter import Converter
 
 class DatabaseController(QDialog, Ui_form_Database):
-    def __init__(self, db_service: DatabaseService, logger: LoggingService, converter: Converter, notification_service: NotificationService):
+    def __init__(self, db_service: DatabaseService, logger: LoggingService,
+                 converter: Converter, notification_service: NotificationService):
         super().__init__()
         self.setupUi(self)
         self.db_service = db_service
