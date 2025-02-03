@@ -1,7 +1,7 @@
 from PySide6.QtCore import Signal, QObject
 import pandas as pd
 
-class CsvSetup(QObject):
+class CsvService(QObject):
     csv_loaded = Signal(list, list)  # Emit columns and rows
 
     def __init__(self):
