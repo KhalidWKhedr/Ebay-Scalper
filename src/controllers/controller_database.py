@@ -29,9 +29,8 @@ class DatabaseController:
 
         try:
             message_connection = self.database_service.connect(connection_details)
-            message_save = self.save_connection_settings(connection_details)
+            self.save_connection_settings(connection_details)
             self.logger.log(f"Connection successful: {message_connection}", level="info")
-            self.logger.log(f"Saved details: {message_save}", level="info")
             return message_connection
         except ConnectionError as e:
             error_message = f"Database connection error: {str(e)}"

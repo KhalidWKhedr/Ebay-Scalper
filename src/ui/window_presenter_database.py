@@ -11,7 +11,6 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self.setupUi(self)
         self.database_controller = database_controller
         self.schema_connection_details = schema_connection_details
-
         self.initialize_ui()
 
     def initialize_ui(self):
@@ -102,12 +101,13 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
 
     def build_mongo_uri(self):
         """Build Mongo URI from the connection details stored in schema."""
-        connection_details = self.schema_connection_details
-        uri = f"mongodb://{connection_details.user}:{connection_details.password}@" \
-              f"{connection_details.host}:{connection_details.port}/" \
-              f"{connection_details.db_name}?authSource={connection_details.auth_source}"
-        if connection_details.auth_type:
-            uri += f"&authMechanism={connection_details.auth_type}"
+        connection_details = self.schema_connection_details.model_dump()
+        print(connection_details.get('host'))
+        uri = f"mongodb://{connection_details.get('user')}:{connection_details.get('password')}@" \
+              f"{connection_details.get('host')}:{connection_details.get('port')}/" \
+              f"{connection_details.get('db_name')}?authSource={connection_details.get('auth_source')}"
+        if connection_details.get('auth_type'):
+            uri += f"&authMechanism={connection_details.get('auth_type')}"
         return uri
 
     def get_connection_details(self) -> SchemaConnectionDetails:
