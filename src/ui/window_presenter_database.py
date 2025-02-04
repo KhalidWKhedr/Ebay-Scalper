@@ -21,22 +21,22 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         else:
             self.set_default_ui()
 
-        self.set_authentication_radio(self.schema_connection_details.auth_type)
+        self.set_authentication_radio(self.schema_connection_details.AUTH_TYPE)
         self.update_mongo_uri()
         self.setup_connections()
 
     def set_ui_from_connection_settings(self, connection_settings):
         """Populate UI from connection settings."""
-        self.text_Host.setPlainText(connection_settings['host'])
-        self.text_Port.setPlainText(str(connection_settings['port']))
-        self.text_Username.setPlainText(connection_settings['user'])
-        self.text_Password.setPlainText(connection_settings['password'])
-        self.text_DbName.setPlainText(connection_settings['db_name'])
-        self.text_AuthSource.setPlainText(connection_settings['auth_source'])
-        self.text_SSH_Host.setPlainText(connection_settings['ssh_host'])
-        self.text_SSH_Port.setPlainText(str(connection_settings['ssh_port']))
-        self.text_SSH_Username.setPlainText(connection_settings['ssh_username'])
-        self.text_SSH_Password.setPlainText(connection_settings['ssh_password'])
+        self.text_Host.setPlainText(connection_settings['MONGO_HOST'])
+        self.text_Port.setPlainText(connection_settings['MONGO_PORT'])
+        self.text_Username.setPlainText(connection_settings['MONGO_USER'])
+        self.text_Password.setPlainText(connection_settings['MONGO_PASSWORD'])
+        self.text_DbName.setPlainText(connection_settings['MONGO_DB_NAME'])
+        self.text_AuthSource.setPlainText(connection_settings['MONGO_AUTH_DB'])
+        self.text_SSH_Host.setPlainText(connection_settings['SSH_HOST'])
+        self.text_SSH_Port.setPlainText(connection_settings['SSH_PORT'])
+        self.text_SSH_Username.setPlainText(connection_settings['SSH_USERNAME'])
+        self.text_SSH_Password.setPlainText(connection_settings['SSH_PASSWORD'])
 
     def set_default_ui(self):
         """Set default UI values."""
@@ -76,7 +76,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for button in radio_buttons:
             button.toggled.connect(self.update_mongo_uri)
 
-    def set_authentication_radio(self, auth_type):
+    def set_authentication_radio(self, AUTH_TYPE):
         """Set the appropriate radio button for authentication type."""
         auth_map = {
             "MONGODB-X509": self.radio_X509,
@@ -91,8 +91,8 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for radio_button in auth_map.values():
             radio_button.setChecked(False)
 
-        if auth_type and auth_type in auth_map:
-            auth_map[auth_type].setChecked(True)
+        if AUTH_TYPE and AUTH_TYPE in auth_map:
+            auth_map[AUTH_TYPE].setChecked(True)
 
     def update_mongo_uri(self):
         """Generate Mongo URI based on user input."""
@@ -101,30 +101,29 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
 
     def build_mongo_uri(self):
         """Build Mongo URI from the connection details stored in schema."""
-        connection_details = self.schema_connection_details.model_dump()
-        print(connection_details.get('host'))
-        uri = f"mongodb://{connection_details.get('user')}:{connection_details.get('password')}@" \
-              f"{connection_details.get('host')}:{connection_details.get('port')}/" \
-              f"{connection_details.get('db_name')}?authSource={connection_details.get('auth_source')}"
-        if connection_details.get('auth_type'):
-            uri += f"&authMechanism={connection_details.get('auth_type')}"
+        connection_details = self.get_connection_details()
+        uri = f"mongodb://{connection_details.MONGO_USER}:{connection_details.MONGO_PASSWORD}@" \
+              f"{connection_details.MONGO_HOST}:{str(connection_details.MONGO_PORT)}/" \
+              f"{connection_details.MONGO_DB_NAME}?authSource={connection_details.MONGO_AUTH_DB}"
+        if connection_details.AUTH_TYPE:
+            uri += f"&authMechanism={connection_details.AUTH_TYPE}"
         return uri
 
     def get_connection_details(self) -> SchemaConnectionDetails:
         """Extract UI data and create a Pydantic model."""
         return SchemaConnectionDetails(
-            use_ssh=self.checkbox_SSH.isChecked(),
-            host=self.text_Host.toPlainText().strip(),
-            port=self.text_Port.toPlainText().strip(),
-            user=self.text_Username.toPlainText().strip(),
-            password=self.text_Password.toPlainText().strip(),
-            db_name=self.text_DbName.toPlainText().strip(),
-            auth_source=self.text_AuthSource.toPlainText().strip(),
-            ssh_host=self.text_SSH_Host.toPlainText().strip(),
-            ssh_port=self.text_SSH_Port.toPlainText().strip(),
-            ssh_username=self.text_SSH_Username.toPlainText().strip(),
-            ssh_password=self.text_SSH_Password.toPlainText().strip(),
-            auth_type=self.get_selected_auth_type(),
+            SSH_TOGGLE=self.checkbox_SSH.isChecked(),
+            MONGO_HOST=self.text_Host.toPlainText().strip(),
+            MONGO_PORT=self.text_Port.toPlainText().strip(),
+            MONGO_USER=self.text_Username.toPlainText().strip(),
+            MONGO_PASSWORD=self.text_Password.toPlainText().strip(),
+            MONGO_DB_NAME=self.text_DbName.toPlainText().strip(),
+            MONGO_AUTH_DB=self.text_AuthSource.toPlainText().strip(),
+            SSH_HOST=self.text_SSH_Host.toPlainText().strip(),
+            SSH_PORT=self.text_SSH_Port.toPlainText().strip(),
+            SSH_USERNAME=self.text_SSH_Username.toPlainText().strip(),
+            SSH_PASSWORD=self.text_SSH_Password.toPlainText().strip(),
+            AUTH_TYPE=self.get_selected_auth_type(),
         )
 
     def get_selected_auth_type(self):

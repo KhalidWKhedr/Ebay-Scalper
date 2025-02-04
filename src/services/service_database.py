@@ -3,44 +3,45 @@ from src.database.manager_mongo_connector import MongoConnectionManager
 from logger.service_logging import LoggingService
 from utils.manager_secure_config import SecureConfigManager
 
-
 class DatabaseService:
-    def __init__(self):
+    def __init__(self, logger: LoggingService, secure_config: SecureConfigManager,
+                 mongo_manager: MongoConnectionManager):
+        self.logger = logger
+        self.secure_config = secure_config
+        self.mongo_manager = mongo_manager
         self.db_connection = None
-        self.config = SecureConfigManager(connection_details=None)
 
-    def save_connection_settings(self, connection_details : SchemaConnectionDetails):
+    def save_connection_settings(self, connection_details: SchemaConnectionDetails):
         """Save encrypted database connection details."""
         parsed_connection_details = connection_details.model_dump()
         for key, value in parsed_connection_details.items():
             if value is not None:
-                self.config.write(key, str(value))
+                self.secure_config.write(key, str(value))
 
     def get_connection_settings(self):
         """Retrieve and decrypt database connection details."""
-        return self.config.get_all()
+        return self.secure_config.get_all()
 
-    def connect(self, connection_details):
-        """Attempts to connect to MongoDB based on the provided details."""
+    def connect(self, connection_details: SchemaConnectionDetails):
+        """Attempts to connect to MongoDB based on the loaded details from secure config."""
         try:
-            LoggingService.log(
-                f"Attempting to connect to database: {connection_details.db_name} at {connection_details.host}:{connection_details.port}",
-                level="info")
+            self.save_connection_settings(connection_details)
+            connection_details = self.secure_config.get_all()
+            print(connection_details)
+            required_keys = ["MONGO_HOST", "MONGO_PORT", "MONGO_DB_NAME", "MONGO_USER", "MONGO_PASSWORD"]
+            if not all(key in connection_details for key in required_keys):
+                raise ValueError("Missing required connection details in .env file")
 
-            mongo_manager = MongoConnectionManager(connection_details)
-            self.db_connection = mongo_manager.connect()
+            self.logger.log(
+                f"Attempting to connect to database: {connection_details['MONGO_DB_NAME']} "
+                f"at {connection_details['MONGO_HOST']}:{connection_details['MONGO_PORT']}",
+                level="info"
+            )
 
-            if not self.db_connection:
-                LoggingService.log(
-                    f"Could not connect to MongoDB at {connection_details.db_name}:{connection_details.port}",
-                    level="error")
-                return "Could not connect to MongoDB."
+            self.db_connection = self.mongo_manager.connect()
 
-            LoggingService.log(
-                f"Successfully connected to MongoDB at {connection_details.host}:{connection_details.port}",
-                level="info")
-            return "Connected to MongoDB!"
-
+            self.logger.log(f"Connection successful to {connection_details['MONGO_HOST']}", level="info")
+            return "Connection successful"
         except Exception as e:
-            LoggingService.log(f"Error connecting to MongoDB: {str(e)}", level="error")
-            return f"Error: {str(e)}"
+            self.logger.log(f"Database connection error: {str(e)}", level="error")
+            raise Exception(f"Database connection error: {str(e)}")

@@ -1,58 +1,74 @@
 from urllib.parse import quote
-
 import pymongo
 from sshtunnel import SSHTunnelForwarder
-
+from utils.manager_secure_config import SecureConfigManager
 
 class MongoConnectionManager:
-    def __init__(self, connection_details):
-        # Access connection details using dot notation (assuming SchemaConnectionDetails object)
-        self.ssh_checked = connection_details.use_ssh
-        self.ssh_host = connection_details.ssh_host if self.ssh_checked else None
-        self.ssh_port = connection_details.ssh_port if self.ssh_checked else None
-        self.ssh_username = connection_details.ssh_username if self.ssh_checked else None
-        self.ssh_password = connection_details.ssh_password if self.ssh_checked else None
-        self.mongo_host = connection_details.host
-        self.mongo_port = connection_details.port
-        self.mongo_user = connection_details.user
-        self.mongo_password = connection_details.password
-        self.db_name = connection_details.db_name
-        self.auth_source = connection_details.auth_source
-        self.auth_type = connection_details.auth_type
-        self.uri = f"mongodb://{quote(self.mongo_user)}:{quote(self.mongo_password)}@localhost:27018/{self.db_name}?authSource={self.auth_source}&authMechanism={self.auth_type}"
-
-        # Additional initialization
+    def __init__(self, secure_config_manager: SecureConfigManager):
+        self.secure_config_manager = secure_config_manager
         self.tunnel = None
         self.client = None
-        print(connection_details)
 
-    def _create_tunnel(self):
-        """Creates the SSH tunnel."""
-        if self.ssh_checked:
+    def _create_tunnel(self, connection_details):
+        """Creates the SSH tunnel if required."""
+        if connection_details.get("SSH_TOGGLE", False):
             try:
                 self.tunnel = SSHTunnelForwarder(
-                    (self.ssh_host, self.ssh_port),
-                    ssh_username=self.ssh_username,
-                    ssh_password=self.ssh_password,
-                    remote_bind_address=(self.mongo_host, self.mongo_port),
-                    local_bind_address=(self.mongo_host, 27018)
+                    (connection_details["SSH_HOST"], int(connection_details["SSH_PORT"])),
+                    ssh_username=connection_details["SSH_USERNAME"],
+                    ssh_password=connection_details["SSH_PASSWORD"],
+                    remote_bind_address=(connection_details["MONGO_HOST"], int(connection_details["MONGO_PORT"])),
+                    local_bind_address=(connection_details["MONGO_HOST"], 27018)  # Bind to localhost
                 )
+                print("SSH tunnel created")
                 self.tunnel.start()
-                local_port = self.tunnel.local_bind_port
-                return local_port
+                return self.tunnel.local_bind_port
             except Exception as e:
                 raise Exception(f"Failed to create SSH tunnel: {repr(e)}")
 
     def connect(self):
         """Connect to MongoDB, either via SSH tunnel or directly."""
         try:
+            mongo_host = self.secure_config_manager.read("MONGO_HOST")
+            mongo_port = self.secure_config_manager.read("MONGO_PORT")
+            mongo_user = self.secure_config_manager.read("MONGO_USER")
+            mongo_password = self.secure_config_manager.read("MONGO_PASSWORD")
+            mongo_auth_db = self.secure_config_manager.read("MONGO_AUTH_DB")
+            mongo_db_name = self.secure_config_manager.read("MONGO_DB_NAME")
+            ssh_toggle = self.secure_config_manager.read("SSH_TOGGLE") == "True"  # Updated for SSH_TOGGLE
+            ssh_host = self.secure_config_manager.read("SSH_HOST")
+            ssh_port = self.secure_config_manager.read("SSH_PORT")
+            ssh_username = self.secure_config_manager.read("SSH_USERNAME")
+            ssh_password = self.secure_config_manager.read("SSH_PASSWORD")
+            auth_type = self.secure_config_manager.read("AUTH_TYPE")
 
-            if self.ssh_checked:
-                local_port = self._create_tunnel()
-                self.uri = self.uri.replace("localhost:27018", f"localhost:{local_port}")
+            if not all([mongo_host, mongo_port, mongo_db_name, mongo_user, mongo_password]):
+                raise ValueError("Missing required connection details in .env file")
 
-            self.client = pymongo.MongoClient(self.uri, serverSelectionTimeoutMS=5000)
+            connection_details = {
+                "mongo_host": mongo_host,
+                "mongo_port": int(mongo_port),
+                "mongo_user": mongo_user,
+                "mongo_password": mongo_password,
+                "mongo_auth_db": mongo_auth_db,
+                "mongo_db_name": mongo_db_name,
+                "ssh_toggle": ssh_toggle,
+                "ssh_host": ssh_host,
+                "ssh_port": ssh_port,
+                "ssh_username": ssh_username,
+                "ssh_password": ssh_password,
+                "auth_type": auth_type,
+            }
+
+            local_port = 27018
+            if ssh_toggle:
+                local_port = self._create_tunnel(connection_details)
+
+            uri = f"mongodb://{quote(mongo_user)}:{quote(mongo_password)}@localhost:{local_port}/{mongo_db_name}?authSource={mongo_auth_db}"
+
+            self.client = pymongo.MongoClient(uri, serverSelectionTimeoutMS=5000)
             self.client.admin.command("ping")
+            print(self.client)
             return self.client
         except Exception as e:
             raise Exception(f"Failed to connect to MongoDB: {repr(e)}")

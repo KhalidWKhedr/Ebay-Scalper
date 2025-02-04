@@ -25,18 +25,11 @@ class DatabaseController:
 
     def connect_to_db(self, connection_details: SchemaConnectionDetails):
         """Attempt to connect to the database."""
-        self.logger.log(f"Attempting to connect to database at host: {connection_details.host}", level="info")
-
         try:
-            message_connection = self.database_service.connect(connection_details)
-            self.save_connection_settings(connection_details)
-            self.logger.log(f"Connection successful: {message_connection}", level="info")
-            return message_connection
-        except ConnectionError as e:
-            error_message = f"Database connection error: {str(e)}"
-            self.logger.log(error_message, level="error")
-            raise ConnectionError(error_message)
+            message_connect = self.database_service.connect(connection_details)
+            if message_connect == "Connection successful":
+                self.notification_service.show_message(self, message_connect)
+            else:
+                self.notification_service.show_message(self, f"Error: {message_connect}")
         except Exception as e:
-            error_message = f"Unexpected error: {str(e)}"
-            self.logger.log(error_message, level="critical")
-            raise Exception(error_message)
+            self.notification_service.show_message(self, f"Error: {str(e)}")
