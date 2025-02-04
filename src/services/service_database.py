@@ -1,4 +1,5 @@
-from database.manager_mongo_connector import MongoConnectionManager
+from src.models.model_database_connection_details import SchemaConnectionDetails
+from src.database.manager_mongo_connector import MongoConnectionManager
 from logger.service_logging import LoggingService
 from utils.manager_secure_config import SecureConfigManager
 
@@ -8,9 +9,10 @@ class DatabaseService:
         self.db_connection = None
         self.config = SecureConfigManager(connection_details=None)
 
-    def save_connection_settings(self, connection_details):
+    def save_connection_settings(self, connection_details : SchemaConnectionDetails):
         """Save encrypted database connection details."""
-        for key, value in connection_details.items():
+        parsed_connection_details = connection_details.model_dump()
+        for key, value in parsed_connection_details.items():
             if value is not None:
                 self.config.write(key, str(value))
 

@@ -1,4 +1,4 @@
-from services.ebay.manager_ebay_connection import EbayConnectionManager
+from src.ebay.manager_ebay_connection import EbayConnectionManager
 from logger.service_logging import LoggingService
 
 class EbayService:

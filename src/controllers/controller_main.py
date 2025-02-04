@@ -2,15 +2,15 @@ from PySide6.QtWidgets import QMainWindow
 
 from gui.gui_form_main import Ui_form_MainWindow
 
-from controllers.controller_csv import CsvController
-from controllers.controller_database import DatabaseController
-from controllers.controller_ebay_api import EbayApiController
-from database.service_database import DatabaseService
+from src.controllers.controller_csv import CsvController
+from src.controllers.controller_database import DatabaseController
+from src.controllers.controller_ebay_api import EbayApiController
+from src.services.service_database import DatabaseService
 from logger.service_logging import LoggingService
-from schemas.schema_connection_details import SchemaConnectionDetails
-from services.ebay.service_ebay import EbayService
-from services.service_notification import NotificationService
-from services.service_csv import CsvService
+from src.models.model_database_connection_details import SchemaConnectionDetails
+from src.services.service_ebay import EbayService
+from src.services.service_notification import NotificationService
+from src.services.service_csv import CsvService
 from utils.converter import Converter
 
 

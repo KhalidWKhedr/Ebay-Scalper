@@ -3,9 +3,9 @@ import pandas as pd
 from dotenv import load_dotenv
 from ebaysdk.exception import ConnectionError
 from ebaysdk.finding import Connection
-from core.MongoDBOperations import MongoDBOperations  # Corrected class name
+from src.core.MongoDBOperations import MongoDBOperations  # Corrected class name
 from deprecated.base_mongo_connection import MongoSSHConnector
-from core.EbayJsonExtractor import EbayJsonExtractor
+from src.core.EbayJsonExtractor import EbayJsonExtractor
 load_dotenv('config/.env')
 
 class EbayScraping:

@@ -1,15 +1,16 @@
 from PySide6.QtWidgets import QDialog
-from database.service_database import DatabaseService
+from src.services.service_database import DatabaseService
 from gui.gui_form_database import Ui_form_Database
 from logger.service_logging import LoggingService
-from schemas.schema_connection_details import SchemaConnectionDetails
-from services.service_notification import NotificationService
+from src.models.model_database_connection_details import SchemaConnectionDetails
+from src.services.service_notification import NotificationService
 from utils.converter import Converter
 
 
 class DatabaseController(QDialog, Ui_form_Database):
     def __init__(self, database_service: DatabaseService, logger: LoggingService,
-                 converter: Converter, notification_service: NotificationService, schema_connection_details: SchemaConnectionDetails):
+                 converter: Converter, notification_service: NotificationService,
+                 schema_connection_details: SchemaConnectionDetails):
         super().__init__()
         self.setupUi(self)
         self.logger = logger
@@ -164,22 +165,19 @@ class DatabaseController(QDialog, Ui_form_Database):
     def connect_to_db(self):
         """Attempt to connect to the database."""
 
-        updated_connection_details = self.get_connection_details()
-
-        # Directly assign the updated details to schema_connection_details
-        self.schema_connection_details = updated_connection_details
-
+        self.schema_connection_details = self.get_connection_details()
         LoggingService.log(f"Attempting to connect to database at host: {self.schema_connection_details.host}",
                            level="info")
 
         try:
-            message = self.database_service.connect(self.schema_connection_details)
-           #self.database_service.save_connection_settings(self.schema_connection_details)
-            LoggingService.log(f"Connection to database successful: {message}", level="info")
+            message_connection = self.database_service.connect(self.schema_connection_details)
+            message_save = self.database_service.save_connection_settings(self.schema_connection_details)
+            LoggingService.log(f"Connection successful: {message_connection}", level="info")
+            LoggingService.log(f"Saved details: {message_save}", level="info")
+        except ConnectionError as e:
+            message = f"Database connection error: {str(e)}"
+            self.logger.log(message, level="error")
         except Exception as e:
-            message = f"Failed to connect to database: {str(e)}"
-            LoggingService.log(message, level="error")
-
-        self.notification_service.show_message(self, message)
-
+            message = f"Unexpected error: {str(e)}"
+            self.logger.log(message, level="critical")
 

@@ -2,8 +2,8 @@ from functools import partial
 
 from PySide6.QtWidgets import QPushButton, QListWidgetItem, QFileDialog
 
-from services.service_csv import CsvService
-from services.service_notification import NotificationService
+from src.services.service_csv import CsvService
+from src.services.service_notification import NotificationService
 
 
 class CsvController:
