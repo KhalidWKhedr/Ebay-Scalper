@@ -11,11 +11,16 @@ class EbayApiController:
         self.site_domain_mapping = site_domain_mapping
         self.notification_service = notification_service
 
-    def get_site_code(self, site_name):
+    def get_site_code(self, site_name: str) -> str:
         """Retrieve eBay site code based on the selected site name."""
-        return self.site_domain_mapping.get(site_name, {}).get('site', "")
+        return self.site_domain_mapping.get(site_name, {}).get('site', "")  # Site code retrieval
 
-    def connect_to_api(self, api_details):
+    def get_domain_for_site(self, site_name: str) -> str:
+        """Retrieve the domain associated with the given site name."""
+        site_info = self.site_domain_mapping.get(site_name, {})
+        return site_info.get('domain', "")
+
+    def connect_to_api(self, api_details: dict) -> str:
         """Handle the API connection process."""
         LoggingService.log(f"Attempting to connect to eBay API with details: {api_details}", level="info")
 
