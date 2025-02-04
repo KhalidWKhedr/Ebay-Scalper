@@ -5,7 +5,8 @@ from src.models.model_database_connection_details import SchemaConnectionDetails
 
 
 class DatabaseWindowPresenter(QDialog, Ui_form_Database):
-    def __init__(self, database_controller: DatabaseController, schema_connection_details: SchemaConnectionDetails):
+    def __init__(self, database_controller: DatabaseController,
+                 schema_connection_details: SchemaConnectionDetails):
         super().__init__()
         self.setupUi(self)
         self.database_controller = database_controller
