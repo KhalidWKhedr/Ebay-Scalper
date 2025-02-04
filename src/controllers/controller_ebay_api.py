@@ -5,8 +5,15 @@ from src.services.service_notification import NotificationService
 
 
 class EbayApiController:
-    def __init__(self, ebay_service: EbayService, notification_service: NotificationService,
-                 site_domain_mapping: dict = SITE_DOMAIN_MAPPING):
+    def __init__(
+        self,
+        ebay_service: EbayService,
+        notification_service: NotificationService,
+        logger: LoggingService,
+        site_domain_mapping: dict = SITE_DOMAIN_MAPPING
+        ):
+
+        self.logger = logger
         self.ebay_service = ebay_service
         self.site_domain_mapping = site_domain_mapping
         self.notification_service = notification_service

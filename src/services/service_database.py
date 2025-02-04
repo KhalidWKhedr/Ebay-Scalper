@@ -27,7 +27,6 @@ class DatabaseService:
         try:
             self.save_connection_settings(connection_details)
             connection_details = self.secure_config.get_all()
-            print(connection_details)
             required_keys = ["MONGO_HOST", "MONGO_PORT", "MONGO_DB_NAME", "MONGO_USER", "MONGO_PASSWORD"]
             if not all(key in connection_details for key in required_keys):
                 raise ValueError("Missing required connection details in .env file")

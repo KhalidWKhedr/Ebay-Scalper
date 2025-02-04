@@ -13,32 +13,35 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self.schema_connection_details = schema_connection_details
         self.initialize_ui()
 
-    def initialize_ui(self):
+    def initialize_ui(self) -> None:
         """Initialize UI and load connection settings."""
+        self.load_connection_settings()
+        self.set_authentication_radio(self.schema_connection_details.AUTH_TYPE)
+        self.update_mongo_uri()
+        self.setup_connections()
+
+    def load_connection_settings(self) -> None:
+        """Load connection settings into the UI or set defaults."""
         connection_settings = self.database_controller.get_connection_settings()
         if connection_settings:
             self.set_ui_from_connection_settings(connection_settings)
         else:
             self.set_default_ui()
 
-        self.set_authentication_radio(self.schema_connection_details.AUTH_TYPE)
-        self.update_mongo_uri()
-        self.setup_connections()
-
-    def set_ui_from_connection_settings(self, connection_settings):
+    def set_ui_from_connection_settings(self, connection_settings: dict) -> None:
         """Populate UI from connection settings."""
-        self.text_Host.setPlainText(connection_settings['MONGO_HOST'])
-        self.text_Port.setPlainText(connection_settings['MONGO_PORT'])
-        self.text_Username.setPlainText(connection_settings['MONGO_USER'])
-        self.text_Password.setPlainText(connection_settings['MONGO_PASSWORD'])
-        self.text_DbName.setPlainText(connection_settings['MONGO_DB_NAME'])
-        self.text_AuthSource.setPlainText(connection_settings['MONGO_AUTH_DB'])
-        self.text_SSH_Host.setPlainText(connection_settings['SSH_HOST'])
-        self.text_SSH_Port.setPlainText(connection_settings['SSH_PORT'])
-        self.text_SSH_Username.setPlainText(connection_settings['SSH_USERNAME'])
-        self.text_SSH_Password.setPlainText(connection_settings['SSH_PASSWORD'])
+        self.text_Host.setPlainText(connection_settings.get('MONGO_HOST', ''))
+        self.text_Port.setPlainText(connection_settings.get('MONGO_PORT', ''))
+        self.text_Username.setPlainText(connection_settings.get('MONGO_USER', ''))
+        self.text_Password.setPlainText(connection_settings.get('MONGO_PASSWORD', ''))
+        self.text_DbName.setPlainText(connection_settings.get('MONGO_DB_NAME', ''))
+        self.text_AuthSource.setPlainText(connection_settings.get('MONGO_AUTH_DB', ''))
+        self.text_SSH_Host.setPlainText(connection_settings.get('SSH_HOST', ''))
+        self.text_SSH_Port.setPlainText(connection_settings.get('SSH_PORT', ''))
+        self.text_SSH_Username.setPlainText(connection_settings.get('SSH_USERNAME', ''))
+        self.text_SSH_Password.setPlainText(connection_settings.get('SSH_PASSWORD', ''))
 
-    def set_default_ui(self):
+    def set_default_ui(self) -> None:
         """Set default UI values."""
         self.text_Host.setPlainText("localhost")
         self.text_Port.setPlainText("27017")
@@ -47,7 +50,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self.text_DbName.setPlainText("test_db")
         self.text_AuthSource.setPlainText("admin")
 
-    def setup_connections(self):
+    def setup_connections(self) -> None:
         """Setup signal-slot connections."""
         self.checkbox_SSH.toggled.connect(self.toggle_ssh_options)
         self.button_Connect.clicked.connect(self.connect_to_db)
@@ -55,7 +58,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self.setup_radio_button_connections()
         self.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
-    def setup_text_changed_connections(self):
+    def setup_text_changed_connections(self) -> None:
         """Setup text change connections to update Mongo URI."""
         text_fields = [
             self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username,
@@ -66,7 +69,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for field in text_fields:
             field.textChanged.connect(self.update_mongo_uri)
 
-    def setup_radio_button_connections(self):
+    def setup_radio_button_connections(self) -> None:
         """Connect radio buttons to update auth type dynamically."""
         radio_buttons = [
             self.radio_X509, self.radio_SHA1, self.radio_AWS,
@@ -76,7 +79,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for button in radio_buttons:
             button.toggled.connect(self.update_mongo_uri)
 
-    def set_authentication_radio(self, AUTH_TYPE):
+    def set_authentication_radio(self, auth_type: str) -> None:
         """Set the appropriate radio button for authentication type."""
         auth_map = {
             "MONGODB-X509": self.radio_X509,
@@ -91,15 +94,15 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for radio_button in auth_map.values():
             radio_button.setChecked(False)
 
-        if AUTH_TYPE and AUTH_TYPE in auth_map:
-            auth_map[AUTH_TYPE].setChecked(True)
+        if auth_type and auth_type in auth_map:
+            auth_map[auth_type].setChecked(True)
 
-    def update_mongo_uri(self):
+    def update_mongo_uri(self) -> None:
         """Generate Mongo URI based on user input."""
         uri = self.build_mongo_uri()
         self.text_MongoUri.setPlainText(uri)
 
-    def build_mongo_uri(self):
+    def build_mongo_uri(self) -> str:
         """Build Mongo URI from the connection details stored in schema."""
         connection_details = self.get_connection_details()
         uri = f"mongodb://{connection_details.MONGO_USER}:{connection_details.MONGO_PASSWORD}@" \
@@ -126,7 +129,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
             AUTH_TYPE=self.get_selected_auth_type(),
         )
 
-    def get_selected_auth_type(self):
+    def get_selected_auth_type(self) -> str | None:
         """Get the selected authentication type from radio buttons."""
         auth_map = {
             self.radio_X509: "MONGODB-X509",
@@ -144,7 +147,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
 
         return None
 
-    def toggle_ssh_options(self, is_checked):
+    def toggle_ssh_options(self, is_checked: bool) -> None:
         """Toggle visibility of SSH options based on checkbox."""
         ssh_elements = [
             self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username,
@@ -154,11 +157,12 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for element in ssh_elements:
             element.setVisible(is_checked)
 
-    def connect_to_db(self):
+    def connect_to_db(self) -> None:
         """Attempt to connect to the database."""
         connection_details = self.get_connection_details()
         try:
             message = self.database_controller.connect_to_db(connection_details)
             self.database_controller.notification_service.show_message(self, message)
         except Exception as e:
-            self.database_controller.notification_service.show_message(self, str(e))
+            self.database_controller.notification_service.show_message(self, f"Error: {str(e)}")
+            self.database_controller.logger.error(f"Failed to connect to database: {e}")

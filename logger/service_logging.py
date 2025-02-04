@@ -30,6 +30,9 @@ class LoggingService:
         log_method = getattr(logger, level, logger.info)
         log_method(message)
 
+    def error(self, param):
+        pass
+
 
 # Example Usage:
 LoggingService.log("This is an info message")  # Logs as INFO by default

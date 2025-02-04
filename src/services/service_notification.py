@@ -17,3 +17,6 @@ class NotificationService:
         else:
             self.logger.info(f"Info: {message}")
             QMessageBox.information(parent, "Connection Successful", message)
+
+    def notify(self, param):
+        pass
