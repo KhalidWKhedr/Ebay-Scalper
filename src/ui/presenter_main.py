@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QMainWindow
 from logger.service_logging import LoggingService
+from src.controllers.controller_csv import CsvController
 from src.controllers.controller_database import DatabaseController
 from src.controllers.controller_ebay_api import EbayApiController
 from src.models.model_database_connection_details import SchemaConnectionDetails
@@ -7,8 +7,9 @@ from src.services.service_csv import CsvService
 from src.services.service_database import DatabaseService
 from src.services.service_ebay import EbayService
 from src.services.service_notification import NotificationService
-from src.ui.window_presenter_database import DatabaseWindowPresenter
-from src.ui.window_presenter_ebay import EbayWindowPresenter
+from src.ui.presenter_csv import CsvPresenter
+from src.ui.presenter_database import DatabaseWindowPresenter
+from src.ui.presenter_ebay import EbayWindowPresenter
 from utils.converter import Converter
 
 
@@ -22,6 +23,7 @@ class MainPresenter:
         ebay_service: EbayService,
         csv_service: CsvService,
         schema_connection_details: SchemaConnectionDetails,
+        csv_presenter: CsvPresenter,
     ):
         self.db_service = db_service
         self.logger = logger
@@ -30,23 +32,23 @@ class MainPresenter:
         self.ebay_service = ebay_service
         self.csv_service = csv_service
         self.schema_connection_details = schema_connection_details
+        self.csv_presenter = csv_presenter
 
-        # Initialize the windows
+
+        self.csv_controller = CsvController(csv_service, notification_service)
+        self.database_controller = DatabaseController(
+            db_service, logger, converter, notification_service, schema_connection_details
+        )
+        self.ebay_controller = EbayApiController(ebay_service, notification_service, logger)
+
         self.database_window = None
         self.ebay_window = None
 
     def open_database_window(self) -> None:
         try:
             if not self.database_window or not self.database_window.isVisible():
-                database_controller = DatabaseController(
-                    self.db_service,
-                    self.logger,
-                    self.converter,
-                    self.notification_service,
-                    self.schema_connection_details,
-                )
                 self.database_window = DatabaseWindowPresenter(
-                    database_controller, schema_connection_details=self.schema_connection_details
+                    self.database_controller, schema_connection_details=self.schema_connection_details
                 )
             self.database_window.show()
         except Exception as e:
@@ -56,14 +58,16 @@ class MainPresenter:
     def open_ebay_window(self) -> None:
         try:
             if not self.ebay_window or not self.ebay_window.isVisible():
-
-                ebay_controller = EbayApiController(
-                    self.ebay_service,
-                    self.notification_service,
-                    self.logger,
-                )
-                self.ebay_window = EbayWindowPresenter(ebay_controller)
+                self.ebay_window = EbayWindowPresenter(self.ebay_controller)
             self.ebay_window.show()
         except Exception as e:
             self.logger.error(f"Failed to open eBay window: {e}")
+            self.notification_service.notify(f"Error: {e}")
+
+    def perform_csv_operation(self, file_path: str) -> None:
+        try:
+            self.csv_controller.load_csv(file_path)
+            self.notification_service.notify("CSV file loaded successfully.")
+        except Exception as e:
+            self.logger.error(f"Failed to perform CSV operation: {e}")
             self.notification_service.notify(f"Error: {e}")

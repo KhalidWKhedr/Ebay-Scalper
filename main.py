@@ -1,5 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication
+from src.controllers.controller_csv import CsvController
 from src.controllers.controller_main import MainController
 from src.database.manager_mongo_connector import MongoConnectionManager
 from src.services.service_database import DatabaseService
@@ -11,11 +12,11 @@ from utils.converter import Converter
 from src.services.service_csv import CsvService
 from utils.manager_secure_config import SecureConfigManager
 
+
 def create_services():
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
     mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
-
     database_service = DatabaseService(
         logger=logger,
         secure_config=secure_config_manager,
@@ -28,6 +29,7 @@ def create_services():
     service_csv = CsvService()
 
     schema_connection_details = SchemaConnectionDetails()
+    csv_controller = CsvController(service_csv, service_notification)
 
     return {
         'database_service': database_service,
@@ -36,26 +38,29 @@ def create_services():
         'service_notification': service_notification,
         'service_ebay': service_ebay,
         'service_csv': service_csv,
-        'schema_connection_details': schema_connection_details
+        'schema_connection_details': schema_connection_details,
+        'csv_controller': csv_controller,
     }
 
-def main():
 
+def main():
     services = create_services()
 
     app = QApplication(sys.argv)
-    window = MainController(
+
+    main_controller = MainController(
         db_service=services['database_service'],
         logger=services['logger'],
         converter=services['utils_converter'],
         notification_service=services['service_notification'],
         ebay_service=services['service_ebay'],
         csv_service=services['service_csv'],
-        schema_connection_details=services['schema_connection_details']
+        schema_connection_details=services['schema_connection_details'],
     )
+    main_controller.show()
 
-    window.show()  #
     sys.exit(app.exec())
+
 
 if __name__ == '__main__':
     main()

@@ -85,3 +85,6 @@ class LoggingService:
         for handler in logger.handlers[:]:
             logger.removeHandler(handler)
 
+    def error(self, param):
+        pass
+
