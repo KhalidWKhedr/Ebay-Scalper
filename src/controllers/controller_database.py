@@ -6,9 +6,14 @@ from utils.converter import Converter
 
 
 class DatabaseController:
-    def __init__(self, database_service: DatabaseService, logger: LoggingService,
-                 converter: Converter, notification_service: NotificationService,
-                 schema_connection_details: SchemaConnectionDetails):
+    def __init__(
+        self,
+        database_service: DatabaseService,
+        logger: LoggingService,
+        converter: Converter,
+        notification_service: NotificationService,
+        schema_connection_details: SchemaConnectionDetails,
+    ):
         self.logger = logger
         self.converter = converter
         self.database_service = database_service
@@ -23,13 +28,20 @@ class DatabaseController:
         """Save connection settings using the database service."""
         return self.database_service.save_connection_settings(connection_details)
 
-    def connect_to_db(self, connection_details: SchemaConnectionDetails):
-        """Attempt to connect to the database."""
+    def connect_to_db(self, connection_details: SchemaConnectionDetails) -> str:
+        """Attempt to connect to the database and return a status message."""
         try:
             message_connect = self.database_service.connect(connection_details)
+
             if message_connect == "Connection successful":
-                self.notification_service.show_message(self, message_connect)
+                self.logger.log("Database connection successful.", level="info")
+                return "Connection successful"
             else:
-                self.notification_service.show_message(self, f"Error: {message_connect}")
+                error_message = f"Unexpected response from database service: {message_connect}"
+                self.logger.log(error_message, level="error")
+                return error_message
+
         except Exception as e:
-            self.notification_service.show_message(self, f"Error: {str(e)}")
+            error_message = f"Failed to connect to the database: {str(e)}"
+            self.logger.log(error_message, level="error")
+            return error_message

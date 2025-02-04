@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog, QMessageBox
 from gui.gui_form_database import Ui_form_Database
 from src.controllers.controller_database import DatabaseController
 from src.models.model_database_connection_details import SchemaConnectionDetails
@@ -157,12 +157,19 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for element in ssh_elements:
             element.setVisible(is_checked)
 
-    def connect_to_db(self) -> None:
-        """Attempt to connect to the database."""
-        connection_details = self.get_connection_details()
-        try:
-            message = self.database_controller.connect_to_db(connection_details)
-            self.database_controller.notification_service.show_message(self, message)
-        except Exception as e:
-            self.database_controller.notification_service.show_message(self, f"Error: {str(e)}")
-            self.database_controller.logger.error(f"Failed to connect to database: {e}")
+    def connect_to_db(self, connection_details):
+        """Attempt to connect to the database and show appropriate messages."""
+        result = self.database_controller.connect_to_db(self.get_connection_details())
+
+        if result == "Connection successful":
+            QMessageBox.information(
+                self,  # Use 'self' as the parent widget
+                "Database Connection",
+                "Database connection successful!"
+            )
+        else:
+            QMessageBox.critical(
+                self,  # Use 'self' as the parent widget
+                "Database Connection Error",
+                result
+            )
