@@ -2,6 +2,8 @@ from PySide6.QtWidgets import QMainWindow
 from gui.gui_form_main import Ui_form_MainWindow
 from logger.service_logging import LoggingService
 from src.controllers.controller_csv import CsvController
+from src.controllers.controller_database import DatabaseController
+from src.controllers.controller_ebay_api import EbayApiController
 from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.services.service_csv import CsvService
 from src.services.service_database import DatabaseService
@@ -35,10 +37,28 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         self.csv_service = csv_service
         self.schema_connection_details = schema_connection_details
 
-        # Initialize controllers and presenters
+        # Initialize controllers
         self.csv_controller = self._initialize_csv_controller()
-        self.csv_presenter = self._initialize_csv_presenter()
-        self.presenter = self._initialize_main_presenter()
+        self.database_controller = self._initialize_database_controller()
+        self.ebay_controller = self._initialize_ebay_controller()
+
+        # Initialize CSV presenter
+        self.csv_presenter = CsvPresenter(self, self.csv_controller, self.notification_service)
+
+        # Initialize main presenter with injected controllers
+        self.presenter = MainPresenter(
+            db_service=self.db_service,
+            logger=self.logger,
+            converter=self.converter,
+            notification_service=self.notification_service,
+            ebay_service=self.ebay_service,
+            csv_service=self.csv_service,
+            schema_connection_details=self.schema_connection_details,
+            csv_presenter=self.csv_presenter,
+            csv_controller=self.csv_controller,
+            database_controller=self.database_controller,
+            ebay_controller=self.ebay_controller,
+        )
 
         # Connect UI buttons to presenter methods
         self._connect_ui_actions()
@@ -47,22 +67,19 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         """Initialize and return the CSV controller."""
         return CsvController(self.csv_service, self.notification_service)
 
-    def _initialize_csv_presenter(self) -> CsvPresenter:
-        """Initialize and return the CSV presenter."""
-        return CsvPresenter(self, self.csv_controller, self.notification_service)
-
-    def _initialize_main_presenter(self) -> MainPresenter:
-        """Initialize and return the main presenter."""
-        return MainPresenter(
+    def _initialize_database_controller(self) -> DatabaseController:
+        """Initialize and return the database controller."""
+        return DatabaseController(
             self.db_service,
             self.logger,
             self.converter,
             self.notification_service,
-            self.ebay_service,
-            self.csv_service,
             self.schema_connection_details,
-            self.csv_presenter,
         )
+
+    def _initialize_ebay_controller(self) -> EbayApiController:
+        """Initialize and return the eBay controller."""
+        return EbayApiController(self.ebay_service, self.notification_service, self.logger)
 
     def _connect_ui_actions(self):
         """Connect UI buttons to their respective presenter methods."""

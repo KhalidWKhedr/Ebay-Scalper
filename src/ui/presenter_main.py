@@ -24,8 +24,10 @@ class MainPresenter:
         csv_service: CsvService,
         schema_connection_details: SchemaConnectionDetails,
         csv_presenter: CsvPresenter,
+        csv_controller: CsvController,  # Injected dependency
+        database_controller: DatabaseController,  # Injected dependency
+        ebay_controller: EbayApiController,  # Injected dependency
     ):
-        """ Initializes the MainPresenter. """
         self.db_service = db_service
         self.logger = logger
         self.converter = converter
@@ -35,32 +37,14 @@ class MainPresenter:
         self.schema_connection_details = schema_connection_details
         self.csv_presenter = csv_presenter
 
-        # Initialize controllers
-        self.csv_controller = self._initialize_csv_controller()
-        self.database_controller = self._initialize_database_controller()
-        self.ebay_controller = self._initialize_ebay_controller()
+        # Injected controllers
+        self.csv_controller = csv_controller
+        self.database_controller = database_controller
+        self.ebay_controller = ebay_controller
 
         # Initialize windows
         self.database_window = None
         self.ebay_window = None
-
-    def _initialize_csv_controller(self) -> CsvController:
-        """Initializes and returns the CSV controller."""
-        return CsvController(self.csv_service, self.notification_service)
-
-    def _initialize_database_controller(self) -> DatabaseController:
-        """Initializes and returns the database controller."""
-        return DatabaseController(
-            self.db_service,
-            self.logger,
-            self.converter,
-            self.notification_service,
-            self.schema_connection_details,
-        )
-
-    def _initialize_ebay_controller(self) -> EbayApiController:
-        """Initializes and returns the eBay controller."""
-        return EbayApiController(self.ebay_service, self.notification_service, self.logger)
 
     def open_database_window(self) -> None:
         """Opens the database window."""

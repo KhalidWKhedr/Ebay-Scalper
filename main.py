@@ -12,7 +12,7 @@ from src.services.service_csv import CsvService
 from utils.manager_secure_config import SecureConfigManager
 
 
-def create_services():
+def initialize_services():
     """Initialize and return all required services."""
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
@@ -43,10 +43,13 @@ def create_services():
 
 def main():
     """Main entry point for the application."""
-    services = create_services()
+    # Initialize services
+    services = initialize_services()
 
+    # Create the Qt application
     app = QApplication(sys.argv)
 
+    # Initialize the main application controller
     main_controller = MainController(
         db_service=services['database_service'],
         logger=services['logger'],
@@ -56,8 +59,11 @@ def main():
         csv_service=services['service_csv'],
         schema_connection_details=services['schema_connection_details'],
     )
+
+    # Show the main window
     main_controller.show()
 
+    # Execute the application
     sys.exit(app.exec())
 
 
