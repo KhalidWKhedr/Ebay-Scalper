@@ -144,7 +144,6 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for radio_button, auth_value in auth_map.items():
             if radio_button.isChecked():
                 return auth_value
-
         return None
 
     def toggle_ssh_options(self, is_checked: bool) -> None:

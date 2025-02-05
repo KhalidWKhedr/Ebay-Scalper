@@ -25,6 +25,7 @@ class MainPresenter:
         schema_connection_details: SchemaConnectionDetails,
         csv_presenter: CsvPresenter,
     ):
+        """ Initializes the MainPresenter. """
         self.db_service = db_service
         self.logger = logger
         self.converter = converter
@@ -34,17 +35,35 @@ class MainPresenter:
         self.schema_connection_details = schema_connection_details
         self.csv_presenter = csv_presenter
 
+        # Initialize controllers
+        self.csv_controller = self._initialize_csv_controller()
+        self.database_controller = self._initialize_database_controller()
+        self.ebay_controller = self._initialize_ebay_controller()
 
-        self.csv_controller = CsvController(csv_service, notification_service)
-        self.database_controller = DatabaseController(
-            db_service, logger, converter, notification_service, schema_connection_details
-        )
-        self.ebay_controller = EbayApiController(ebay_service, notification_service, logger)
-
+        # Initialize windows
         self.database_window = None
         self.ebay_window = None
 
+    def _initialize_csv_controller(self) -> CsvController:
+        """Initializes and returns the CSV controller."""
+        return CsvController(self.csv_service, self.notification_service)
+
+    def _initialize_database_controller(self) -> DatabaseController:
+        """Initializes and returns the database controller."""
+        return DatabaseController(
+            self.db_service,
+            self.logger,
+            self.converter,
+            self.notification_service,
+            self.schema_connection_details,
+        )
+
+    def _initialize_ebay_controller(self) -> EbayApiController:
+        """Initializes and returns the eBay controller."""
+        return EbayApiController(self.ebay_service, self.notification_service, self.logger)
+
     def open_database_window(self) -> None:
+        """Opens the database window."""
         try:
             if not self.database_window or not self.database_window.isVisible():
                 self.database_window = DatabaseWindowPresenter(
@@ -52,22 +71,26 @@ class MainPresenter:
                 )
             self.database_window.show()
         except Exception as e:
-            self.logger.error(f"Failed to open database window: {e}")
-            self.notification_service.notify(f"Error: {e}")
+            self._handle_error("Failed to open database window", e)
 
     def open_ebay_window(self) -> None:
+        """Opens the eBay window."""
         try:
             if not self.ebay_window or not self.ebay_window.isVisible():
                 self.ebay_window = EbayWindowPresenter(self.ebay_controller)
             self.ebay_window.show()
         except Exception as e:
-            self.logger.error(f"Failed to open eBay window: {e}")
-            self.notification_service.notify(f"Error: {e}")
+            self._handle_error("Failed to open eBay window", e)
 
     def perform_csv_operation(self, file_path: str) -> None:
+        """Performs a CSV operation (e.g., loading a CSV file)."""
         try:
             self.csv_controller.load_csv(file_path)
             self.notification_service.notify("CSV file loaded successfully.")
         except Exception as e:
-            self.logger.error(f"Failed to perform CSV operation: {e}")
-            self.notification_service.notify(f"Error: {e}")
+            self._handle_error("Failed to perform CSV operation", e)
+
+    def _handle_error(self, message: str, error: Exception) -> None:
+        """Handles errors by logging and notifying the user."""
+        self.logger.error(f"{message}: {error}")
+        self.notification_service.notify(f"Error: {error}")

@@ -1,6 +1,5 @@
 import sys
 from PySide6.QtWidgets import QApplication
-from src.controllers.controller_csv import CsvController
 from src.controllers.controller_main import MainController
 from src.database.manager_mongo_connector import MongoConnectionManager
 from src.services.service_database import DatabaseService
@@ -14,6 +13,7 @@ from utils.manager_secure_config import SecureConfigManager
 
 
 def create_services():
+    """Initialize and return all required services."""
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
     mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
@@ -29,7 +29,6 @@ def create_services():
     service_csv = CsvService()
 
     schema_connection_details = SchemaConnectionDetails()
-    csv_controller = CsvController(service_csv, service_notification)
 
     return {
         'database_service': database_service,
@@ -39,11 +38,11 @@ def create_services():
         'service_ebay': service_ebay,
         'service_csv': service_csv,
         'schema_connection_details': schema_connection_details,
-        'csv_controller': csv_controller,
     }
 
 
 def main():
+    """Main entry point for the application."""
     services = create_services()
 
     app = QApplication(sys.argv)
