@@ -156,7 +156,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for element in ssh_elements:
             element.setVisible(is_checked)
 
-    def connect_to_db(self, connection_details):
+    def connect_to_db(self):
         """Attempt to connect to the database and show appropriate messages."""
         result = self.database_controller.connect_to_db(self.get_connection_details())
 
