@@ -75,7 +75,11 @@ class MainController(QMainWindow, Ui_form_MainWindow):
 
     def _initialize_ebay_controller(self) -> EbayApiController:
         """Initialize and return the eBay controller."""
-        return EbayApiController(self.ebay_service, self.notification_service, self.logger)
+        return EbayApiController(
+            self.ebay_service,
+            self.notification_service,
+            self.logger
+        )
 
     def _connect_ui_actions(self):
         """Connect UI buttons to their respective presenter methods."""

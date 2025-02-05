@@ -33,7 +33,7 @@ def initialize_services():
 
     utils_converter = Converter()
     service_notification = NotificationService(logger=logger)
-    service_ebay = EbayService(ebay_connection_manager=ebay_connection_manager, logger=logger)
+    service_ebay = EbayService(logger=logger)
     service_csv = CsvService()
 
     return {
