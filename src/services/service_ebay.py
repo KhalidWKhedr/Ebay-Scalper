@@ -7,7 +7,8 @@ class EbayService:
         self,
         logger: LoggingService,
         secure_config: SecureConfigManager
-    ):
+        ):
+
         self.logger = logger
         self.secure_config = secure_config
         self.ebay_connection_manager = None
@@ -15,7 +16,6 @@ class EbayService:
 
     def save_ebay_connection_settings(self, connection_details):
         """Save eBay connection settings."""
-        print(connection_details)
         for key, value in connection_details.items():
             if value is not None:
                 self.secure_config.write(key, str(value))
@@ -27,6 +27,7 @@ class EbayService:
 
             if not self.ebay_connection_manager:
                 self.ebay_connection_manager = EbayConnectionManager(connection_details)
+
             self.save_ebay_connection_settings(connection_details)
             api = self.ebay_connection_manager.connect_to_ebay()
 

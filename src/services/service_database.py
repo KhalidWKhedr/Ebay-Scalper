@@ -5,11 +5,11 @@ from utils.manager_secure_config import SecureConfigManager
 
 class DatabaseService:
     def __init__(
-        self,
-        logger: LoggingService,
-        secure_config: SecureConfigManager,
-        mongo_manager: MongoConnectionManager
-        ):
+            self,
+            logger: LoggingService,
+            secure_config: SecureConfigManager,
+            mongo_manager: MongoConnectionManager = None  # Default to None
+    ):
 
         self.logger = logger
         self.secure_config = secure_config
@@ -44,6 +44,10 @@ class DatabaseService:
                 f"at {connection_details['MONGO_HOST']}:{connection_details['MONGO_PORT']}",
                 level="info"
             )
+
+            # Ensure mongo_manager is set before using it
+            if not self.mongo_manager:
+                raise ValueError("MongoConnectionManager is not provided or initialized.")
 
             self.db_connection = self.mongo_manager.connect()
 
