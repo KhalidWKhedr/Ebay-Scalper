@@ -9,14 +9,8 @@ class EbayConnectionManager:
         self.api_site_id = api_details['API_SITE_ID']
         self.logger = service_logging
 
-    def check_app_id(self):
-        if not self.api_id:
-            raise ValueError("Missing required environment variable APP_ID.")
-
     def connect_to_ebay(self):
         try:
-            self.check_app_id()
-            print(self.api_id, self.api_domain, self.api_site_id)
             api = Connection(
                 appid=self.api_id,
                 config_file=None,

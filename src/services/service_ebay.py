@@ -14,6 +14,11 @@ class EbayService:
         self.ebay_connection_manager = None
         self.ebay_connection = None
 
+    @staticmethod
+    def check_app_id(connection_details):
+        if not connection_details['API_ID']:
+            raise ValueError("Missing required environment variable APP_ID.")
+
     def save_ebay_connection_settings(self, connection_details):
         """Save eBay connection settings."""
         for key, value in connection_details.items():
@@ -24,7 +29,7 @@ class EbayService:
         try:
 
             self.logger.get_logger().info(f"Attempting to connect to eBay API: {connection_details}")
-
+            self.check_app_id(connection_details)
             if not self.ebay_connection_manager:
                 self.ebay_connection_manager = EbayConnectionManager(connection_details)
 

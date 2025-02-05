@@ -11,6 +11,27 @@ class MongoConnectionManager:
         self.tunnel: Optional[SSHTunnelForwarder] = None
         self.client: Optional[pymongo.MongoClient] = None
 
+    @staticmethod
+    def _validate_connection_details(mongo_config: Dict[str, Any]) -> None:
+        """Validate required MongoDB connection details."""
+        required_fields = ["MONGO_HOST", "MONGO_PORT", "MONGO_USER", "MONGO_PASSWORD", "MONGO_DB_NAME"]
+        for field in required_fields:
+            if not mongo_config.get(field):
+                raise ValueError(f"Missing required connection detail: {field}")
+
+    @staticmethod
+    def _build_mongo_uri(mongo_config: Dict[str, Any], local_port: int) -> str:
+        """Build the MongoDB connection URI."""
+        mongo_user = quote(mongo_config["MONGO_USER"])
+        mongo_password = quote(mongo_config["MONGO_PASSWORD"])
+        mongo_db_name = mongo_config["MONGO_DB_NAME"]
+        mongo_auth_db = mongo_config["MONGO_AUTH_DB"]
+
+        return (
+            f"mongodb://{mongo_user}:{mongo_password}@localhost:{local_port}/"
+            f"{mongo_db_name}?authSource={mongo_auth_db}"
+        )
+
     def _create_ssh_tunnel(self, ssh_config: Dict[str, Any], mongo_host: str, mongo_port: int) -> int:
         """Create an SSH tunnel for MongoDB connection."""
         try:
@@ -27,24 +48,6 @@ class MongoConnectionManager:
         except Exception as e:
             raise Exception(f"Failed to create SSH tunnel: {repr(e)}")
 
-    def _build_mongo_uri(self, mongo_config: Dict[str, Any], local_port: int) -> str:
-        """Build the MongoDB connection URI."""
-        mongo_user = quote(mongo_config["MONGO_USER"])
-        mongo_password = quote(mongo_config["MONGO_PASSWORD"])
-        mongo_db_name = mongo_config["MONGO_DB_NAME"]
-        mongo_auth_db = mongo_config["MONGO_AUTH_DB"]
-
-        return (
-            f"mongodb://{mongo_user}:{mongo_password}@localhost:{local_port}/"
-            f"{mongo_db_name}?authSource={mongo_auth_db}"
-        )
-
-    def _validate_connection_details(self, mongo_config: Dict[str, Any]) -> None:
-        """Validate required MongoDB connection details."""
-        required_fields = ["MONGO_HOST", "MONGO_PORT", "MONGO_USER", "MONGO_PASSWORD", "MONGO_DB_NAME"]
-        for field in required_fields:
-            if not mongo_config.get(field):
-                raise ValueError(f"Missing required connection detail: {field}")
 
     def connect(self) -> pymongo.MongoClient:
         """Connect to MongoDB, either directly or via an SSH tunnel."""

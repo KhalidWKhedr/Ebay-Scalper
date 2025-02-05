@@ -12,6 +12,11 @@ class CsvPresenter:
         self._connect_ui_actions()
         self._connect_csv_controller_signals()
 
+    @staticmethod
+    def on_column_button_clicked(column_name):
+        """ Handles the click event for a column button. """
+        print(f"Column {column_name} button clicked!")
+
     def _connect_ui_actions(self):
         """Connects UI actions to their respective methods."""
         self.ui.actionImport_CSV.triggered.connect(self.open_file_dialog)
@@ -59,7 +64,3 @@ class CsvPresenter:
         self.ui.listWidget.addItem(list_item)
         self.ui.listWidget.setItemWidget(list_item, button)
         print(f"Added button for column: {column_name}")
-
-    def on_column_button_clicked(self, column_name):
-        """ Handles the click event for a column button. """
-        print(f"Column {column_name} button clicked!")
