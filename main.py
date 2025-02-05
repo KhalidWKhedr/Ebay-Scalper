@@ -4,7 +4,6 @@ from src.controllers.controller_main import MainController
 from src.database.manager_mongo_connector import MongoConnectionManager
 from src.services.service_database import DatabaseService
 from logger.service_logging import LoggingService
-from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.services.service_ebay import EbayService
 from src.services.service_notification import NotificationService
 from utils.converter import Converter
@@ -17,12 +16,14 @@ def initialize_services():
     """Initialize and return all required services."""
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
+
     api_details = {
         "api_id": "your_api_id_here",  # Replace with your actual API ID
         "api_domain": "api.ebay.com",  # Domain for the API (eBay example)
         "api_site_id": "0"  # API site ID (eBay's site ID)
     }
-    ebay_connection_manager=EbayConnectionManager(api_details)
+    ebay_connection_manager = EbayConnectionManager(api_details)
+
     mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
     database_service = DatabaseService(
         logger=logger,
@@ -35,8 +36,6 @@ def initialize_services():
     service_ebay = EbayService(ebay_connection_manager=ebay_connection_manager, logger=logger)
     service_csv = CsvService()
 
-    schema_connection_details = SchemaConnectionDetails()
-
     return {
         'database_service': database_service,
         'logger': logger,
@@ -44,7 +43,6 @@ def initialize_services():
         'service_notification': service_notification,
         'service_ebay': service_ebay,
         'service_csv': service_csv,
-        'schema_connection_details': schema_connection_details,
     }
 
 
@@ -64,7 +62,6 @@ def main():
         notification_service=services['service_notification'],
         ebay_service=services['service_ebay'],
         csv_service=services['service_csv'],
-        schema_connection_details=services['schema_connection_details'],
     )
 
     # Show the main window

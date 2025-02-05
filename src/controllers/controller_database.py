@@ -12,13 +12,11 @@ class DatabaseController:
         logger: LoggingService,
         converter: Converter,
         notification_service: NotificationService,
-        schema_connection_details: SchemaConnectionDetails,
     ):
         self.logger = logger
         self.converter = converter
         self.database_service = database_service
         self.notification_service = notification_service
-        self.schema_connection_details = schema_connection_details
 
     def get_connection_settings(self):
         """Retrieve connection settings from the database service."""

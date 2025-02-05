@@ -22,11 +22,10 @@ class MainPresenter:
         notification_service: NotificationService,
         ebay_service: EbayService,
         csv_service: CsvService,
-        schema_connection_details: SchemaConnectionDetails,
         csv_presenter: CsvPresenter,
-        csv_controller: CsvController,  # Injected dependency
-        database_controller: DatabaseController,  # Injected dependency
-        ebay_controller: EbayApiController,  # Injected dependency
+        csv_controller: CsvController,
+        database_controller: DatabaseController,
+        ebay_controller: EbayApiController,
     ):
         self.db_service = db_service
         self.logger = logger
@@ -34,7 +33,6 @@ class MainPresenter:
         self.notification_service = notification_service
         self.ebay_service = ebay_service
         self.csv_service = csv_service
-        self.schema_connection_details = schema_connection_details
         self.csv_presenter = csv_presenter
 
         # Injected controllers
@@ -50,8 +48,11 @@ class MainPresenter:
         """Opens the database window."""
         try:
             if not self.database_window or not self.database_window.isVisible():
+                # Create SchemaConnectionDetails dynamically when needed
+                connection_details = SchemaConnectionDetails(**self.database_controller.get_connection_settings())
+
                 self.database_window = DatabaseWindowPresenter(
-                    self.database_controller, schema_connection_details=self.schema_connection_details
+                    self.database_controller, schema_connection_details=connection_details
                 )
             self.database_window.show()
         except Exception as e:

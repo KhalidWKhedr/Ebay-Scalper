@@ -4,7 +4,6 @@ from logger.service_logging import LoggingService
 from src.controllers.controller_csv import CsvController
 from src.controllers.controller_database import DatabaseController
 from src.controllers.controller_ebay_api import EbayApiController
-from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.services.service_csv import CsvService
 from src.services.service_database import DatabaseService
 from src.services.service_ebay import EbayService
@@ -12,6 +11,7 @@ from src.services.service_notification import NotificationService
 from src.ui.presenter_main import MainPresenter
 from src.ui.presenter_csv import CsvPresenter
 from utils.converter import Converter
+from src.models.model_database_connection_details import SchemaConnectionDetails  # Kept for local instantiation
 
 
 class MainController(QMainWindow, Ui_form_MainWindow):
@@ -23,7 +23,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         notification_service: NotificationService,
         ebay_service: EbayService,
         csv_service: CsvService,
-        schema_connection_details: SchemaConnectionDetails,
     ):
         super().__init__()
         self.setupUi(self)
@@ -35,7 +34,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         self.notification_service = notification_service
         self.ebay_service = ebay_service
         self.csv_service = csv_service
-        self.schema_connection_details = schema_connection_details
 
         # Initialize controllers
         self.csv_controller = self._initialize_csv_controller()
@@ -53,7 +51,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
             notification_service=self.notification_service,
             ebay_service=self.ebay_service,
             csv_service=self.csv_service,
-            schema_connection_details=self.schema_connection_details,
             csv_presenter=self.csv_presenter,
             csv_controller=self.csv_controller,
             database_controller=self.database_controller,
@@ -74,7 +71,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
             self.logger,
             self.converter,
             self.notification_service,
-            self.schema_connection_details,
         )
 
     def _initialize_ebay_controller(self) -> EbayApiController:
