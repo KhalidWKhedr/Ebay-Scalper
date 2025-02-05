@@ -10,12 +10,19 @@ from src.services.service_notification import NotificationService
 from utils.converter import Converter
 from src.services.service_csv import CsvService
 from utils.manager_secure_config import SecureConfigManager
+from src.ebay.manager_ebay_connection import EbayConnectionManager
 
 
 def initialize_services():
     """Initialize and return all required services."""
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
+    api_details = {
+        "api_id": "your_api_id_here",  # Replace with your actual API ID
+        "api_domain": "api.ebay.com",  # Domain for the API (eBay example)
+        "api_site_id": "0"  # API site ID (eBay's site ID)
+    }
+    ebay_connection_manager=EbayConnectionManager(api_details)
     mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
     database_service = DatabaseService(
         logger=logger,
@@ -25,7 +32,7 @@ def initialize_services():
 
     utils_converter = Converter()
     service_notification = NotificationService(logger=logger)
-    service_ebay = EbayService()
+    service_ebay = EbayService(ebay_connection_manager=ebay_connection_manager, logger=logger)
     service_csv = CsvService()
 
     schema_connection_details = SchemaConnectionDetails()
