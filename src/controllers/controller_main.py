@@ -4,7 +4,7 @@ from logger.service_logging import LoggingService
 from src.controllers.controller_csv import CsvController
 from src.controllers.controller_database import DatabaseController
 from src.controllers.controller_ebay_api import EbayApiController
-from config.site_domain_mapping_ebay import SITE_DOMAIN_MAPPING
+from src.config.site_domain_mapping_ebay import SITE_DOMAIN_MAPPING
 from src.services.service_csv import CsvService
 from src.services.service_database import DatabaseService
 from src.services.service_ebay import EbayService
