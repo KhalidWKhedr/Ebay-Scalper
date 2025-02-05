@@ -1,35 +1,42 @@
-from src.ebay.manager_ebay_connection import EbayConnectionManager
 from logger.service_logging import LoggingService
+from src.ebay.manager_ebay_connection import EbayConnectionManager
+from utils.manager_secure_config import SecureConfigManager
 
 class EbayService:
     def __init__(
         self,
-        logger: LoggingService
-        ):
-
+        logger: LoggingService,
+        secure_config: SecureConfigManager
+    ):
         self.logger = logger
-        self.ebay_connection_manager = EbayConnectionManager
+        self.secure_config = secure_config
+        self.ebay_connection_manager = None
         self.ebay_connection = None
 
-    def connect(self, connection_details):
-        """Attempts to connect to eBay API based on the provided details."""
-        try:
-            self.logger.get_logger().info(
-                f"Attempting to connect to eBay API: {connection_details['api_id']} "
-                f"at {connection_details['api_domain']}:{connection_details['api_site_id']}"
-            )
+    def save_ebay_connection_settings(self, connection_details):
+        """Save eBay connection settings."""
+        print(connection_details)
+        for key, value in connection_details.items():
+            if value is not None:
+                self.secure_config.write(key, str(value))
 
-            api = self.ebay_connection.connect_to_ebay()
+    def connect(self, connection_details):
+        try:
+
+            self.logger.get_logger().info(f"Attempting to connect to eBay API: {connection_details}")
+
+            if not self.ebay_connection_manager:
+                self.ebay_connection_manager = EbayConnectionManager(connection_details)
+            self.save_ebay_connection_settings(connection_details)
+            api = self.ebay_connection_manager.connect_to_ebay()
 
             if not api:
                 self.logger.get_logger().error(
-                    f"Could not connect to eBay API at {connection_details['api_domain']}"
-                )
+                    f"Could not connect to eBay API at {connection_details.get('api_domain')}")
                 return "Could not connect to eBay API."
 
             self.logger.get_logger().info(
-                f"Successfully connected to eBay API at {connection_details['api_domain']}"
-            )
+                f"Successfully connected to eBay API at {connection_details.get('api_domain')}")
             return "Connected to eBay API!"
 
         except Exception as e:
