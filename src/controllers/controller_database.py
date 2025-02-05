@@ -12,7 +12,8 @@ class DatabaseController:
         logger: LoggingService,
         converter: Converter,
         notification_service: NotificationService,
-    ):
+        ):
+
         self.logger = logger
         self.converter = converter
         self.database_service = database_service

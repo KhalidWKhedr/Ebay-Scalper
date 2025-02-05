@@ -4,8 +4,13 @@ from logger.service_logging import LoggingService
 from utils.manager_secure_config import SecureConfigManager
 
 class DatabaseService:
-    def __init__(self, logger: LoggingService, secure_config: SecureConfigManager,
-                 mongo_manager: MongoConnectionManager):
+    def __init__(
+        self,
+        logger: LoggingService,
+        secure_config: SecureConfigManager,
+        mongo_manager: MongoConnectionManager
+        ):
+
         self.logger = logger
         self.secure_config = secure_config
         self.mongo_manager = mongo_manager
