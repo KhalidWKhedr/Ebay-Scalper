@@ -5,7 +5,7 @@ from ebaysdk.exception import ConnectionError
 from ebaysdk.finding import Connection
 from src.core.MongoDBOperations import MongoDBOperations  # Corrected class name
 from deprecated.base_mongo_connection import MongoSSHConnector
-from src.core.EbayJsonExtractor import EbayJsonExtractor
+from utils.extractor_json_ebay import EbayJsonExtractor
 load_dotenv('config/.env')
 
 class EbayScraping:

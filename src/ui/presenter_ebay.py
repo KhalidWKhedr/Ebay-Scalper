@@ -12,18 +12,17 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
 
     def initialize_ui(self) -> None:
         """Initialize UI elements like combo boxes and set up signal connections."""
-        site_names = self.get_available_sites()
+        site_names = self.ebay_controller.site_domain_model.get_site_names()  # Use the model
         self.comboBox_SITE_ID.addItems(site_names)
-        self.text_Domain.setPlainText(self.get_default_domain())
+        self.text_Domain.setPlainText(self.ebay_controller.site_domain_model.get_default_domain() or "")
         self.comboBox_SITE_ID.currentTextChanged.connect(self.update_domain_field)
         self.button_CONNECT.clicked.connect(self.connect_to_api)
         self.text_Domain.setReadOnly(True)
 
     def update_domain_field(self, selected_country: str) -> None:
         """Update the domain field based on the selected country."""
-        site_id = self.get_site_id_from_country(selected_country)
-        if site_id:
-            domain = self.ebay_controller.site_domain_mapping[site_id]["domain"]
+        domain = self.ebay_controller.site_domain_model.get_domain_for_site(selected_country)  # Use the model
+        if domain:
             self.text_Domain.setPlainText(domain)
 
     def connect_to_api(self) -> None:
@@ -42,23 +41,5 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
         return {
             'API_ID': self.text_AppID.toPlainText().strip(),
             'API_DOMAIN': self.text_Domain.toPlainText().strip(),
-            'API_SITE_ID': self.get_site_id_from_country(selected_site),
+            'API_SITE_ID': self.ebay_controller.site_domain_model.get_site_id_for_site_name(selected_site) or "",
         }
-
-    def get_available_sites(self) -> list[str]:
-        """Retrieve list of available site names (country names) from the controller."""
-        return [site_info["site"] for site_info in self.ebay_controller.site_domain_mapping.values()]
-
-    def get_default_domain(self) -> str:
-        """Get the default domain from the controller."""
-
-        if not self.ebay_controller.site_domain_mapping:
-            return ""
-        return next(iter(self.ebay_controller.site_domain_mapping.values()))["domain"]
-
-    def get_site_id_from_country(self, selected_country: str) -> str:
-        """Retrieve the site_id from the selected country."""
-        for site_id, site_info in self.ebay_controller.site_domain_mapping.items():
-            if site_info["site"] == selected_country:
-                return site_id
-        return ""

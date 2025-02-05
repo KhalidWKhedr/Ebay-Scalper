@@ -4,6 +4,7 @@ from logger.service_logging import LoggingService
 from src.controllers.controller_csv import CsvController
 from src.controllers.controller_database import DatabaseController
 from src.controllers.controller_ebay_api import EbayApiController
+from config.site_domain_mapping_ebay import SITE_DOMAIN_MAPPING
 from src.services.service_csv import CsvService
 from src.services.service_database import DatabaseService
 from src.services.service_ebay import EbayService
@@ -11,7 +12,7 @@ from src.services.service_notification import NotificationService
 from src.ui.presenter_main import MainPresenter
 from src.ui.presenter_csv import CsvPresenter
 from utils.converter import Converter
-from src.models.model_database_connection_details import SchemaConnectionDetails  # Kept for local instantiation
+from src.models.model_site_domain_ebay import SiteDomainModel
 
 
 class MainController(QMainWindow, Ui_form_MainWindow):
@@ -35,6 +36,10 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         self.ebay_service = ebay_service
         self.csv_service = csv_service
 
+
+        # Initialize Models
+        self.site_domain_model = SiteDomainModel(SITE_DOMAIN_MAPPING)
+
         # Initialize controllers
         self.csv_controller = self._initialize_csv_controller()
         self.database_controller = self._initialize_database_controller()
@@ -42,6 +47,8 @@ class MainController(QMainWindow, Ui_form_MainWindow):
 
         # Initialize CSV presenter
         self.csv_presenter = CsvPresenter(self, self.csv_controller, self.notification_service)
+
+
 
         # Initialize main presenter with injected controllers
         self.presenter = MainPresenter(
@@ -71,6 +78,7 @@ class MainController(QMainWindow, Ui_form_MainWindow):
             self.logger,
             self.converter,
             self.notification_service,
+
         )
 
     def _initialize_ebay_controller(self) -> EbayApiController:
@@ -78,7 +86,8 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         return EbayApiController(
             self.ebay_service,
             self.notification_service,
-            self.logger
+            self.logger,
+            self.site_domain_model
         )
 
     def _connect_ui_actions(self):

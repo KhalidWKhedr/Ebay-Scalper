@@ -9,7 +9,6 @@ from src.services.service_notification import NotificationService
 from utils.converter import Converter
 from src.services.service_csv import CsvService
 from utils.manager_secure_config import SecureConfigManager
-from src.ebay.manager_ebay_connection import EbayConnectionManager
 
 
 def initialize_services():
