@@ -32,9 +32,12 @@ class DatabaseService:
         try:
             self.save_connection_settings(connection_details)
             connection_details = self.secure_config.get_all()
+
             required_keys = ["MONGO_HOST", "MONGO_PORT", "MONGO_DB_NAME", "MONGO_USER", "MONGO_PASSWORD"]
             if not all(key in connection_details for key in required_keys):
-                raise ValueError("Missing required connection details in .env file")
+                error_message = "Missing required connection details in .env file"
+                self.logger.log(error_message, level="error")
+                raise ValueError(error_message)
 
             self.logger.log(
                 f"Attempting to connect to database: {connection_details['MONGO_DB_NAME']} "
@@ -47,5 +50,6 @@ class DatabaseService:
             self.logger.log(f"Connection successful to {connection_details['MONGO_HOST']}", level="info")
             return "Connection successful"
         except Exception as e:
-            self.logger.log(f"Database connection error: {str(e)}", level="error")
-            raise Exception(f"Database connection error: {str(e)}")
+            error_message = f"Database connection error: {str(e)}"
+            self.logger.log(error_message, level="error")
+            raise Exception(error_message)

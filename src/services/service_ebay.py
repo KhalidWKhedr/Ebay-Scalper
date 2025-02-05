@@ -2,7 +2,12 @@ from src.ebay.manager_ebay_connection import EbayConnectionManager
 from logger.service_logging import LoggingService
 
 class EbayService:
-    def __init__(self, ebay_connection_manager: EbayConnectionManager, logger: LoggingService):
+    def __init__(
+        self,
+        ebay_connection_manager: EbayConnectionManager,
+        logger: LoggingService
+        ):
+
         self.logger = logger
         self.ebay_connection_manager = ebay_connection_manager
         self.ebay_connection = None

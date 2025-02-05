@@ -49,7 +49,6 @@ class MongoConnectionManager:
     def connect(self) -> pymongo.MongoClient:
         """Connect to MongoDB, either directly or via an SSH tunnel."""
         try:
-
             mongo_config = {
                 "MONGO_HOST": self.secure_config_manager.read("MONGO_HOST"),
                 "MONGO_PORT": int(self.secure_config_manager.read("MONGO_PORT")),
@@ -79,6 +78,8 @@ class MongoConnectionManager:
             print("Connected to MongoDB successfully.")
             return self.client
         except Exception as e:
+            if self.tunnel and self.tunnel.is_active:
+                self.tunnel.stop()
             raise Exception(f"Failed to connect to MongoDB: {repr(e)}")
 
     def close(self) -> None:
