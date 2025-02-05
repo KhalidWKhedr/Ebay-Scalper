@@ -37,9 +37,9 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
         """Retrieve API details from UI inputs."""
         selected_site = self.comboBox_SITE_ID.currentText().strip()
         return {
-            'api_id': self.text_AppID.toPlainText().strip(),
-            'api_domain': self.text_Domain.toPlainText().strip(),
-            'api_site_id': self.ebay_controller.get_site_code(selected_site),
+            'API_ID': self.text_AppID.toPlainText().strip(),
+            'API_DOMAIN': self.text_Domain.toPlainText().strip(),
+            'API_SITE_ID': self.ebay_controller.get_site_code(selected_site),
         }
 
     def get_available_sites(self) -> list[str]:

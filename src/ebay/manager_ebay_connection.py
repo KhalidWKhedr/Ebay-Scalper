@@ -4,9 +4,9 @@ from ebaysdk.finding import Connection
 
 class EbayConnectionManager:
     def __init__(self, api_details):
-        self.api_id = api_details['api_id']
-        self.api_domain = api_details['api_domain']
-        self.api_site_id = api_details['api_site_id']
+        self.api_id = api_details['API_ID']
+        self.api_domain = api_details['API_DOMAIN']
+        self.api_site_id = api_details['API_SITE_ID']
         self.logger = service_logging
 
     def check_app_id(self):
@@ -16,7 +16,6 @@ class EbayConnectionManager:
     def connect_to_ebay(self):
         try:
             self.check_app_id()
-            print(self.api_id)
             api = Connection(
                 appid=self.api_id,
                 config_file=None,

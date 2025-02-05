@@ -12,6 +12,7 @@ class EbayApiController:
         logger: LoggingService,
         site_domain_mapping: dict = SITE_DOMAIN_MAPPING
         ):
+
         self.logger = logger
         self.ebay_service = ebay_service
         self.site_domain_mapping = site_domain_mapping

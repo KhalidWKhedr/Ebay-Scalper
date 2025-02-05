@@ -33,11 +33,11 @@ class EbayService:
 
             if not api:
                 self.logger.get_logger().error(
-                    f"Could not connect to eBay API at {connection_details.get('api_domain')}")
+                    f"Could not connect to eBay API at {connection_details.get('API_DOMAIN')}")
                 return "Could not connect to eBay API."
 
             self.logger.get_logger().info(
-                f"Successfully connected to eBay API at {connection_details.get('api_domain')}")
+                f"Successfully connected to eBay API at {connection_details.get('API_DOMAIN')}")
             return "Connected to eBay API!"
 
         except Exception as e:
