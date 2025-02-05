@@ -24,7 +24,7 @@ def initialize_services():
     )
 
     utils_converter = Converter()
-    service_notification = NotificationService()
+    service_notification = NotificationService(logger=logger)
     service_ebay = EbayService()
     service_csv = CsvService()
 
