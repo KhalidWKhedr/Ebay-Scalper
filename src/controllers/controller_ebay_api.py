@@ -10,11 +10,11 @@ class EbayApiController:
         ebay_service: EbayService,
         notification_service: NotificationService,
         logger: LoggingService,
-        site_domain_model: SiteDomainModel,  # Use the model instead of raw dict
+        site_domain_model: SiteDomainModel,
     ):
         self.logger = logger
         self.ebay_service = ebay_service
-        self.site_domain_model = site_domain_model  # Use the model
+        self.site_domain_model = site_domain_model
         self.notification_service = notification_service
 
     def get_site_code(self, site_name: str) -> str:

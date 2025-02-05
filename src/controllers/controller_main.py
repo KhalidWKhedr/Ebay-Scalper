@@ -36,7 +36,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         self.ebay_service = ebay_service
         self.csv_service = csv_service
 
-
         # Initialize Models
         self.site_domain_model = SiteDomainModel(SITE_DOMAIN_MAPPING)
 
@@ -47,7 +46,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
 
         # Initialize CSV presenter
         self.csv_presenter = CsvPresenter(self, self.csv_controller, self.notification_service)
-
 
 
         # Initialize main presenter with injected controllers

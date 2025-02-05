@@ -7,7 +7,11 @@ from src.services.service_notification import NotificationService
 class CsvController(QObject):
     csv_loaded = Signal(list, list)
 
-    def __init__(self, csv_service: CsvService, notification_service: NotificationService):
+    def __init__(
+        self,
+        csv_service: CsvService,
+        notification_service: NotificationService
+    ):
         super().__init__()
         self.csv_service = csv_service
         self.notification_service = notification_service
