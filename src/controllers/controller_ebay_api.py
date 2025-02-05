@@ -12,7 +12,6 @@ class EbayApiController:
         logger: LoggingService,
         site_domain_mapping: dict = SITE_DOMAIN_MAPPING
         ):
-
         self.logger = logger
         self.ebay_service = ebay_service
         self.site_domain_mapping = site_domain_mapping
@@ -27,15 +26,24 @@ class EbayApiController:
         site_info = self.site_domain_mapping.get(site_name, {})
         return site_info.get('domain', "")
 
+    def save_connection_settings(self, api_details: dict) -> str:
+        """Save connection settings using the EbayService."""
+        try:
+            # Call the EbayService to save connection settings
+            self.ebay_service.save_ebay_connection_settings(api_details)
+            return "Connection settings saved successfully."
+        except Exception as e:
+            error_message = f"Failed to save connection settings: {str(e)}"
+            self.logger.get_logger().error(error_message)
+            return error_message
+
     def connect_to_api(self, api_details: dict) -> str:
         """Handle the API connection process."""
-        LoggingService.log(f"Attempting to connect to eBay API with details: {api_details}", level="info")
-
         try:
             message = self.ebay_service.connect(api_details)
-            LoggingService.log(f"Connection to eBay API successful: {message}", level="info")
+            self.logger.get_logger().info(f"Connection to eBay API successful: {message}")
             return message
         except Exception as e:
             error_message = f"Failed to connect to eBay API: {str(e)}"
-            LoggingService.log(error_message, level="error")
+            self.logger.get_logger().error(error_message)
             raise Exception(error_message)
