@@ -16,27 +16,25 @@ def initialize_services():
     """Initialize and return all required services."""
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
-
-    mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
-    database_service = DatabaseService(
-        logger=logger,
-        secure_config=secure_config_manager,
-        mongo_manager=mongo_manager
-    )
-
     utils_converter = Converter()
-    service_notification = NotificationService(logger=logger)
-    service_ebay = EbayService(logger=logger, secure_config=secure_config_manager)
     service_csv = CsvService()
 
-    return {
-        'database_service': database_service,
-        'logger': logger,
-        'utils_converter': utils_converter,
-        'service_notification': service_notification,
-        'service_ebay': service_ebay,
-        'service_csv': service_csv,
-    }
+    service_notification = NotificationService(logger=logger)
+
+    service_ebay = EbayService(logger=logger,
+                               secure_config=secure_config_manager)
+
+    mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
+    database_service = DatabaseService(logger=logger,
+                                       secure_config=secure_config_manager,
+                                       mongo_manager=mongo_manager)
+
+    return {'database_service': database_service,
+            'logger': logger,
+            'utils_converter': utils_converter,
+            'service_notification': service_notification,
+            'service_ebay': service_ebay,
+            'service_csv': service_csv}
 
 
 def main():
@@ -48,14 +46,12 @@ def main():
     app = QApplication(sys.argv)
 
     # Initialize the main application controller
-    main_controller = MainController(
-        db_service=services['database_service'],
-        logger=services['logger'],
-        converter=services['utils_converter'],
-        notification_service=services['service_notification'],
-        ebay_service=services['service_ebay'],
-        csv_service=services['service_csv'],
-    )
+    main_controller = MainController(db_service=services['database_service'],
+                                     logger=services['logger'],
+                                     converter=services['utils_converter'],
+                                     notification_service=services['service_notification'],
+                                     ebay_service=services['service_ebay'],
+                                     csv_service=services['service_csv'])
 
     # Show the main window
     main_controller.show()
