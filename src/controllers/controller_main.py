@@ -76,7 +76,6 @@ class MainController(QMainWindow, Ui_form_MainWindow):
             self.logger,
             self.converter,
             self.notification_service,
-
         )
 
     def _initialize_ebay_controller(self) -> EbayApiController:
