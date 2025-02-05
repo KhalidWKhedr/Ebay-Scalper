@@ -14,7 +14,6 @@ class EbayConnectionManager:
             api = Connection(
                 appid=self.api_id,
                 config_file=None,
-                domain=self.api_domain,
                 siteid=self.api_site_id
             )
             return api
