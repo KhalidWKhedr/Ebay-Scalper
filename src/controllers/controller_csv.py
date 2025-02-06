@@ -1,5 +1,3 @@
-from logging import Logger
-
 from PySide6.QtCore import QObject, Signal
 
 from logger.service_logging import LoggingService

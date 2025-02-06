@@ -1,4 +1,3 @@
-from socket import socket
 from urllib.parse import quote
 
 import paramiko
