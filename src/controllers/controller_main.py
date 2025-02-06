@@ -39,16 +39,31 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         # Initialize Models
         self.site_domain_model = SiteDomainModel(SITE_DOMAIN_MAPPING)
 
-        # Initialize controllers
-        self.csv_controller = self._initialize_csv_controller()
-        self.database_controller = self._initialize_database_controller()
-        self.ebay_controller = self._initialize_ebay_controller()
+        # Initialize Controllers & Presenters
+        self._initialize_controllers()
+        self._initialize_presenters()
 
-        # Initialize CSV presenter
+        # Connect UI actions
+        self._connect_ui_actions()
+
+    def _initialize_controllers(self):
+        """Initialize and store controllers."""
+        self.logger.log("Initializing controllers...", level="info")
+
+        self.csv_controller = CsvController(self.csv_service, self.notification_service)
+        self.database_controller = DatabaseController(
+            self.db_service, self.logger, self.converter, self.notification_service
+        )
+        self.ebay_controller = EbayApiController(
+            self.ebay_service, self.notification_service, self.logger, self.site_domain_model
+        )
+
+    def _initialize_presenters(self):
+        """Initialize and store presenters."""
+        self.logger.log("Initializing presenters...", level="info")
+
         self.csv_presenter = CsvPresenter(self, self.csv_controller, self.notification_service)
 
-
-        # Initialize main presenter with injected controllers
         self.presenter = MainPresenter(
             db_service=self.db_service,
             logger=self.logger,
@@ -62,32 +77,11 @@ class MainController(QMainWindow, Ui_form_MainWindow):
             ebay_controller=self.ebay_controller,
         )
 
-        # Connect UI buttons to presenter methods
-        self._connect_ui_actions()
-
-    def _initialize_csv_controller(self) -> CsvController:
-        """Initialize and return the CSV controller."""
-        return CsvController(self.csv_service, self.notification_service)
-
-    def _initialize_database_controller(self) -> DatabaseController:
-        """Initialize and return the database controller."""
-        return DatabaseController(
-            self.db_service,
-            self.logger,
-            self.converter,
-            self.notification_service,
-        )
-
-    def _initialize_ebay_controller(self) -> EbayApiController:
-        """Initialize and return the eBay controller."""
-        return EbayApiController(
-            self.ebay_service,
-            self.notification_service,
-            self.logger,
-            self.site_domain_model
-        )
-
     def _connect_ui_actions(self):
-        """Connect UI buttons to their respective presenter methods."""
+        """Connect UI buttons to presenter methods."""
+        self.logger.log("Connecting UI actions...", level="info")
+
+        # Connect the buttons to corresponding presenter methods
         self.button_DATABASE.clicked.connect(self.presenter.open_database_window)
         self.button_EBAY.clicked.connect(self.presenter.open_ebay_window)
+

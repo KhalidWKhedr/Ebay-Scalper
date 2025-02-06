@@ -13,33 +13,56 @@ class DatabaseController:
         converter: Converter,
         notification_service: NotificationService,
     ):
+        """
+        Initialize the DatabaseController with the provided services.
+
+        :param database_service: Service responsible for database interactions.
+        :param logger: Logger for recording events and errors.
+        :param converter: Service responsible for data conversion.
+        :param notification_service: Service responsible for showing notifications.
+        """
         self.logger = logger
         self.converter = converter
         self.database_service = database_service
         self.notification_service = notification_service
 
     def get_connection_settings(self):
-        """Retrieve connection settings from the database service."""
+        """
+        Retrieve the current database connection settings from the database service.
+
+        :return: The connection settings.
+        """
         return self.database_service.get_connection_settings()
 
     def save_connection_settings(self, connection_details: SchemaConnectionDetails):
-        """Save connection settings using the database service."""
+        """
+        Save new connection settings to the database.
+
+        :param connection_details: The connection details to be saved.
+        :return: The result of the save operation.
+        """
         return self.database_service.save_connection_settings(connection_details)
 
-    def connect_to_db(self, connection_details: SchemaConnectionDetails) -> str:
-        """Attempt to connect to the database and return a status message."""
+    def connect_to_db(self, connection_details: SchemaConnectionDetails) -> bool:
+        """
+        Attempt to connect to the database using the provided connection details.
+
+        :param connection_details: The connection details for the database.
+        :return: True if the connection is successful, False otherwise.
+        """
         try:
-            message_connect = self.database_service.connect(connection_details)
-
-            if message_connect == "Connection successful":
-                self.logger.log("Database connection successful.", level="info")
-                return "Connection successful"
+            if self.database_service.connect(connection_details):
+                success_message = "Database connection successful."
+                self.logger.log(success_message, level="info")
+                self.notification_service.show_message(self, success_message)
+                return True
             else:
-                error_message = f"Unexpected response from database service: {message_connect}"
+                error_message = "Database connection failed."
                 self.logger.log(error_message, level="error")
-                return error_message
-
+                self.notification_service.show_message(error_message)
+                return False
         except Exception as e:
             error_message = f"Failed to connect to the database: {str(e)}"
             self.logger.log(error_message, level="error")
-            return error_message
+            self.notification_service.show_message(error_message)
+            return False

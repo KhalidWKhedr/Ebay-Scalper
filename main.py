@@ -16,14 +16,15 @@ def initialize_services():
     logger = LoggingService()
     secure_config_manager = SecureConfigManager()
     utils_converter = Converter()
-    service_csv = CsvService()
+    service_csv = CsvService(logger=logger)
 
     service_notification = NotificationService(logger=logger)
 
     service_ebay = EbayService(logger=logger,
                                secure_config=secure_config_manager)
 
-    mongo_manager = MongoConnectionManager(secure_config_manager=secure_config_manager)
+    mongo_manager = MongoConnectionManager(logger=logger,
+                                           secure_config_manager=secure_config_manager)
     database_service = DatabaseService(logger=logger,
                                        secure_config=secure_config_manager,
                                        mongo_manager=mongo_manager)
