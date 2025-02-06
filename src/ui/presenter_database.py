@@ -160,7 +160,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         """Attempt to connect to the database and show appropriate messages."""
         result = self.database_controller.connect_to_db(self.get_connection_details())
 
-        if result == "Connection successful":
+        if result is True:
             QMessageBox.information(
                 self,  # Use 'self' as the parent widget
                 "Database Connection",
@@ -170,5 +170,4 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
             QMessageBox.critical(
                 self,  # Use 'self' as the parent widget
                 "Database Connection Error",
-                result
             )

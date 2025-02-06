@@ -80,5 +80,4 @@ class EbayApiController:
         except Exception as e:
             error_message = f"Failed to connect to eBay API: {str(e)}"
             self.logger.log(error_message, level="error")
-            self.notification_service.show_message(error_message)
             raise Exception(error_message)

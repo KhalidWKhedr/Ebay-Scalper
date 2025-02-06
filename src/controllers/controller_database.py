@@ -54,15 +54,12 @@ class DatabaseController:
             if self.database_service.connect(connection_details):
                 success_message = "Database connection successful."
                 self.logger.log(success_message, level="info")
-                self.notification_service.show_message(self, success_message)
                 return True
             else:
                 error_message = "Database connection failed."
                 self.logger.log(error_message, level="error")
-                self.notification_service.show_message(error_message)
                 return False
         except Exception as e:
             error_message = f"Failed to connect to the database: {str(e)}"
             self.logger.log(error_message, level="error")
-            self.notification_service.show_message(error_message)
             return False

@@ -50,13 +50,19 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         """Initialize and store controllers."""
         self.logger.log("Initializing controllers...", level="info")
 
-        self.csv_controller = CsvController(self.csv_service, self.notification_service)
-        self.database_controller = DatabaseController(
-            self.db_service, self.logger, self.converter, self.notification_service
-        )
-        self.ebay_controller = EbayApiController(
-            self.ebay_service, self.notification_service, self.logger, self.site_domain_model
-        )
+        self.csv_controller = CsvController(self.logger,
+                                            self.csv_service,
+                                            self.notification_service
+                                            )
+        self.database_controller = DatabaseController(self.db_service,
+                                                      self.logger, self.converter,
+                                                      self.notification_service
+                                                      )
+        self.ebay_controller = EbayApiController(self.ebay_service,
+                                                 self.notification_service,
+                                                 self.logger,
+                                                 self.site_domain_model
+                                                 )
 
     def _initialize_presenters(self):
         """Initialize and store presenters."""

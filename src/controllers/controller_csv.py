@@ -1,4 +1,8 @@
+from logging import Logger
+
 from PySide6.QtCore import QObject, Signal
+
+from logger.service_logging import LoggingService
 from src.services.service_csv import CsvService
 from src.services.service_notification import NotificationService
 
@@ -11,6 +15,7 @@ class CsvController(QObject):
 
     def __init__(
         self,
+        logger: LoggingService,
         csv_service: CsvService,
         notification_service: NotificationService
     ):
@@ -21,6 +26,7 @@ class CsvController(QObject):
         :param notification_service: An instance of NotificationService for displaying notifications.
         """
         super().__init__()
+        self.logger = logger
         self.csv_service = csv_service
         self.notification_service = notification_service
 
@@ -38,7 +44,7 @@ class CsvController(QObject):
             self.csv_service.load_csv(file_path)
         except RuntimeError as e:
             # Notify the user if an error occurs during CSV loading.
-            self.notification_service.show_message(f"Error: {str(e)}")
+            self.logger.log(f"Error: {str(e)}")
 
     def _on_csv_loaded(self, csv_data: list, headers: list):
         """
