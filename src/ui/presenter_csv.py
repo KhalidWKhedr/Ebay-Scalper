@@ -4,7 +4,12 @@ from PySide6.QtWidgets import QFileDialog, QPushButton, QListWidgetItem
 
 
 class CsvPresenter:
-    def __init__(self, main_ui, csv_controller, notification_service):
+    def __init__(
+        self,
+        main_ui,
+        csv_controller,
+        notification_service
+    ):
         """ Initializes the CsvPresenter. """
         self.ui = main_ui
         self.csv_controller = csv_controller
@@ -34,10 +39,13 @@ class CsvPresenter:
             "CSV Files (*.csv);;Excel Files (*.xlsx)"
         )
         if file_path:
-            self.csv_controller.load_csv(file_path)
+            try:
+                self.csv_controller.load_csv(file_path)
+            except Exception as e:
+                self.notification_service.show_message(self.ui, f"Error loading file: {e}")
 
     def handle_csv_loaded(self, columns, rows):
-        """ Handles the UI update after a CSV file is loaded. """
+        """Handles the UI update after a CSV file is loaded."""
         if not columns:
             self.notification_service.show_message(self.ui, "Failed to load CSV.")
             return
@@ -46,20 +54,20 @@ class CsvPresenter:
         self.populate_column_buttons(columns)
 
     def populate_column_buttons(self, columns):
-        """ Dynamically adds buttons for each column in the CSV file. """
+        """Dynamically adds buttons for each column in the CSV file."""
         self.ui.listWidget.clear()
         for column in columns:
             button = self._create_column_button(column)
             self._add_button_to_list_widget(button, column)
 
     def _create_column_button(self, column_name):
-        """ Creates a QPushButton for a CSV column. """
+        """Creates a QPushButton for a CSV column."""
         button = QPushButton(column_name)
         button.clicked.connect(partial(self.on_column_button_clicked, column_name))
         return button
 
     def _add_button_to_list_widget(self, button, column_name):
-        """ Adds a button to the list widget. """
+        """Adds a button to the list widget."""
         list_item = QListWidgetItem(self.ui.listWidget)
         self.ui.listWidget.addItem(list_item)
         self.ui.listWidget.setItemWidget(list_item, button)

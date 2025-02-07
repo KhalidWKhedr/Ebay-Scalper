@@ -68,20 +68,20 @@ class MainController(QMainWindow, Ui_form_MainWindow):
 
         self.csv_presenter = CsvPresenter(self,
                                           self.csv_controller,
-                                          self.notification_service)
+                                          self.notification_service
+                                          )
 
-        self.presenter = MainPresenter(
-            db_service=self.db_service,
-            logger=self.logger,
-            converter=self.converter,
-            notification_service=self.notification_service,
-            ebay_service=self.ebay_service,
-            csv_service=self.csv_service,
-            csv_presenter=self.csv_presenter,
-            csv_controller=self.csv_controller,
-            database_controller=self.database_controller,
-            ebay_controller=self.ebay_controller,
-        )
+        self.presenter = MainPresenter(db_service=self.db_service,
+                                       logger=self.logger,
+                                       converter=self.converter,
+                                       notification_service=self.notification_service,
+                                       ebay_service=self.ebay_service,
+                                       csv_service=self.csv_service,
+                                       csv_presenter=self.csv_presenter,
+                                       csv_controller=self.csv_controller,
+                                       database_controller=self.database_controller,
+                                       ebay_controller=self.ebay_controller
+                                       )
 
     def _connect_ui_actions(self):
         """Connect UI buttons to presenter methods."""
