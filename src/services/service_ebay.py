@@ -8,11 +8,12 @@ class EbayService:
     def __init__(
         self,
         logger: LoggingService,
-        secure_config: SecureConfigManager
+        secure_config: SecureConfigManager,
+        ebay_connection_manager: Optional[EbayConnectionManager] = None
     ):
         self.logger = logger
         self.secure_config = secure_config
-        self.ebay_connection_manager: Optional[EbayConnectionManager] = None
+        self.ebay_connection_manager = ebay_connection_manager
 
     @staticmethod
     def check_app_id(connection_details: Dict[str, str]):
@@ -46,9 +47,7 @@ class EbayService:
             api = self.ebay_connection_manager.connect_to_ebay()
 
             if not api:
-                error_message = f"Could not connect to eBay API at {connection_details.get('API_DOMAIN')}"
-                self.logger.get_logger().error(error_message)
-                return error_message
+                return self._handle_error(connection_details, "Could not connect to eBay API")
 
             # Log success
             success_message = f"Successfully connected to eBay API at {connection_details.get('API_DOMAIN')}"
@@ -56,12 +55,12 @@ class EbayService:
             return success_message
 
         except ValueError as ve:
-            # Log and return specific ValueError exception
-            error_message = f"Error: {str(ve)}"
-            self.logger.get_logger().error(error_message)
-            return error_message
+            return self._handle_error(connection_details, f"ValueError: {str(ve)}")
+
         except Exception as e:
-            # Log and return general exception
-            error_message = f"Error connecting to eBay API: {str(e)}"
-            self.logger.get_logger().error(error_message)
-            return error_message
+            return self._handle_error(connection_details, f"Error connecting to eBay API: {str(e)}")
+
+    def _handle_error(self, connection_details: Dict[str, str], error_message: str) -> str:
+        """Helper method to handle errors and log them."""
+        self.logger.get_logger().error(f"{error_message} at {connection_details.get('API_DOMAIN')}")
+        return error_message

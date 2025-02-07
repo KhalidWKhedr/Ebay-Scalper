@@ -47,17 +47,17 @@ class CsvService(QObject):
 
         except pd.errors.EmptyDataError:
             # Handle case where the file is empty
-            self.csv_loaded.emit([], [], "The selected file is empty.")
-            self.logger.error("The selected file is empty.")
+            self.csv_loaded.emit([], [], "The selected file is empty or could not be read.")
+            self.logger.error("The selected file is empty or could not be read.")
 
-        except pd.errors.ParserError:
+        except pd.errors.ParserError as e:
             # Handle error parsing the file
-            self.csv_loaded.emit([], [], "Error parsing the file. Please check its format.")
-            self.logger.error("Error parsing the file.")
+            self.csv_loaded.emit([], [], f"Error parsing the file: {e}. Please check its format.")
+            self.logger.error(f"Error parsing the file: {e}")
 
         except ValueError as e:
             # Handle other value errors
-            self.csv_loaded.emit([], [], str(e))
+            self.csv_loaded.emit([], [], f"Value error: {e}")
             self.logger.error(f"Value error: {e}")
 
         except Exception as e:

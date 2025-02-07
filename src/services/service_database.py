@@ -37,7 +37,7 @@ class DatabaseService:
             # Ensure required keys are present in connection details
             required_keys = ["MONGO_HOST", "MONGO_PORT", "MONGO_DB_NAME", "MONGO_USER", "MONGO_PASSWORD"]
             if not all(key in connection_details for key in required_keys):
-                error_message = "Missing required connection details in .env file"
+                error_message = "Missing required connection details in .env file."
                 self.logger.log(error_message, level="error")
                 raise ValueError(error_message)
 
@@ -50,7 +50,9 @@ class DatabaseService:
 
             # Ensure mongo_manager is provided
             if not self.mongo_manager:
-                raise ValueError("MongoConnectionManager is not provided or initialized.")
+                error_message = "MongoConnectionManager is not provided or initialized."
+                self.logger.log(error_message, level="error")
+                raise ValueError(error_message)
 
             # Establish the connection
             self.db_connection = self.mongo_manager.connect()
@@ -60,12 +62,12 @@ class DatabaseService:
             return "Connection successful"
 
         except ValueError as ve:
-            # Handle specific ValueError exceptions (e.g., missing required keys)
+            # Handle specific ValueError exceptions (e.g., missing required keys or missing mongo manager)
             self.logger.log(f"ValueError: {str(ve)}", level="error")
             raise
 
         except Exception as e:
-            # Handle other unexpected errors
+            # Handle other unexpected errors with context
             error_message = f"Database connection error: {str(e)}"
             self.logger.log(error_message, level="error")
             raise Exception(error_message)
