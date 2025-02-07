@@ -51,8 +51,9 @@ class MainPresenter:
                 # Create SchemaConnectionDetails dynamically when needed
                 connection_details = SchemaConnectionDetails(**self.database_controller.get_connection_settings())
 
-                self.database_window = DatabaseWindowPresenter(
-                    self.database_controller, schema_connection_details=connection_details
+                self.database_window = DatabaseWindowPresenter(self.notification_service,
+                                                               self.database_controller,
+                                                               schema_connection_details=connection_details
                 )
             self.database_window.show()
         except Exception as e:
@@ -62,7 +63,8 @@ class MainPresenter:
         """Opens the eBay window."""
         try:
             if not self.ebay_window or not self.ebay_window.isVisible():
-                self.ebay_window = EbayWindowPresenter(self.ebay_controller)
+                self.ebay_window = EbayWindowPresenter(self.logger,
+                                                       self.ebay_controller)
             self.ebay_window.show()
         except Exception as e:
             self._handle_error("Failed to open eBay window", e)
@@ -79,3 +81,4 @@ class MainPresenter:
         """Handles errors by logging and notifying the user."""
         self.logger.error(f"{message}: {error}")
         self.notification_service.notify(f"Error: {error}")
+

@@ -66,8 +66,9 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         """Initialize and store presenters."""
         self.logger.log("Initializing presenters...", level="info")
 
-        self.csv_presenter = CsvPresenter(self.notification_service,
-                                          self.csv_controller)
+        self.csv_presenter = CsvPresenter(self,
+                                          self.csv_controller,
+                                          self.notification_service)
 
         self.presenter = MainPresenter(
             db_service=self.db_service,
