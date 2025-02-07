@@ -1,89 +1,68 @@
-from PySide6.QtWidgets import QMainWindow
-from gui.gui_form_main import Ui_form_MainWindow
 from logger.service_logging import LoggingService
-from src.controllers.controller_csv import CsvController
+from src.models.model_database_connection_details import SchemaConnectionDetails
+from src.services.service_notification import NotificationService
+from src.ui.presenter_database import DatabaseWindowPresenter
+from src.ui.presenter_ebay import EbayWindowPresenter
 from src.controllers.controller_database import DatabaseController
 from src.controllers.controller_ebay_api import EbayApiController
-from src.config.site_domain_mapping_ebay import SITE_DOMAIN_MAPPING
-from src.services.service_csv import CsvService
-from src.services.service_database import DatabaseService
-from src.services.service_ebay import EbayService
-from src.services.service_notification import NotificationService
-from src.ui.presenter_main import MainPresenter
-from src.ui.presenter_csv import CsvPresenter
-from utils.converter import Converter
-from src.models.model_site_domain_ebay import SiteDomainModel
+from src.controllers.controller_csv import CsvController
 
 
-class MainController(QMainWindow, Ui_form_MainWindow):
+class MainController:
     def __init__(
         self,
-        converter: Converter,
         logger: LoggingService,
         notification_service: NotificationService,
-        db_service: DatabaseService,
-        ebay_service: EbayService,
-        csv_service: CsvService,
+        csv_controller: CsvController,
+        database_controller: DatabaseController,
+        ebay_controller: EbayApiController,
     ):
-        super().__init__()
-        self.setupUi(self)
-
-        # Store injected dependencies
-        self.db_service = db_service
         self.logger = logger
-        self.converter = converter
         self.notification_service = notification_service
-        self.ebay_service = ebay_service
-        self.csv_service = csv_service
 
-        # Initialize Models
-        self.site_domain_model = SiteDomainModel(SITE_DOMAIN_MAPPING)
+        # Injected controllers
+        self.csv_controller = csv_controller
+        self.database_controller = database_controller
+        self.ebay_controller = ebay_controller
 
-        # Initialize Controllers & Presenters
-        self._initialize_controllers()
-        self._initialize_presenters()
+        # Initialize windows
+        self.database_window = None
+        self.ebay_window = None
 
-        # Connect UI actions
-        self._connect_ui_actions()
+    def open_database_window(self) -> None:
+        """Opens the database window."""
+        try:
+            if not self.database_window or not self.database_window.isVisible():
+                # Create SchemaConnectionDetails dynamically when needed
+                connection_details = SchemaConnectionDetails(**self.database_controller.get_connection_settings())
 
-    def _initialize_controllers(self):
-        """Initialize and store controllers."""
-        self.logger.log("Initializing controllers...", level="info")
+                self.database_window = DatabaseWindowPresenter(self.notification_service,
+                                                               self.database_controller,
+                                                               schema_connection_details=connection_details
+                                                               )
+            self.database_window.show()
+        except Exception as e:
+            self._handle_error("Failed to open database window", e)
 
-        self.csv_controller = CsvController(self.logger,
-                                            self.csv_service,
-                                            )
-        self.database_controller = DatabaseController(self.logger,
-                                                      self.db_service,
-                                                      self.converter,
-                                                      )
-        self.ebay_controller = EbayApiController(self.logger,
-                                                 self.ebay_service,
-                                                 self.site_domain_model
-                                                 )
+    def open_ebay_window(self) -> None:
+        """Opens the eBay window."""
+        try:
+            if not self.ebay_window or not self.ebay_window.isVisible():
+                self.ebay_window = EbayWindowPresenter(self.notification_service,
+                                                       self.ebay_controller)
+            self.ebay_window.show()
+        except Exception as e:
+            self._handle_error("Failed to open eBay window", e)
 
-    def _initialize_presenters(self):
-        """Initialize and store presenters."""
-        self.logger.log("Initializing presenters...", level="info")
+    def perform_csv_operation(self, file_path: str) -> None:
+        """Performs a CSV operation (e.g., loading a CSV file)."""
+        try:
+            self.csv_controller.load_csv(file_path)
+            self.notification_service.notify("CSV file loaded successfully.")
+        except Exception as e:
+            self._handle_error("Failed to perform CSV operation", e)
 
-        self.csv_presenter = CsvPresenter(self,
-                                          self.csv_controller,
-                                          self.notification_service
-                                          )
-
-        self.presenter = MainPresenter(
-                                       logger=self.logger,
-                                       notification_service=self.notification_service,
-                                       csv_controller=self.csv_controller,
-                                       database_controller=self.database_controller,
-                                       ebay_controller=self.ebay_controller
-                                       )
-
-    def _connect_ui_actions(self):
-        """Connect UI buttons to presenter methods."""
-        self.logger.log("Connecting UI actions...", level="info")
-
-        # Connect the buttons to corresponding presenter methods
-        self.button_DATABASE.clicked.connect(self.presenter.open_database_window)
-        self.button_EBAY.clicked.connect(self.presenter.open_ebay_window)
-
+    def _handle_error(self, message: str, error: Exception) -> None:
+        """Handles errors by logging and notifying the user."""
+        self.logger.error(f"{message}: {error}")
+        self.notification_service.notify(f"Error: {error}")
