@@ -2,6 +2,7 @@ from src.services.service_database import DatabaseService
 from logger.service_logging import LoggingService
 from src.models.model_database_connection_details import SchemaConnectionDetails
 from utils.converter import Converter
+import traceback
 
 
 class DatabaseController:
@@ -47,15 +48,18 @@ class DatabaseController:
         :return: True if the connection is successful, False otherwise.
         """
         try:
+            # Attempt to connect
             if self.database_service.connect(connection_details):
                 success_message = "Database connection successful."
-                self.logger.log(success_message, level="info")
+                self.logger.get_logger().info(success_message)  # Using info for success
                 return True
             else:
                 error_message = "Database connection failed."
-                self.logger.log(error_message, level="error")
+                self.logger.error(error_message)  # Using error for failure
                 return False
         except Exception as e:
+            # Log detailed error information
             error_message = f"Failed to connect to the database: {str(e)}"
-            self.logger.log(error_message, level="error")
+            self.logger.error(error_message)
+            self.logger.error("Exception stack trace:\n" + traceback.format_exc())  # Log the stack trace for debugging
             return False

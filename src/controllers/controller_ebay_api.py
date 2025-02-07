@@ -29,7 +29,7 @@ class EbayApiController:
         :return: The site code corresponding to the site name.
         """
         site_code = self.site_domain_model.get_site_id_for_site_name(site_name) or ""
-        self.logger.log(f"Retrieved site code for {site_name}: {site_code}", level="debug")
+        self.logger.get_logger().debug(f"Retrieved site code for {site_name}: {site_code}")
         return site_code
 
     def get_domain_for_site(self, site_name: str) -> str:
@@ -40,40 +40,37 @@ class EbayApiController:
         :return: The domain corresponding to the site name.
         """
         domain = self.site_domain_model.get_domain_for_site(site_name) or ""
-        self.logger.log(f"Retrieved domain for {site_name}: {domain}", level="debug")
+        self.logger.get_logger().debug(f"Retrieved domain for {site_name}: {domain}")
         return domain
 
-    def save_connection_settings(self, api_details: dict) -> str:
+    def save_connection_settings(self, api_details: dict) -> bool:
         """
         Save the eBay API connection settings.
 
         :param api_details: The connection settings for the eBay API.
-        :return: A message indicating success or failure.
+        :return: A boolean indicating whether the operation was successful.
         """
         try:
-            self.logger.log("Saving eBay API connection settings...", level="info")
+            self.logger.get_logger().info("Saving eBay API connection settings...")
             self.ebay_service.save_ebay_connection_settings(api_details)
-            success_message = "Connection settings saved successfully."
-            self.logger.log(success_message, level="info")
-            return success_message
+            self.logger.get_logger().info("Connection settings saved successfully.")
+            return True
         except Exception as e:
-            error_message = f"Failed to save connection settings: {str(e)}"
-            self.logger.log(error_message, level="error")
-            return error_message
+            self.logger.error(f"Failed to save connection settings: {str(e)}")
+            return False
 
-    def connect_to_api(self, api_details: dict) -> str:
+    def connect_to_api(self, api_details: dict) -> bool:
         """
         Handle the eBay API connection process.
 
         :param api_details: The API connection details.
-        :return: A message indicating the connection status.
+        :return: A boolean indicating whether the connection was successful.
         """
         try:
-            self.logger.log("Attempting to connect to eBay API...", level="info")
+            self.logger.get_logger().info("Attempting to connect to eBay API...")
             message = self.ebay_service.connect(api_details)
-            self.logger.log(f"Successfully connected to eBay API: {message}", level="info")
-            return message
+            self.logger.get_logger().info(f"Successfully connected to eBay API: {message}")
+            return True
         except Exception as e:
-            error_message = f"Failed to connect to eBay API: {str(e)}"
-            self.logger.log(error_message, level="error")
-            raise Exception(error_message)
+            self.logger.error(f"Failed to connect to eBay API: {str(e)}")
+            return False

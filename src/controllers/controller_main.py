@@ -35,24 +35,23 @@ class MainController:
             if not self.database_window or not self.database_window.isVisible():
                 # Create SchemaConnectionDetails dynamically when needed
                 connection_details = SchemaConnectionDetails(**self.database_controller.get_connection_settings())
-
                 self.database_window = DatabaseWindowPresenter(self.notification_service,
                                                                self.database_controller,
-                                                               schema_connection_details=connection_details
-                                                               )
+                                                               schema_connection_details=connection_details)
             self.database_window.show()
         except Exception as e:
             self._handle_error("Failed to open database window", e)
+            return  # Return early after notifying the user of the error
 
     def open_ebay_window(self) -> None:
         """Opens the eBay window."""
         try:
             if not self.ebay_window or not self.ebay_window.isVisible():
-                self.ebay_window = EbayWindowPresenter(self.notification_service,
-                                                       self.ebay_controller)
+                self.ebay_window = EbayWindowPresenter(self.notification_service, self.ebay_controller)
             self.ebay_window.show()
         except Exception as e:
             self._handle_error("Failed to open eBay window", e)
+            return  # Return early after notifying the user of the error
 
     def perform_csv_operation(self, file_path: str) -> None:
         """Performs a CSV operation (e.g., loading a CSV file)."""
@@ -61,6 +60,7 @@ class MainController:
             self.notification_service.notify("CSV file loaded successfully.")
         except Exception as e:
             self._handle_error("Failed to perform CSV operation", e)
+            return  # Return early after notifying the user of the error
 
     def _handle_error(self, message: str, error: Exception) -> None:
         """Handles errors by logging and notifying the user."""
