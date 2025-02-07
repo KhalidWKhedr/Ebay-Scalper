@@ -1,5 +1,6 @@
 from functools import partial
-from PySide6.QtWidgets import QPushButton, QListWidgetItem, QFileDialog
+
+from PySide6.QtWidgets import QFileDialog, QPushButton, QListWidgetItem
 
 
 class CsvPresenter:
@@ -8,9 +9,8 @@ class CsvPresenter:
         self.ui = main_ui
         self.csv_controller = csv_controller
         self.notification_service = notification_service
-
         self._connect_ui_actions()
-        self._connect_csv_controller_signals()
+        self._connect_csv_service_signals()
 
     @staticmethod
     def on_column_button_clicked(column_name):
@@ -21,9 +21,9 @@ class CsvPresenter:
         """Connects UI actions to their respective methods."""
         self.ui.actionImport_CSV.triggered.connect(self.open_file_dialog)
 
-    def _connect_csv_controller_signals(self):
-        """Connects CSV controller signals to their respective handlers."""
-        self.csv_controller.csv_loaded.connect(self.handle_csv_loaded)
+    def _connect_csv_service_signals(self):
+        """Connects CSV service signals to their respective handlers."""
+        self.csv_controller.csv_service.csv_loaded.connect(self.handle_csv_loaded)
 
     def open_file_dialog(self):
         """Opens a file dialog to select and load a CSV file."""
