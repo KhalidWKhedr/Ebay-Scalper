@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QDialog
-from gui.gui_form_ebay import Ui_form_EbayAPI
+from src.view.gui.gui_form_ebay import Ui_form_EbayAPI
 from src.controllers.controller_ebay_api import EbayApiController
 
 

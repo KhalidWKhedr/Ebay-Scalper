@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QMainWindow
-from gui.gui_form_main import Ui_form_MainWindow
+from src.view.gui.gui_form_main import Ui_form_MainWindow
 from src.controllers.controller_csv import CsvController
 
 from src.controllers.controller_main import MainController
 from src.services.service_notification import NotificationService
-from src.ui.presenter_csv import CsvPresenter
+from src.view.presenters.presenter_csv import CsvPresenter
 
 
 class MainPresenter(QMainWindow, Ui_form_MainWindow, MainController):

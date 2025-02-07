@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QDialog, QMessageBox
-from gui.gui_form_database import Ui_form_Database
+from PySide6.QtWidgets import QDialog
+from src.view.gui.gui_form_database import Ui_form_Database
 from src.controllers.controller_database import DatabaseController
 from src.models.model_database_connection_details import SchemaConnectionDetails
 
