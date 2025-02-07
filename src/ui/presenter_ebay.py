@@ -4,9 +4,14 @@ from src.controllers.controller_ebay_api import EbayApiController
 
 
 class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
-    def __init__(self, ebay_controller: EbayApiController):
+    def __init__(
+        self,
+        notification_service,
+        ebay_controller: EbayApiController
+    ):
         super().__init__()
         self.setupUi(self)
+        self.notification_service = notification_service
         self.ebay_controller = ebay_controller
         self.initialize_ui()
 
@@ -30,10 +35,9 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
         api_details = self.get_api_details()
         try:
             message = self.ebay_controller.connect_to_api(api_details)
-            self.ebay_controller.notification_service.show_message(self, message)
+            self.notification_service.show_message(self, message)
         except Exception as e:
-            self.ebay_controller.notification_service.show_message(self, f"Error: {str(e)}")
-            self.ebay_controller.logger.error(f"Failed to connect to API: {e}")
+            self.notification_service.show_message(self, f"Error: {str(e)}")
 
     def get_api_details(self) -> dict[str, str]:
         """Retrieve API details from UI inputs."""

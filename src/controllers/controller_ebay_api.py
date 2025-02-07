@@ -1,29 +1,25 @@
 from logger.service_logging import LoggingService
 from src.services.service_ebay import EbayService
-from src.services.service_notification import NotificationService
 from src.models.model_site_domain_ebay import SiteDomainModel
 
 
 class EbayApiController:
     def __init__(
         self,
-        ebay_service: EbayService,
-        notification_service: NotificationService,
         logger: LoggingService,
-        site_domain_model: SiteDomainModel,
+        ebay_service: EbayService,
+        site_domain_model: SiteDomainModel
     ):
         """
         Initialize the EbayApiController with necessary services.
 
         :param ebay_service: Service responsible for handling eBay API interactions.
-        :param notification_service: Service responsible for showing notifications.
         :param logger: Logger for recording events and errors.
         :param site_domain_model: Model for handling site and domain data related to eBay.
         """
         self.logger = logger
         self.ebay_service = ebay_service
         self.site_domain_model = site_domain_model
-        self.notification_service = notification_service
 
     def get_site_code(self, site_name: str) -> str:
         """

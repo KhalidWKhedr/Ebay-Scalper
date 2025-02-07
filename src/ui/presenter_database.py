@@ -1,14 +1,20 @@
 from PySide6.QtWidgets import QDialog, QMessageBox
 from gui.gui_form_database import Ui_form_Database
+from logger.service_logging import LoggingService
 from src.controllers.controller_database import DatabaseController
 from src.models.model_database_connection_details import SchemaConnectionDetails
 
 
 class DatabaseWindowPresenter(QDialog, Ui_form_Database):
-    def __init__(self, database_controller: DatabaseController,
-                 schema_connection_details: SchemaConnectionDetails):
+    def __init__(
+        self,
+        notification_service,
+        database_controller: DatabaseController,
+        schema_connection_details: SchemaConnectionDetails
+    ):
         super().__init__()
         self.setupUi(self)
+        self.notification_service = notification_service
         self.database_controller = database_controller
         self.schema_connection_details = schema_connection_details
         self.initialize_ui()

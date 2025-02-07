@@ -1,17 +1,15 @@
 from src.services.service_database import DatabaseService
 from logger.service_logging import LoggingService
 from src.models.model_database_connection_details import SchemaConnectionDetails
-from src.services.service_notification import NotificationService
 from utils.converter import Converter
 
 
 class DatabaseController:
     def __init__(
         self,
-        database_service: DatabaseService,
         logger: LoggingService,
-        converter: Converter,
-        notification_service: NotificationService,
+        database_service: DatabaseService,
+        converter: Converter
     ):
         """
         Initialize the DatabaseController with the provided services.
@@ -19,12 +17,10 @@ class DatabaseController:
         :param database_service: Service responsible for database interactions.
         :param logger: Logger for recording events and errors.
         :param converter: Service responsible for data conversion.
-        :param notification_service: Service responsible for showing notifications.
         """
         self.logger = logger
         self.converter = converter
         self.database_service = database_service
-        self.notification_service = notification_service
 
     def get_connection_settings(self):
         """

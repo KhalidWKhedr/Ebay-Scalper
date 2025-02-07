@@ -52,15 +52,13 @@ class MainController(QMainWindow, Ui_form_MainWindow):
 
         self.csv_controller = CsvController(self.logger,
                                             self.csv_service,
-                                            self.notification_service
                                             )
-        self.database_controller = DatabaseController(self.db_service,
-                                                      self.logger, self.converter,
-                                                      self.notification_service
+        self.database_controller = DatabaseController(self.logger,
+                                                      self.db_service,
+                                                      self.converter,
                                                       )
-        self.ebay_controller = EbayApiController(self.ebay_service,
-                                                 self.notification_service,
-                                                 self.logger,
+        self.ebay_controller = EbayApiController(self.logger,
+                                                 self.ebay_service,
                                                  self.site_domain_model
                                                  )
 
@@ -68,7 +66,8 @@ class MainController(QMainWindow, Ui_form_MainWindow):
         """Initialize and store presenters."""
         self.logger.log("Initializing presenters...", level="info")
 
-        self.csv_presenter = CsvPresenter(self, self.csv_controller, self.notification_service)
+        self.csv_presenter = CsvPresenter(self.notification_service,
+                                          self.csv_controller)
 
         self.presenter = MainPresenter(
             db_service=self.db_service,
