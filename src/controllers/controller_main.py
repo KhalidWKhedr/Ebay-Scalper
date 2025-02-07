@@ -18,10 +18,10 @@ from src.models.model_site_domain_ebay import SiteDomainModel
 class MainController(QMainWindow, Ui_form_MainWindow):
     def __init__(
         self,
-        db_service: DatabaseService,
-        logger: LoggingService,
         converter: Converter,
+        logger: LoggingService,
         notification_service: NotificationService,
+        db_service: DatabaseService,
         ebay_service: EbayService,
         csv_service: CsvService,
     ):
@@ -71,13 +71,9 @@ class MainController(QMainWindow, Ui_form_MainWindow):
                                           self.notification_service
                                           )
 
-        self.presenter = MainPresenter(db_service=self.db_service,
+        self.presenter = MainPresenter(
                                        logger=self.logger,
-                                       converter=self.converter,
                                        notification_service=self.notification_service,
-                                       ebay_service=self.ebay_service,
-                                       csv_service=self.csv_service,
-                                       csv_presenter=self.csv_presenter,
                                        csv_controller=self.csv_controller,
                                        database_controller=self.database_controller,
                                        ebay_controller=self.ebay_controller

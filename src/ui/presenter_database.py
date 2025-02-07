@@ -164,16 +164,8 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
 
     def connect_to_db(self):
         """Attempt to connect to the database and show appropriate messages."""
-        result = self.database_controller.connect_to_db(self.get_connection_details())
-
-        if result is True:
-            QMessageBox.information(
-                self,  # Use 'self' as the parent widget
-                "Database Connection",
-                "Database connection successful!"
-            )
-        else:
-            QMessageBox.critical(
-                self,  # Use 'self' as the parent widget
-                "Database Connection Error",
-            )
+        try:
+            message = self.database_controller.connect_to_db(self.get_connection_details())
+            self.notification_service.show_message(self, message)
+        except Exception as e:
+            self.notification_service.show_message(self, f"Error: {str(e)}")
