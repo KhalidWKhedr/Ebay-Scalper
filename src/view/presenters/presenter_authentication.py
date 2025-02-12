@@ -1,4 +1,5 @@
 from src.view.gui.gui_form_database import Ui_form_Database
+from utils.auth_utils import get_selected_auth_type
 
 
 class AuthenticationPresenter:
@@ -27,18 +28,4 @@ class AuthenticationPresenter:
             auth_map[auth_type].setChecked(True)
 
     def get_selected_auth_type(self) -> str | None:
-        """Get the selected authentication type from radio buttons."""
-        auth_map = {
-            self.ui.radio_X509: "MONGODB-X509",
-            self.ui.radio_SHA1: "SCRAM-SHA-1",
-            self.ui.radio_AWS: "MONGODB-AWS",
-            self.ui.radio_KERBEROS_2: "PLAIN",
-            self.ui.radio_SHA256: "SCRAM-SHA-256",
-            self.ui.radio_KERBEROS: "GSSAPI (Kerberos)",
-            self.ui.radio_LDAP: "LDAP"
-        }
-
-        for radio_button, auth_value in auth_map.items():
-            if radio_button.isChecked():
-                return auth_value
-        return None
+        return get_selected_auth_type(self.ui)
