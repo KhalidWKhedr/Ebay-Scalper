@@ -2,7 +2,7 @@ from typing import Optional
 from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.database.manager_mongo_connector import MongoConnectionManager
 from logger.service_logging import LoggingService
-from utils.manager_secure_config import SecureConfigManager
+from utils.utils_manager_secure_config import SecureConfigManager
 
 class DatabaseService:
     def __init__(

@@ -4,7 +4,7 @@ import pymongo.errors
 from sshtunnel import SSHTunnelForwarder
 
 from logger.service_logging import LoggingService
-from utils.manager_secure_config import SecureConfigManager
+from utils.utils_manager_secure_config import SecureConfigManager
 
 class MongoConnectionManager:
     def __init__(

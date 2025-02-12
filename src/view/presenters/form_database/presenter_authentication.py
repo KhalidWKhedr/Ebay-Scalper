@@ -1,5 +1,5 @@
 from src.view.gui.gui_form_database import Ui_form_Database
-from utils.auth_utils import get_selected_auth_type
+from utils.utils_auth import get_selected_auth_type
 
 
 class AuthenticationPresenter:

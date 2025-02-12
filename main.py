@@ -2,8 +2,8 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 # --- Utils ---
-from utils.converter import Converter
-from utils.manager_secure_config import SecureConfigManager
+from utils.utils_converter import Converter
+from utils.utils_manager_secure_config import SecureConfigManager
 
 # --- Services ---
 from logger.service_logging import LoggingService

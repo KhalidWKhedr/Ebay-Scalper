@@ -1,6 +1,6 @@
 from logger.service_logging import LoggingService
 from src.ebay.manager_ebay_connection import EbayConnectionManager
-from utils.manager_secure_config import SecureConfigManager
+from utils.utils_manager_secure_config import SecureConfigManager
 from typing import Dict, Optional
 
 
