@@ -4,7 +4,7 @@ from src.controllers.controller_csv import CsvController
 
 from src.controllers.controller_main import MainController
 from src.services.service_notification import NotificationService
-from src.view.presenters.presenter_csv import CsvPresenter
+from src.view.presenters.form_main.presenter_csv import CsvPresenter
 
 
 class MainPresenter(QMainWindow, Ui_form_MainWindow, MainController):

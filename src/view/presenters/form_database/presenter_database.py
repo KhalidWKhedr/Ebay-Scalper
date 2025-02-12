@@ -3,10 +3,10 @@ from PySide6.QtWidgets import QDialog
 from src.controllers.controller_database import DatabaseController
 from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.view.gui.gui_form_database import Ui_form_Database
-from src.view.presenters.presenter_authentication import AuthenticationPresenter
-from src.view.presenters.presenter_connection_settings import ConnectionSettingsPresenter
-from src.view.presenters.presenter_mongo_uri import MongoURIPresenter
-from src.view.presenters.presenter_ssh import SSHPresenter
+from src.view.presenters.form_database.presenter_authentication import AuthenticationPresenter
+from src.view.presenters.form_database.presenter_connection_settings import ConnectionSettingsPresenter
+from src.view.presenters.form_database.presenter_mongo_uri import MongoURIPresenter
+from src.view.presenters.form_database.presenter_ssh import SSHPresenter
 
 
 class DatabaseWindowPresenter(QDialog, Ui_form_Database):

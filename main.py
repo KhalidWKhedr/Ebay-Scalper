@@ -24,7 +24,7 @@ from src.models.model_site_domain_ebay import SiteDomainModel
 from src.config.site_domain_mapping_ebay import SITE_DOMAIN_MAPPING
 
 # --- UI ---
-from src.view.presenters.presenter_main import MainPresenter
+from src.view.presenters.form_main.presenter_main import MainPresenter
 
 
 def initialize_services():
