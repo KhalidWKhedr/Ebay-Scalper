@@ -16,13 +16,18 @@ class MongoURIPresenter:
         self.ui.text_MongoUri.setPlainText(uri)
 
     def build_mongo_uri(self) -> str:
-        """Build Mongo URI from the connection details stored in schema."""
         connection_details = self.get_connection_details()
-        uri = f"mongodb://{connection_details.MONGO_USER}:{connection_details.MONGO_PASSWORD}@" \
-              f"{connection_details.MONGO_HOST}:{str(connection_details.MONGO_PORT)}/" \
+
+        credentials = ""
+        if connection_details.MONGO_USER and connection_details.MONGO_PASSWORD:
+            credentials = f"{connection_details.MONGO_USER}:{connection_details.MONGO_PASSWORD}@"
+
+        uri = f"mongodb://{credentials}{connection_details.MONGO_HOST}:{connection_details.MONGO_PORT}/" \
               f"{connection_details.MONGO_DB_NAME}?authSource={connection_details.MONGO_AUTH_DB}"
+
         if connection_details.AUTH_TYPE:
             uri += f"&authMechanism={connection_details.AUTH_TYPE}"
+
         return uri
 
     def get_connection_details(self) -> SchemaConnectionDetails:
