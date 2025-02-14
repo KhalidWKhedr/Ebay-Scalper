@@ -13,7 +13,7 @@ class EbayConnectionManager:
         self.api_id = api_details['API_ID']
         self.api_domain = api_details['API_DOMAIN']
         self.api_site_id = api_details['API_SITE_ID']
-        self.logger = logger  # Use the passed logger instancce
+        self.logger = logger  # Use the passed logger instance
 
     def connect_to_ebay(self):
         """Attempt to connect to eBay API and handle any connection errors."""

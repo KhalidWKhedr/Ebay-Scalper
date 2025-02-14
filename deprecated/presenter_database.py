@@ -135,22 +135,22 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
             AUTH_TYPE=self.get_selected_auth_type(),
         )
 
-    def get_selected_auth_type(self) -> str | None:
-        """Get the selected authentication type from radio buttons."""
-        auth_map = {
-            self.radio_X509: "MONGODB-X509",
-            self.radio_SHA1: "SCRAM-SHA-1",
-            self.radio_AWS: "MONGODB-AWS",
-            self.radio_KERBEROS_2: "PLAIN",
-            self.radio_SHA256: "SCRAM-SHA-256",
-            self.radio_KERBEROS: "GSSAPI (Kerberos)",
-            self.radio_LDAP: "LDAP"
-        }
-
-        for radio_button, auth_value in auth_map.items():
-            if radio_button.isChecked():
-                return auth_value
-        return None
+    # def get_selected_auth_type(self) -> str | None:
+    #     """Get the selected authentication type from radio buttons."""
+    #     auth_map = {
+    #         self.radio_X509: "MONGODB-X509",
+    #         self.radio_SHA1: "SCRAM-SHA-1",
+    #         self.radio_AWS: "MONGODB-AWS",
+    #         self.radio_KERBEROS_2: "PLAIN",
+    #         self.radio_SHA256: "SCRAM-SHA-256",
+    #         self.radio_KERBEROS: "GSSAPI (Kerberos)",
+    #         self.radio_LDAP: "LDAP"
+    #     }
+    #
+    #     for radio_button, auth_value in auth_map.items():
+    #         if radio_button.isChecked():
+    #             return auth_value
+    #     return None
 
     def toggle_ssh_options(self, is_checked: bool) -> None:
         """Toggle visibility of SSH options based on checkbox."""

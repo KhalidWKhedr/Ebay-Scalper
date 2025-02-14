@@ -51,7 +51,8 @@ class SecureConfigManager:
         if key in config and config[key]:
             try:
                 return self.decrypt(config[key])
-            except Exception:
+            except Exception as e:
+                print(e)
                 return None
         return None
 
@@ -71,7 +72,8 @@ class SecureConfigManager:
         for k, v in config.items():
             try:
                 decrypted_config[k] = self.decrypt(v)
-            except Exception:
+            except Exception as e:
+                print(e)
                 decrypted_config[k] = None
         return decrypted_config
 

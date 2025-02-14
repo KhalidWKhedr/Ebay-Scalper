@@ -1,5 +1,4 @@
 from logger.service_logging import LoggingService
-from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.services.service_notification import NotificationService
 from src.view.presenters.form_database.presenter_database import DatabaseWindowPresenter
 from src.view.presenters.form_ebay.presenter_ebay import EbayWindowPresenter
