@@ -5,10 +5,8 @@ from utils.utils_auth import get_selected_auth_type
 class MongoURIPresenter:
     def __init__(
         self, ui: Ui_form_Database,
-        schema_connection_details: SchemaConnectionDetails
     ):
         self.ui = ui
-        self.schema_connection_details = schema_connection_details
 
     def update_mongo_uri(self) -> None:
         """Generate Mongo URI based on user input."""

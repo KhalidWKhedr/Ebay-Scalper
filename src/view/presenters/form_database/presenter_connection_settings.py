@@ -1,15 +1,11 @@
-from PySide6.QtWidgets import QDialog
 from src.view.gui.gui_form_database import Ui_form_Database
-from src.models.model_database_connection_details import SchemaConnectionDetails
 
 class ConnectionSettingsPresenter:
     def __init__(
         self,
         ui: Ui_form_Database,
-        schema_connection_details: SchemaConnectionDetails
     ):
         self.ui = ui
-        self.schema_connection_details = schema_connection_details
 
     def load_connection_settings(self, connection_settings: dict) -> None:
         """Load connection settings into the UI or set defaults."""

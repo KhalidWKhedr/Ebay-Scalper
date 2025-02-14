@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QDialog
 
 from src.controllers.controller_database import DatabaseController
-from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.view.gui.gui_form_database import Ui_form_Database
 from src.view.presenters.form_database.presenter_authentication import AuthenticationPresenter
 from src.view.presenters.form_database.presenter_connection_settings import ConnectionSettingsPresenter
@@ -14,28 +13,30 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self,
         notification_service,
         database_controller: DatabaseController,
-        schema_connection_details: SchemaConnectionDetails
     ):
         super().__init__()
         self.setupUi(self)
 
         self.notification_service = notification_service
         self.database_controller = database_controller
-        self.schema_connection_details = schema_connection_details
 
-        self.connection_settings_presenter = ConnectionSettingsPresenter(self, schema_connection_details)
+        # Fetch connection details dynamically instead of injecting them
+        self.schema_connection_details = self.database_controller.get_connection_settings()
+
+        self.connection_settings_presenter = ConnectionSettingsPresenter(self)
         self.authentication_presenter = AuthenticationPresenter(self)
-        self.mongo_uri_presenter = MongoURIPresenter(self, schema_connection_details)
+        self.mongo_uri_presenter = MongoURIPresenter(self)
         self.ssh_presenter = SSHPresenter(self)
 
         self.initialize_ui()
 
     def initialize_ui(self) -> None:
         """Initialize UI and load connection settings."""
-        self.connection_settings_presenter.load_connection_settings(self.database_controller.get_connection_settings())
-        self.authentication_presenter.set_authentication_radio(self.schema_connection_details.AUTH_TYPE)
+        self.connection_settings_presenter.load_connection_settings(self.schema_connection_details)
+        self.authentication_presenter.set_authentication_radio(self.schema_connection_details.get("AUTH_TYPE", ""))
         self.mongo_uri_presenter.update_mongo_uri()
         self.setup_connections()
+
 
     def setup_connections(self) -> None:
         """Setup signal-slot connections."""

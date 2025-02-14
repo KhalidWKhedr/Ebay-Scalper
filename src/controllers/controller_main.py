@@ -33,11 +33,8 @@ class MainController:
         """Opens the database window."""
         try:
             if not self.database_window or not self.database_window.isVisible():
-                # Create SchemaConnectionDetails dynamically when needed
-                connection_details = SchemaConnectionDetails(**self.database_controller.get_connection_settings())
                 self.database_window = DatabaseWindowPresenter(self.notification_service,
-                                                               self.database_controller,
-                                                               schema_connection_details=connection_details)
+                                                               self.database_controller)
             self.database_window.show()
         except Exception as e:
             self._handle_error("Failed to open database window", e)
