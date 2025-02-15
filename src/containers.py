@@ -50,6 +50,7 @@ class CoreContainer(containers.DeclarativeContainer):
         NotificationService,
         logger=service_logging)
 
+    # Ebay API
     ebay_manager = providers.Singleton(
         EbayConnectionManager,
         logger=service_logging)
