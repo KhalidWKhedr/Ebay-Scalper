@@ -1,6 +1,6 @@
 from ebaysdk.exception import ConnectionError
 from ebaysdk.finding import Connection
-from logger.service_logging import LoggingService
+from src.logger.service_logging import LoggingService
 
 
 class EbayConnectionManager:

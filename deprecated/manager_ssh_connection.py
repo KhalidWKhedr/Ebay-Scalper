@@ -3,7 +3,7 @@ from urllib.parse import quote
 import paramiko
 import pymongo
 from sshtunnel import SSHTunnelForwarder
-from logger import service_logging
+from src.logger import service_logging
 
 
 class SSHConnectionManager:

@@ -1,4 +1,4 @@
-from logger.service_logging import LoggingService
+from src.logger.service_logging import LoggingService
 from src.services.service_csv import CsvService
 
 class CsvController:

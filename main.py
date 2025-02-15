@@ -1,4 +1,4 @@
-from src.containers import ApplicationContainer
+from src.containers.container_application import ApplicationContainer
 
 # Initialize DI container
 container = ApplicationContainer()

@@ -3,8 +3,8 @@ from typing import Optional, Dict, Any
 import pymongo.errors
 from sshtunnel import SSHTunnelForwarder
 
-from logger.service_logging import LoggingService
-from utils.utils_manager_secure_config import SecureConfigManager
+from src.logger.service_logging import LoggingService
+from src.utils.utils_manager_secure_config import SecureConfigManager
 
 class MongoConnectionManager:
     def __init__(

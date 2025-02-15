@@ -1,4 +1,4 @@
-from logger.service_logging import LoggingService
+from src.logger.service_logging import LoggingService
 from src.services.service_ebay import EbayService
 from src.models.model_site_domain_ebay import SiteDomainModel
 

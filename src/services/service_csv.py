@@ -1,6 +1,6 @@
 from PySide6.QtCore import Signal, QObject
 import pandas as pd
-from logger.service_logging import LoggingService
+from src.logger.service_logging import LoggingService
 
 
 class CsvService(QObject):

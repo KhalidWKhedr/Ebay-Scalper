@@ -1,7 +1,7 @@
 from src.services.service_database import DatabaseService
-from logger.service_logging import LoggingService
+from src.logger.service_logging import LoggingService
 from src.models.model_database_connection_details import SchemaConnectionDetails
-from utils.utils_converter import Converter
+from src.utils.utils_converter import Converter
 import traceback
 
 
