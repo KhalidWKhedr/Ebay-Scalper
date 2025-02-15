@@ -7,7 +7,7 @@ container = ApplicationContainer()
 app = container.app()
 
 # Create the main window presenter
-main_window = container.core.main_presenter()
+main_window = container.core.ui.main_presenter()
 
 main_window.show()
 app.exec()
