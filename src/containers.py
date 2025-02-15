@@ -1,6 +1,7 @@
 from dependency_injector import containers, providers
 from PySide6.QtWidgets import QApplication
 
+from src.ebay.manager_ebay_connection import EbayConnectionManager
 # --- Utils ---
 from utils.utils_converter import Converter
 from utils.utils_manager_secure_config import SecureConfigManager
@@ -49,10 +50,15 @@ class CoreContainer(containers.DeclarativeContainer):
         NotificationService,
         logger=service_logging)
 
+    ebay_manager = providers.Singleton(
+        EbayConnectionManager,
+        logger=service_logging)
+
     service_ebay = providers.Singleton(
         EbayService,
         logger=service_logging,
-        secure_config=secure_config_manager)
+        secure_config=secure_config_manager,
+        ebay_connection_manager=ebay_manager)
 
     # MongoDB
     mongo_manager = providers.Singleton(

@@ -1,4 +1,3 @@
-from typing import Optional
 from src.models.model_database_connection_details import SchemaConnectionDetails
 from src.database.manager_mongo_connector import MongoConnectionManager
 from logger.service_logging import LoggingService
@@ -9,7 +8,7 @@ class DatabaseService:
         self,
         logger: LoggingService,
         secure_config: SecureConfigManager,
-        mongo_manager: Optional[MongoConnectionManager] = None  # Default to None, but can be injected
+        mongo_manager: MongoConnectionManager
     ):
         self.logger = logger
         self.secure_config = secure_config
