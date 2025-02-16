@@ -3,7 +3,7 @@ from ebaysdk.finding import Connection
 from src.logger.service_logging import LoggingService
 
 
-class EbayConnectionManager:
+class ConnectorEbay:
     def __init__(
         self,
         logger: LoggingService,

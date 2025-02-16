@@ -5,7 +5,7 @@ from .container_controllers import ControllersContainer
 from .container_ui import UIContainer
 
 class CoreContainer(containers.DeclarativeContainer):
-    """Core container for managing non-UI dependencies."""
+    """Core container for managing application dependencies."""
     utils = providers.Container(UtilsContainer)
     services = providers.Container(ServicesContainer)
     controllers = providers.Container(ControllersContainer)

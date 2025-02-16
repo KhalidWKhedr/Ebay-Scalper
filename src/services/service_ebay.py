@@ -1,5 +1,5 @@
 from src.logger.service_logging import LoggingService
-from src.ebay.manager_ebay_connection import EbayConnectionManager
+from src.infrastructure.external.connector_ebay import ConnectorEbay
 from src.utils.utils_manager_secure_config import SecureConfigManager
 from typing import Dict
 
@@ -9,11 +9,11 @@ class EbayService:
         self,
         logger: LoggingService,
         secure_config: SecureConfigManager,
-        ebay_connection_manager: EbayConnectionManager
+        connector_ebay: ConnectorEbay
     ):
         self.logger = logger
         self.secure_config = secure_config
-        self.ebay_connection_manager = ebay_connection_manager
+        self.connector_ebay = connector_ebay
 
     @staticmethod
     def check_app_id(connection_details: Dict[str, str]):
@@ -37,14 +37,14 @@ class EbayService:
             self.check_app_id(connection_details)
 
             # Initialize EbayConnectionManager if it is not already initialized
-            if not self.ebay_connection_manager:
-                self.ebay_connection_manager = EbayConnectionManager(logger=self.logger)
+            if not self.connector_ebay:
+                self.connector_ebay = ConnectorEbay(logger=self.logger)
 
             # Save connection settings securely
             self.save_ebay_connection_settings(connection_details)
 
             # Attempt to connect to eBay API
-            api = self.ebay_connection_manager.connect_to_ebay(connection_details)
+            api = self.connector_ebay.connect_to_ebay(connection_details)
 
             if not api:
                 return self._handle_error(connection_details, "Could not connect to eBay API")

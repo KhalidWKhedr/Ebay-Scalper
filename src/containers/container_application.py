@@ -4,6 +4,6 @@ import sys
 from .container_core import CoreContainer
 
 class ApplicationContainer(containers.DeclarativeContainer):
-    """Application container for managing the Qt application."""
+    """Root container for the application."""
     core = providers.Container(CoreContainer)
     app = providers.Singleton(QApplication, sys.argv) 

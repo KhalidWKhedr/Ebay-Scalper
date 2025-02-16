@@ -6,7 +6,7 @@ from sshtunnel import SSHTunnelForwarder
 from src.logger.service_logging import LoggingService
 from src.utils.utils_manager_secure_config import SecureConfigManager
 
-class MongoConnectionManager:
+class ConnectorMongo:
     def __init__(
         self,
         logger: LoggingService,

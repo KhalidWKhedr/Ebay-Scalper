@@ -5,8 +5,12 @@ from .container_services import ServicesContainer
 
 class UIContainer(containers.DeclarativeContainer):
     """Container for UI-related classes."""
+    controllers = providers.Container(ControllersContainer)
+    services = providers.Container(ServicesContainer)
+    
     main_presenter = providers.Singleton(
         MainPresenter,
-        main_controller=ControllersContainer.main_controller,
-        csv_controller=ControllersContainer.csv_controller,
-        notification_service=ServicesContainer.service_notification) 
+        main_controller=controllers.main_controller,
+        csv_controller=controllers.csv_controller,
+        notification_service=services.service_notification
+    ) 

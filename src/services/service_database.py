@@ -1,5 +1,5 @@
 from src.models.model_database_connection_details import SchemaConnectionDetails
-from src.database.manager_mongo_connector import MongoConnectionManager
+from src.infrastructure.database.connector_mongo import ConnectorMongo
 from src.logger.service_logging import LoggingService
 from src.utils.utils_manager_secure_config import SecureConfigManager
 
@@ -8,11 +8,11 @@ class DatabaseService:
         self,
         logger: LoggingService,
         secure_config: SecureConfigManager,
-        mongo_manager: MongoConnectionManager
+        connector_mongo: ConnectorMongo
     ):
         self.logger = logger
         self.secure_config = secure_config
-        self.mongo_manager = mongo_manager
+        self.connector_mongo = connector_mongo
         self.db_connection = None
 
     def save_connection_settings(self, connection_details: SchemaConnectionDetails):
@@ -48,13 +48,13 @@ class DatabaseService:
             )
 
             # Ensure mongo_manager is provided
-            if not self.mongo_manager:
+            if not self.connector_mongo:
                 error_message = "MongoConnectionManager is not provided or initialized."
                 self.logger.log(error_message, level="error")
                 raise ValueError(error_message)
 
             # Establish the connection
-            self.db_connection = self.mongo_manager.connect()
+            self.db_connection = self.connector_mongo.connect()
 
             # Log successful connection
             self.logger.log(f"Connection successful to {connection_details['MONGO_HOST']}", level="info")
