@@ -43,6 +43,14 @@ class EbayApiController:
         self.logger.get_logger().debug(f"Retrieved domain for {site_name}: {domain}")
         return domain
 
+    def get_connection_settings(self):
+        """
+        Retrieve the current Ebay Api settings from the database service.
+
+        :return: The connection settings.
+        """
+        return self.ebay_service.get_ebay_api()
+
     def save_connection_settings(self, api_details: dict) -> bool:
         """
         Save the eBay API connection settings.

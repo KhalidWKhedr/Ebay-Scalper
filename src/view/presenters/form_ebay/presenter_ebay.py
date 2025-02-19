@@ -23,6 +23,7 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
         self.comboBox_SITE_ID.currentTextChanged.connect(self.update_domain_field)
         self.button_CONNECT.clicked.connect(self.connect_to_api)
         self.text_Domain.setReadOnly(True)
+        self.text_AppID.setPlainText(self.ebay_controller.get_connection_settings().get("API_ID"))
 
     def update_domain_field(self, selected_country: str) -> None:
         """Update the domain field based on the selected country."""

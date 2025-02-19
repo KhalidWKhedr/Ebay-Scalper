@@ -27,6 +27,10 @@ class EbayService:
             if value is not None:
                 self.secure_config.write(key, str(value))
 
+    def get_ebay_api(self):
+        """Retrieve and decrypt Ebay Api Key."""
+        return self.secure_config.get_all()
+
     def connect(self, connection_details: Dict[str, str]) -> str:
         """Connect to the eBay API using the provided connection details."""
         try:
