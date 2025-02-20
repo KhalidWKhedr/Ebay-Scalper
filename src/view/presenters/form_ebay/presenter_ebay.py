@@ -18,22 +18,42 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
         """Initialize UI elements like combo boxes and set up signal connections."""
         self.text_Domain.setReadOnly(True)
 
+        # Get site names and populate the combo box
         site_names = self.ebay_controller.site_domain_model.get_site_names()  # Use the model
         self.comboBox_SITE_ID.addItems(site_names)
 
-        self.text_Domain.setPlainText(self.ebay_controller.get_connection_settings().get("API_DOMAIN", ""))
-        self.text_AppID.setPlainText(self.ebay_controller.get_connection_settings().get("API_ID", ""))
-        self.comboBox_SITE_ID.setCurrentText(self.ebay_controller.get_connection_settings().get("API_SITE_ID", ""))
+        # Set initial text fields with saved connection settings
+        connection_settings = self.ebay_controller.get_connection_settings()
+        self.text_Domain.setPlainText(connection_settings.get("API_DOMAIN", ""))
+        self.text_AppID.setPlainText(connection_settings.get("API_ID", ""))
 
+        # Get the saved API_SITE_ID
+        api_site_id = connection_settings.get("API_SITE_ID", "")
+
+        # Get the country name from the saved API_SITE_ID
+        country = self.ebay_controller.site_domain_model.get_country_from_site_id(api_site_id)
+
+        # Find the country name in the combo box and set the current index if found
+        if country:
+            index = self.comboBox_SITE_ID.findText(country)
+            if index >= 0:
+                self.comboBox_SITE_ID.setCurrentIndex(index)
+            else:
+                # Optional: Handle case where the country wasn't found in the combo box
+                print(f"Country {country} not found in combo box.")
+
+        # Connect signals to slots
         self.comboBox_SITE_ID.currentTextChanged.connect(self.update_domain_field)
         self.button_CONNECT.clicked.connect(self.connect_to_api)
-
 
     def update_domain_field(self, selected_country: str) -> None:
         """Update the domain field based on the selected country."""
         domain = self.ebay_controller.site_domain_model.get_domain_for_site(selected_country)  # Use the model
         if domain:
             self.text_Domain.setPlainText(domain)
+        else:
+            # Optional: Handle case where no domain is found
+            print(f"No domain found for {selected_country}.")
 
     def connect_to_api(self) -> None:
         """Handle API connection attempt."""

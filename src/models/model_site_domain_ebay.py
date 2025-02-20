@@ -46,6 +46,21 @@ class SiteDomainModel:
                 return site_id
         return None
 
+    def get_country_from_site_id(self, site_id: str) -> Optional[str]:
+        """
+        Retrieve the country name (site) for a given site ID.
+
+        Args:
+            site_id (str): The site ID (e.g., 'EBAY-US').
+
+        Returns:
+            Optional[str]: The country name associated with the site ID, or None if not found.
+        """
+        site_info = self.site_domain_mapping.get(site_id)
+        if site_info:
+            return site_info["site"]
+        return None
+
     def get_default_domain(self) -> Optional[str]:
         """
         Retrieve the default domain (e.g., the domain of the first site in the mapping).
