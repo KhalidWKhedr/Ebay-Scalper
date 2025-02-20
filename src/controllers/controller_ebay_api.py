@@ -45,7 +45,7 @@ class EbayApiController:
 
     def get_connection_settings(self):
         """
-        Retrieve the current Ebay Api settings from the database service.
+        Retrieve the current Ebay Api settings from the ebay service.
 
         :return: The connection settings.
         """
