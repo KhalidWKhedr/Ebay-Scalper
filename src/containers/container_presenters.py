@@ -27,5 +27,5 @@ class PresentersContainer(containers.DeclarativeContainer):
         main_controller=controllers.main_controller,
         csv_controller=controllers.csv_controller,
         notification_service=services.service_notification,
-        csv_presenter=csv_presenter  # Inject the CsvPresenter
+        csv_presenter=csv_presenter
     )
