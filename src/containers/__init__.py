@@ -3,7 +3,7 @@ from .container_utils import UtilsContainer
 from .container_infrastructure import InfrastructureContainer
 from .container_services import ServicesContainer
 from .container_controllers import ControllersContainer
-from .container_ui import UIContainer
+from .container_presenters import PresentersContainer
 from .container_core import CoreContainer
 from .container_application import ApplicationContainer
 
@@ -13,7 +13,7 @@ __all__ = [
     'InfrastructureContainer',
     'ServicesContainer',
     'ControllersContainer',
-    'UIContainer',
+    'PresentersContainer',
     'CoreContainer',
     'ApplicationContainer',
 ] 

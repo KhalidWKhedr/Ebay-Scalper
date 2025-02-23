@@ -6,8 +6,8 @@ from .container_controllers import ControllersContainer
 from .container_services import ServicesContainer
 
 
-class UIContainer(containers.DeclarativeContainer):
-    """Container for UI-related classes."""
+class PresentersContainer(containers.DeclarativeContainer):
+    """Container for managing presenter-related dependencies."""
     controllers = providers.Container(ControllersContainer)
     services = providers.Container(ServicesContainer)
 
