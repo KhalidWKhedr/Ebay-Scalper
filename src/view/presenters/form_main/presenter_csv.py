@@ -5,19 +5,16 @@ from PySide6.QtWidgets import QFileDialog, QPushButton, QListWidgetItem
 class CsvPresenter:
     def __init__(
         self,
+        main_ui,  # Pass the main UI directly
         csv_controller,
         notification_service
     ):
         """ Initializes the CsvPresenter. """
-        self.ui = None  # Initialize UI as None
+        self.ui = main_ui  # Set the UI directly
         self.csv_controller = csv_controller
         self.notification_service = notification_service
-        self._connect_csv_service_signals()
-
-    def set_ui(self, ui):
-        """Sets the UI for the presenter."""
-        self.ui = ui
         self._connect_ui_actions()
+        self._connect_csv_service_signals()
 
     @staticmethod
     def on_column_button_clicked(column_name):

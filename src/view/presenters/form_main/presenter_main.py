@@ -24,9 +24,6 @@ class MainPresenter(QMainWindow):
         self.csv_controller = csv_controller
         self.csv_presenter = csv_presenter
 
-        # Pass the initialized UI to CsvPresenter
-        self.csv_presenter.set_ui(self.main_ui)
-
         self._connect_ui_actions()
 
     def _connect_ui_actions(self):

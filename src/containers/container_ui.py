@@ -17,6 +17,7 @@ class UIContainer(containers.DeclarativeContainer):
     # Presenters
     csv_presenter = providers.Singleton(
         CsvPresenter,
+        main_ui=main_ui,  # Pass the main UI directly
         csv_controller=controllers.csv_controller,
         notification_service=services.service_notification
     )
