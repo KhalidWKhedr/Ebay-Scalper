@@ -1,7 +1,7 @@
 from src.logger.service_logging import LoggingService
 from src.infrastructure.external.connector_ebay import ConnectorEbay
 from src.utils.utils_manager_secure_config import SecureConfigManager
-from typing import Dict
+from typing import Dict, Optional
 
 
 class EbayService:
@@ -9,11 +9,11 @@ class EbayService:
         self,
         logger: LoggingService,
         secure_config: SecureConfigManager,
-        connector_ebay: ConnectorEbay
+        connector_ebay: Optional[ConnectorEbay] = None
     ):
         self.logger = logger
         self.secure_config = secure_config
-        self.connector_ebay = connector_ebay
+        self.connector_ebay = connector_ebay or ConnectorEbay(logger=self.logger)
 
     @staticmethod
     def check_app_id(connection_details: Dict[str, str]):
@@ -27,42 +27,61 @@ class EbayService:
             if value is not None:
                 self.secure_config.write(key, str(value))
 
-    def get_ebay_api(self):
-        """Retrieve and decrypt Ebay Api Key."""
+    def get_saved_ebay_connection_settings(self):
+        """Retrieve and decrypt eBay API settings."""
         return self.secure_config.get_all()
 
-    def connect(self, connection_details: Dict[str, str]) -> str:
-        """Connect to the eBay API using the provided connection details."""
+    def initialize_api(self, connection_details: Dict[str, str]):
+        """Initialize eBay API client with given connection details."""
+        self.logger.get_logger().info(f"Initializing eBay API with domain: {connection_details.get('API_DOMAIN')}")
+        self.check_app_id(connection_details)
+        return self.connector_ebay.connect_to_ebay(connection_details)
+
+    def test_connection(self, connection_details: Dict[str, str]) -> str:
+        """Test API connection by making a minimal query."""
         try:
-            # Log attempt to connect
-            self.logger.get_logger().info(f"Attempting to connect to eBay API with details: {connection_details}")
-
-            # Check for the presence of API_ID
-            self.check_app_id(connection_details)
-
-            # Initialize EbayConnectionManager if it is not already initialized
-            if not self.connector_ebay:
-                self.connector_ebay = ConnectorEbay(logger=self.logger)
-
-            # Save connection settings securely
-            self.save_ebay_connection_settings(connection_details)
-
-            # Attempt to connect to eBay API
-            api = self.connector_ebay.connect_to_ebay(connection_details)
+            api = self.initialize_api(connection_details)
 
             if not api:
-                return self._handle_error(connection_details, "Could not connect to eBay API")
+                return self._handle_error(connection_details, "Test connection failed: Could not connect to eBay API.")
 
-            # Log success
-            success_message = f"Successfully connected to eBay API at {connection_details.get('API_DOMAIN')}"
-            self.logger.get_logger().info(success_message)
-            return success_message
+            # Perform a simple fetch request to validate connection
+            test_response = api.execute("findItemsAdvanced", {"keywords": "test"}).dict()
+
+            if test_response.get("ack") == "Success":
+                return f"Test connection successful for {connection_details.get('API_DOMAIN')}."
+
+            return self._handle_error(connection_details, f"Test API request failed: {test_response}")
 
         except ValueError as ve:
             return self._handle_error(connection_details, f"ValueError: {str(ve)}")
 
         except Exception as e:
-            return self._handle_error(connection_details, f"Error connecting to eBay API: {str(e)}")
+            return self._handle_error(connection_details, f"Error during test connection: {str(e)}")
+
+    def scrape_and_store(self, connection_details: Dict[str, str], query="dog"):
+        """Fetch eBay data using a validated connection."""
+        try:
+            api = self.initialize_api(connection_details)
+
+            if not api:
+                return self._handle_error(connection_details, "Failed to initialize API connection.")
+
+            response = api.execute("findItemsAdvanced", {"keywords": query}).dict()
+
+            if response.get("ack") == "Success":
+                items = response.get("searchResult", {}).get("item", [])
+
+                if items:
+                    self.logger.get_logger().info(f"Fetched {len(items)} items for query '{query}'.")
+                    return items  # Consider processing these further
+
+                return self._handle_error(connection_details, f"No items found for query '{query}'.")
+
+            return self._handle_error(connection_details, f"API call failed for '{query}'. Response: {response}")
+
+        except Exception as e:
+            return self._handle_error(connection_details, f"Error scraping for '{query}': {e}")
 
     def _handle_error(self, connection_details: Dict[str, str], error_message: str) -> str:
         """Helper method to handle errors and log them."""

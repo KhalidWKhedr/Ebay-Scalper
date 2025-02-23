@@ -114,27 +114,8 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QPushButton" name="button_CONNECT">
-      <property name="minimumSize">
-       <size>
-        <width>142</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-    </item>
     <item row="4" column="0">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="button_TestApi">
       <property name="minimumSize">
        <size>
         <width>122</width>
@@ -219,6 +200,25 @@
         <width>16777215</width>
         <height>33</height>
        </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QPushButton" name="button_SaveApiSettings">
+      <property name="minimumSize">
+       <size>
+        <width>142</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Save Settings</string>
       </property>
      </widget>
     </item>

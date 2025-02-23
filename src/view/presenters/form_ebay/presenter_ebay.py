@@ -23,7 +23,7 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
         self.comboBox_SITE_ID.addItems(site_names)
 
         # Set initial text fields with saved connection settings
-        connection_settings = self.ebay_controller.get_connection_settings()
+        connection_settings = self.ebay_controller.get_saved_connection_settings()
         self.text_Domain.setPlainText(connection_settings.get("API_DOMAIN", ""))
         self.text_AppID.setPlainText(connection_settings.get("API_ID", ""))
 
@@ -44,7 +44,8 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
 
         # Connect signals to slots
         self.comboBox_SITE_ID.currentTextChanged.connect(self.update_domain_field)
-        self.button_CONNECT.clicked.connect(self.connect_to_api)
+        self.button_TestApi.clicked.connect(self.test_api_connection)
+        self.button_SaveApiSettings.clicked.connect(self.save_api_details)
 
     def update_domain_field(self, selected_country: str) -> None:
         """Update the domain field based on the selected country."""
@@ -55,11 +56,21 @@ class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
             # Optional: Handle case where no domain is found
             print(f"No domain found for {selected_country}.")
 
-    def connect_to_api(self) -> None:
+    def test_api_connection(self) -> None:
         """Handle API connection attempt."""
         api_details = self.get_api_details()
         try:
-            message = self.ebay_controller.connect_to_api(api_details)
+            message = self.ebay_controller.test_connection(api_details)
+            self.notification_service.show_message(self, message)
+        except Exception as e:
+            self.notification_service.show_message(self, f"Error: {str(e)}")
+
+    def save_api_details(self) -> None:
+        """Save API details."""
+        api_details = self.get_api_details()
+        print(api_details)
+        try:
+            message = self.ebay_controller.save_connection_settings(api_details)
             self.notification_service.show_message(self, message)
         except Exception as e:
             self.notification_service.show_message(self, f"Error: {str(e)}")
