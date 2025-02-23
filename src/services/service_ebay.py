@@ -49,6 +49,8 @@ class EbayService:
             test_response = api.execute("findItemsAdvanced", {"keywords": "test"}).dict()
 
             if test_response.get("ack") == "Success":
+                items = test_response.get("searchResult", {}).get("item", [])
+                print(items)
                 return f"Test connection successful for {connection_details.get('API_DOMAIN')}."
 
             return self._handle_error(connection_details, f"Test API request failed: {test_response}")
