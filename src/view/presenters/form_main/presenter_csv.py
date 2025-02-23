@@ -1,21 +1,23 @@
 from functools import partial
-
 from PySide6.QtWidgets import QFileDialog, QPushButton, QListWidgetItem
 
 
 class CsvPresenter:
     def __init__(
         self,
-        main_ui,
         csv_controller,
         notification_service
     ):
         """ Initializes the CsvPresenter. """
-        self.ui = main_ui
+        self.ui = None  # Initialize UI as None
         self.csv_controller = csv_controller
         self.notification_service = notification_service
-        self._connect_ui_actions()
         self._connect_csv_service_signals()
+
+    def set_ui(self, ui):
+        """Sets the UI for the presenter."""
+        self.ui = ui
+        self._connect_ui_actions()
 
     @staticmethod
     def on_column_button_clicked(column_name):
@@ -24,7 +26,10 @@ class CsvPresenter:
 
     def _connect_ui_actions(self):
         """Connects UI actions to their respective methods."""
-        self.ui.actionImport_CSV.triggered.connect(self.open_file_dialog)
+        if hasattr(self.ui, 'actionImport_CSV'):
+            self.ui.actionImport_CSV.triggered.connect(self.open_file_dialog)
+        else:
+            print("Warning: 'actionImport_CSV' is missing in the UI.")
 
     def _connect_csv_service_signals(self):
         """Connects CSV service signals to their respective handlers."""
