@@ -10,7 +10,12 @@ from src.view.presenters.form_database.presenter_ssh import SSHPresenter
 class DatabaseWindowPresenter(QDialog, Ui_form_Database):
     """Handles the database settings window and its interactions."""
 
-    def __init__(self, notification_service, database_controller: DatabaseController):
+    def __init__(
+        self,
+        notification_service,
+        database_controller:
+        DatabaseController
+    ):
         super().__init__()
         self.setupUi(self)
 
