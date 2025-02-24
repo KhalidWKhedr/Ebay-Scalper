@@ -2,7 +2,7 @@ from dependency_injector import containers, providers
 from .container_utils import UtilsContainer
 from .container_services import ServicesContainer
 from .container_controllers import ControllersContainer
-from src.containers.presenters.container_presenters import PresentersContainer
+from src.containers.presenters import PresentersContainer
 
 
 class CoreContainer(containers.DeclarativeContainer):
