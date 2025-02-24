@@ -40,26 +40,13 @@ class DatabaseController:
         """
         return self.database_service.save_connection_settings(connection_details)
 
-    def connect_to_db(self, connection_details: SchemaConnectionDetails) -> bool:
-        """
-        Attempt to connect to the database using the provided connection details.
+    def connect_to_db(self, connection_details: SchemaConnectionDetails) -> str:
+        """Attempts to connect and logs the result."""
+        success = self.database_service.connect(connection_details)
 
-        :param connection_details: The connection details for the database.
-        :return: True if the connection is successful, False otherwise.
-        """
-        try:
-            # Attempt to connect
-            if self.database_service.connect(connection_details):
-                success_message = "Database connection successful."
-                self.logger.get_logger().info(success_message)  # Using info for success
-                return True
-            else:
-                error_message = "Database connection failed."
-                self.logger.error(error_message)  # Using error for failure
-                return False
-        except Exception as e:
-            # Log detailed error information
-            error_message = f"Failed to connect to the database: {str(e)}"
-            self.logger.error(error_message)
-            self.logger.error("Exception stack trace:\n" + traceback.format_exc())  # Log the stack trace for debugging
-            return False
+        if success:
+            self.logger.get_logger().info("Database connection successful.")
+        else:
+            self.logger.error("Database connection failed.")
+
+        return success
