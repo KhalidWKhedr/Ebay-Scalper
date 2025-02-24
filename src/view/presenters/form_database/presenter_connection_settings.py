@@ -14,6 +14,7 @@ class ConnectionSettingsPresenter:
         else:
             self.set_default_ui()
 
+
     def set_ui_from_connection_settings(self, connection_settings: dict) -> None:
         """Populate UI from connection settings."""
         self.ui.text_Host.setPlainText(connection_settings.get('MONGO_HOST', ''))

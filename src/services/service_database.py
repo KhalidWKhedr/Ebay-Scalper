@@ -30,7 +30,6 @@ class DatabaseService:
         """Attempts to connect to MongoDB based on the loaded details from secure config."""
         try:
             # Save connection details securely
-            self.save_connection_settings(connection_details)
             connection_details = self.secure_config.get_all()
 
             # Ensure required keys are present in connection details

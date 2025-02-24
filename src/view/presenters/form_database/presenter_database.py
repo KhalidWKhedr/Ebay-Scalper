@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import QDialog
-
 from src.controllers.controller_database import DatabaseController
 from src.view.gui.gui_form_database import Ui_form_Database
 from src.view.presenters.form_database.presenter_authentication import AuthenticationPresenter
@@ -9,45 +8,54 @@ from src.view.presenters.form_database.presenter_ssh import SSHPresenter
 
 
 class DatabaseWindowPresenter(QDialog, Ui_form_Database):
-    def __init__(
-        self,
-        notification_service,
-        database_controller: DatabaseController,
-    ):
+    """Handles the database settings window and its interactions."""
+
+    def __init__(self, notification_service, database_controller: DatabaseController):
         super().__init__()
         self.setupUi(self)
 
         self.notification_service = notification_service
         self.database_controller = database_controller
-
-        # Fetch connection details dynamically instead of injecting them
         self.schema_connection_details = self.database_controller.get_connection_settings()
 
+        # Initialize Presenters
+        self._init_presenters()
+
+        # Setup UI and event connections
+        self._setup_ui()
+
+    def _init_presenters(self) -> None:
+        """Initialize related presenters."""
         self.connection_settings_presenter = ConnectionSettingsPresenter(self)
         self.authentication_presenter = AuthenticationPresenter(self)
         self.mongo_uri_presenter = MongoURIPresenter(self)
         self.ssh_presenter = SSHPresenter(self)
 
-        self.initialize_ui()
+    def _setup_ui(self) -> None:
+        """Initialize UI components and set up connections."""
+        self._load_connection_settings()
+        self._setup_signal_connections()
 
-    def initialize_ui(self) -> None:
-        """Initialize UI and load connection settings."""
+    def _load_connection_settings(self) -> None:
+        """Load stored connection settings into the UI."""
         self.connection_settings_presenter.load_connection_settings(self.schema_connection_details)
         self.authentication_presenter.set_authentication_radio(self.schema_connection_details.get("AUTH_TYPE", ""))
         self.mongo_uri_presenter.update_mongo_uri()
-        self.setup_connections()
 
-
-    def setup_connections(self) -> None:
-        """Setup signal-slot connections."""
+    def _setup_signal_connections(self) -> None:
+        """Set up UI signal-slot connections."""
         self.checkbox_SSH.toggled.connect(self.ssh_presenter.toggle_ssh_options)
         self.button_Connect.clicked.connect(self.connect_to_db)
-        self.setup_text_changed_connections()
-        self.setup_radio_button_connections()
+        self.button_SaveDetails.clicked.connect(self.save_connection_settings)
+
+        self._connect_text_fields()
+        self._connect_radio_buttons()
+
+        # Ensure SSH options toggle correctly on startup
         self.ssh_presenter.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
-    def setup_text_changed_connections(self) -> None:
-        """Setup text change connections to update Mongo URI."""
+    def _connect_text_fields(self) -> None:
+        """Connect text fields to update Mongo URI dynamically."""
         text_fields = [
             self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username,
             self.text_SSH_Password, self.text_Host, self.text_Port,
@@ -57,8 +65,8 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for field in text_fields:
             field.textChanged.connect(self.mongo_uri_presenter.update_mongo_uri)
 
-    def setup_radio_button_connections(self) -> None:
-        """Connect radio buttons to update auth type dynamically."""
+    def _connect_radio_buttons(self) -> None:
+        """Connect radio buttons to dynamically update authentication type."""
         radio_buttons = [
             self.radio_X509, self.radio_SHA1, self.radio_AWS,
             self.radio_KERBEROS_2, self.radio_SHA256, self.radio_KERBEROS,
@@ -67,10 +75,22 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         for button in radio_buttons:
             button.toggled.connect(self.mongo_uri_presenter.update_mongo_uri)
 
-    def connect_to_db(self):
-        """Attempt to connect to the database and show appropriate messages."""
+    # ========== Business Logic ==========
+
+    def connect_to_db(self) -> None:
+        """Attempt to connect to the database and display result."""
         try:
-            message = self.database_controller.connect_to_db(self.mongo_uri_presenter.get_connection_details())
+            connection_details = self.mongo_uri_presenter.get_connection_details()
+            message = self.database_controller.connect_to_db(connection_details)
+            self.notification_service.show_message(self, message)
+        except Exception as e:
+            self.notification_service.show_message(self, f"Error: {str(e)}")
+
+    def save_connection_settings(self) -> None:
+        """Save the current database connection settings."""
+        try:
+            connection_details = self.mongo_uri_presenter.get_connection_details()
+            message = self.database_controller.save_connection_settings(connection_details)
             self.notification_service.show_message(self, message)
         except Exception as e:
             self.notification_service.show_message(self, f"Error: {str(e)}")
