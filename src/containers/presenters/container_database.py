@@ -7,7 +7,6 @@ from src.view.presenters.form_database import (
     SSHPresenter
 )
 
-
 class DatabasePresentersContainer(containers.DeclarativeContainer):
     """Container for database-related presenters."""
 
@@ -16,37 +15,37 @@ class DatabasePresentersContainer(containers.DeclarativeContainer):
     services = providers.DependenciesContainer()
 
     # Factories for lazy instantiation
-    auth_presenter_factory = providers.Factory(
+    auth_presenter = providers.Factory(
         AuthenticationPresenter,
         database_controller=controllers.database_controller,
-        notification_service=services.notification_service
+        notification_service=services.service_notification
     )
 
-    connection_settings_presenter_factory = providers.Factory(
+    connection_settings_presenter = providers.Factory(
         ConnectionSettingsPresenter,
         database_controller=controllers.database_controller,
-        notification_service=services.notification_service
+        notification_service=services.service_notification
     )
 
-    mongo_uri_presenter_factory = providers.Factory(
+    mongo_uri_presenter = providers.Factory(
         MongoURIPresenter,
         database_controller=controllers.database_controller,
-        notification_service=services.notification_service
+        notification_service=services.service_notification
     )
 
-    ssh_presenter_factory = providers.Factory(
+    ssh_presenter = providers.Factory(
         SSHPresenter,
         database_controller=controllers.database_controller,
-        notification_service=services.notification_service
+        notification_service=services.service_notification
     )
 
     # Main database presenter factory
-    database_presenter = providers.Singleton(
+    database_presenter = providers.Factory(
         DatabaseWindowPresenter,
         database_controller=controllers.database_controller,
-        notification_service=services.notification_service,
-        auth_presenter=auth_presenter_factory,
-        connection_settings_presenter=connection_settings_presenter_factory,
-        mongo_uri_presenter=mongo_uri_presenter_factory,
-        ssh_presenter=ssh_presenter_factory
+        notification_service=services.service_notification,
+        auth_presenter=auth_presenter,
+        connection_settings_presenter=connection_settings_presenter,
+        mongo_uri_presenter=mongo_uri_presenter,
+        ssh_presenter=ssh_presenter
     )
