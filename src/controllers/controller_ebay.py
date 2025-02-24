@@ -3,7 +3,7 @@ from src.services.service_ebay import EbayService
 from src.models.model_site_domain_ebay import SiteDomainModel
 
 
-class EbayApiController:
+class EbayController:
     def __init__(
         self,
         logger: LoggingService,

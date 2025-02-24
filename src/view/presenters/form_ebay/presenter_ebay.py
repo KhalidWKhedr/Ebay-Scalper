@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QDialog
 from src.view.gui.gui_form_ebay import Ui_form_EbayAPI
-from src.controllers.controller_ebay_api import EbayApiController
+from src.controllers.controller_ebay import EbayController
 
 class EbayWindowPresenter(QDialog, Ui_form_EbayAPI):
     def __init__(
         self,
         notification_service,
-        ebay_controller: EbayApiController
+        ebay_controller: EbayController
     ):
         super().__init__()
         self.setupUi(self)

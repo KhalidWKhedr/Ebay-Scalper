@@ -2,7 +2,7 @@ from dependency_injector import containers, providers
 from src.controllers import (
     CsvController,
     DatabaseController,
-    EbayApiController,
+    EbayController,
     MainController
 )
 from src.models.model_site_domain_ebay import SiteDomainModel
@@ -29,7 +29,7 @@ class ControllersContainer(containers.DeclarativeContainer):
     )
     
     ebay_controller = providers.Singleton(
-        EbayApiController,
+        EbayController,
         logger=logger.logging_service,
         ebay_service=services.service_ebay,
         site_domain_model=providers.Factory(

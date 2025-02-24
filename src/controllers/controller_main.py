@@ -3,7 +3,7 @@ from src.services.service_notification import NotificationService
 from src.view.presenters.form_database.presenter_database import DatabaseWindowPresenter
 from src.view.presenters.form_ebay.presenter_ebay import EbayWindowPresenter
 from src.controllers.controller_database import DatabaseController
-from src.controllers.controller_ebay_api import EbayApiController
+from src.controllers.controller_ebay import EbayController
 from src.controllers.controller_csv import CsvController
 
 
@@ -14,7 +14,7 @@ class MainController:
         notification_service: NotificationService,
         csv_controller: CsvController,
         database_controller: DatabaseController,
-        ebay_controller: EbayApiController,
+        ebay_controller: EbayController,
     ):
         self.logger = logger
         self.notification_service = notification_service

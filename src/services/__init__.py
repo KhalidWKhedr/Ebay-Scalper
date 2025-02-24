@@ -1,3 +1,9 @@
+"""
+Services Package
+--------------
+Contains business logic services.
+"""
+
 from .service_csv import CsvService
 from .service_database import DatabaseService
 from .service_ebay import EbayService
