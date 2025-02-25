@@ -16,8 +16,6 @@ class QueryPresenter:
         self.main_window = main_window
         self._connect_ui_actions()  # Connect UI actions after main_window is set
 
-    from functools import partial
-
     def _connect_ui_actions(self):
         """Connects UI actions to their respective methods."""
         self.main_window.main_ui.button_EbaySearch.clicked.connect(
