@@ -13,8 +13,7 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
     def __init__(
         self,
         notification_service,
-        database_controller:
-        DatabaseController
+        database_controller: DatabaseController
     ):
         super().__init__()
         self.setupUi(self)
@@ -23,11 +22,10 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self.database_controller = database_controller
         self.schema_connection_details = self.database_controller.get_connection_settings()
 
-        # Initialize Presenters
         self._init_presenters()
-
-        # Setup UI and event connections
         self._setup_ui()
+
+    # ========== Initialization ==========
 
     def _init_presenters(self) -> None:
         """Initialize related presenters."""
@@ -37,17 +35,21 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self.ssh_presenter = SSHPresenter(self)
 
     def _setup_ui(self) -> None:
-        """Initialize UI components and set up connections."""
+        """Set up UI components and initialize settings."""
         self._load_connection_settings()
-        self._setup_signal_connections()
+        self._setup_event_connections()
+        self._initialize_ssh_ui()
+
+    # ========== UI Setup ==========
 
     def _load_connection_settings(self) -> None:
         """Load stored connection settings into the UI."""
-        self.connection_settings_presenter.load_connection_settings(self.schema_connection_details)
-        self.authentication_presenter.set_authentication_radio(self.schema_connection_details.get("AUTH_TYPE", ""))
+        details = self.schema_connection_details
+        self.connection_settings_presenter.load_connection_settings(details)
+        self.authentication_presenter.set_authentication_radio(details.get("AUTH_TYPE", ""))
         self.mongo_uri_presenter.update_mongo_uri()
 
-    def _setup_signal_connections(self) -> None:
+    def _setup_event_connections(self) -> None:
         """Set up UI signal-slot connections."""
         self.checkbox_SSH.toggled.connect(self.ssh_presenter.toggle_ssh_options)
         self.button_Connect.clicked.connect(self.connect_to_db)
@@ -56,28 +58,27 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self._connect_text_fields()
         self._connect_radio_buttons()
 
-        # Ensure SSH options toggle correctly on startup
+    def _initialize_ssh_ui(self) -> None:
+        """Ensure SSH UI elements start in the correct state."""
         self.ssh_presenter.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
+    # ========== UI Connections ==========
+
     def _connect_text_fields(self) -> None:
-        """Connect text fields to update Mongo URI dynamically."""
-        text_fields = [
-            self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username,
-            self.text_SSH_Password, self.text_Host, self.text_Port,
-            self.text_Username, self.text_Password, self.text_DbName,
-            self.text_AuthSource
-        ]
-        for field in text_fields:
+        """Connect text fields to dynamically update Mongo URI."""
+        ssh_fields = [self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username, self.text_SSH_Password]
+        db_fields = [self.text_Host, self.text_Port, self.text_Username, self.text_Password, self.text_DbName, self.text_AuthSource]
+
+        for field in ssh_fields + db_fields:
             field.textChanged.connect(self.mongo_uri_presenter.update_mongo_uri)
 
     def _connect_radio_buttons(self) -> None:
         """Connect radio buttons to dynamically update authentication type."""
-        radio_buttons = [
-            self.radio_X509, self.radio_SHA1, self.radio_AWS,
-            self.radio_KERBEROS_2, self.radio_SHA256, self.radio_KERBEROS,
-            self.radio_LDAP
+        auth_buttons = [
+            self.radio_X509, self.radio_SHA1, self.radio_AWS, self.radio_KERBEROS_2,
+            self.radio_SHA256, self.radio_KERBEROS, self.radio_LDAP
         ]
-        for button in radio_buttons:
+        for button in auth_buttons:
             button.toggled.connect(self.mongo_uri_presenter.update_mongo_uri)
 
     # ========== Business Logic ==========

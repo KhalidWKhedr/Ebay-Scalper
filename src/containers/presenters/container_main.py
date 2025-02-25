@@ -5,6 +5,8 @@ from src.view.presenters.form_main.presenter_csv import CsvPresenter
 from ..container_controllers import ControllersContainer
 from ..container_services import ServicesContainer
 from ...view.gui.gui_form_database import Ui_form_Database
+from ...view.presenters.form_main.presenter_query import QueryPresenter
+
 
 class MainPresentersContainer(containers.DeclarativeContainer):
     """Container for managing presenter-related dependencies."""
@@ -22,11 +24,18 @@ class MainPresentersContainer(containers.DeclarativeContainer):
         notification_service=services.service_notification
     )
 
+    query_presenter = providers.Singleton(
+        QueryPresenter,
+        ebay_controller=controllers.ebay_controller,
+        notification_service=services.service_notification
+    )
+
     main_presenter = providers.Singleton(
         MainPresenter,
         main_ui=main_ui,
         main_controller=controllers.main_controller,
         csv_controller=controllers.csv_controller,
         notification_service=services.service_notification,
-        csv_presenter=csv_presenter
+        csv_presenter=csv_presenter,
+        query_presenter=query_presenter
     )

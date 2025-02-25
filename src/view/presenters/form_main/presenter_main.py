@@ -4,6 +4,7 @@ from src.controllers.controller_csv import CsvController
 from src.controllers.controller_main import MainController
 from src.services.service_notification import NotificationService
 from src.view.presenters.form_main.presenter_csv import CsvPresenter
+from src.view.presenters.form_main.presenter_query import QueryPresenter
 
 
 class MainPresenter(QMainWindow):
@@ -14,6 +15,8 @@ class MainPresenter(QMainWindow):
         csv_controller: CsvController,
         notification_service: NotificationService,
         csv_presenter: CsvPresenter,  # Pass CsvPresenter as a dependency
+        query_presenter: QueryPresenter
+
     ):
         super().__init__()
         self.main_ui = main_ui
@@ -23,9 +26,11 @@ class MainPresenter(QMainWindow):
         self.main_controller = main_controller
         self.csv_controller = csv_controller
         self.csv_presenter = csv_presenter
+        self.query_presenter = query_presenter
 
         # Pass self (QMainWindow) to CsvPresenter
         self.csv_presenter.set_main_window(self)
+        self.query_presenter.set_main_window(self)
 
         self._connect_ui_actions()
 
