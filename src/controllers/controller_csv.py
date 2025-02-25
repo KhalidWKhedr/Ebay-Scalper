@@ -23,9 +23,9 @@ class CsvController:
         :param file_path: The path of the CSV file to be loaded.
         """
         try:
-            self.logger.get_logger().info(f"Loading CSV file from: {file_path}")
+            print(f"Loading CSV file: {file_path}")  # Debug log
             self.csv_service.load_csv(file_path)
-            self.logger.get_logger().info(f"Successfully loaded CSV file: {file_path}")
+            self.logger.get_logger().info(f"Loading CSV file from: {file_path}")
         except Exception as e:
             self.logger.error(f"Failed to load CSV file from {file_path}: {e}")
             raise  # Optionally re-raise or handle differently based on your use case

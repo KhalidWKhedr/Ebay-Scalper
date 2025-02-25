@@ -45,21 +45,36 @@ class CsvPresenter:
         )
         if file_path:
             try:
+                print(f"Loading CSV file: {file_path}")  # Debug log
                 self.csv_controller.load_csv(file_path)
+                print(f"CSV loaded: {file_path}")  # Debug log
             except Exception as e:
+                print(f"Error loading CSV: {e}")  # Debug log
                 self.notification_service.show_message(self.main_window, f"Error loading file: {e}")
 
-    def handle_csv_loaded(self, columns, rows):
+    def handle_csv_loaded(self, columns, rows, error_msg):
         """Handles the UI update after a CSV file is loaded."""
+        print(f"CSV loaded: columns={columns}, rows={rows}, error_msg={error_msg}")  # Debug log
+        if error_msg:
+            print(f"Error loading CSV: {error_msg}")  # Debug log
+            self.notification_service.show_message(self.main_window, error_msg)
+            return
+
         if not columns:
+            print("No columns found in the CSV file.")  # Debug log
             self.notification_service.show_message(self.main_window, "Failed to load CSV.")
             return
 
-        print("CSV Loaded:", columns, rows)
+        print("CSV Loaded:", columns, rows)  # Debug log
         self.populate_column_buttons(columns)
 
     def populate_column_buttons(self, columns):
         """Dynamically adds buttons for each column in the CSV file."""
+        if not columns:
+            print("No columns to populate.")  # Debug log
+            return
+
+        print(f"Populating buttons for columns: {columns}")  # Debug log
         self.main_window.main_ui.listWidget.clear()  # Access listWidget from the main window's UI
         for column in columns:
             button = self._create_column_button(column)

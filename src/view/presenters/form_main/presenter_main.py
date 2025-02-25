@@ -42,6 +42,5 @@ class MainPresenter(QMainWindow):
     def get_query(self) -> None:
         ebay_query = self.main_ui.text_EbayQuery.toPlainText().strip()
 
-        return ebay_query
 
 

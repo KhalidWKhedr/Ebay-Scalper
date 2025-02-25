@@ -34,7 +34,7 @@ class CsvService(QObject):
             elif file_path.endswith('.xlsx'):
                 df = pd.read_excel(file_path, engine='openpyxl')
             else:
-                raise ValueError("Unsupported file format.")
+                raise ValueError("Unsupported file format. Only .csv and .xlsx files are supported.")
 
             # Check if the file is empty
             if df.empty:
@@ -43,24 +43,24 @@ class CsvService(QObject):
             # Prepare columns and rows for emission
             columns = df.columns.tolist()
             rows = df.values.tolist()
-            self.csv_loaded.emit(columns, rows, "")
+            self.csv_loaded.emit(columns, rows, "")  # Emit data with no error
 
         except pd.errors.EmptyDataError:
-            # Handle case where the file is empty
-            self.csv_loaded.emit([], [], "The selected file is empty or could not be read.")
-            self.logger.error("The selected file is empty or could not be read.")
+            error_msg = "The selected file is empty or could not be read."
+            self.csv_loaded.emit([], [], error_msg)
+            self.logger.error(error_msg)
 
         except pd.errors.ParserError as e:
-            # Handle error parsing the file
-            self.csv_loaded.emit([], [], f"Error parsing the file: {e}. Please check its format.")
-            self.logger.error(f"Error parsing the file: {e}")
+            error_msg = f"Error parsing the file: {e}. Please check its format."
+            self.csv_loaded.emit([], [], error_msg)
+            self.logger.error(error_msg)
 
         except ValueError as e:
-            # Handle other value errors
-            self.csv_loaded.emit([], [], f"Value error: {e}")
-            self.logger.error(f"Value error: {e}")
+            error_msg = f"Value error: {e}"
+            self.csv_loaded.emit([], [], error_msg)
+            self.logger.error(error_msg)
 
         except Exception as e:
-            # Handle unexpected errors
-            self.csv_loaded.emit([], [], f"Unexpected error loading file: {e}")
-            self.logger.error(f"Unexpected error loading file: {e}")
+            error_msg = f"Unexpected error loading file: {e}"
+            self.csv_loaded.emit([], [], error_msg)
+            self.logger.error(error_msg)
