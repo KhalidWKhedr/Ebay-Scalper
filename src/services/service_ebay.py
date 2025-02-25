@@ -61,7 +61,7 @@ class EbayService:
         except Exception as e:
             return self._handle_error(connection_details, f"Error during test connection: {str(e)}")
 
-    def scrape_and_store(self, connection_details: Dict[str, str], query="dog"):
+    def scrape_and_store(self, connection_details: Dict[str, str], query=None):
         """Fetch eBay data using a validated connection."""
         try:
             api = self.initialize_api(connection_details)
@@ -76,6 +76,8 @@ class EbayService:
 
                 if items:
                     self.logger.get_logger().info(f"Fetched {len(items)} items for query '{query}'.")
+                    for item in items:
+                        print(item)
                     return items  # Consider processing these further
 
                 return self._handle_error(connection_details, f"No items found for query '{query}'.")

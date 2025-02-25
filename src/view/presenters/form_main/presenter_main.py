@@ -38,3 +38,10 @@ class MainPresenter(QMainWindow):
         """Connect UI buttons to presenter methods."""
         self.main_ui.button_DATABASE.clicked.connect(self.main_controller.open_database_window)
         self.main_ui.button_EBAY.clicked.connect(self.main_controller.open_ebay_window)
+
+    def get_query(self) -> None:
+        ebay_query = self.main_ui.text_EbayQuery.toPlainText().strip()
+
+        return ebay_query
+
+

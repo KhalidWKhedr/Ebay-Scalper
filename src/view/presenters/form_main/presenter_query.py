@@ -19,7 +19,6 @@ class QueryPresenter:
     def _connect_ui_actions(self):
         """Connects UI actions to their respective methods."""
         self.main_window.main_ui.button_EbaySearch.clicked.connect(
-            lambda: self.ebay_controller.test_connection(
-                api_details=self.ebay_controller.get_saved_connection_settings()
+            lambda: self.ebay_controller.ebay_service.scrape_and_store(connection_details=self.ebay_controller.get_saved_connection_settings(), query=self.main_window.main_ui.text_EbayQuery.toPlainText())
             )
-        )
+
