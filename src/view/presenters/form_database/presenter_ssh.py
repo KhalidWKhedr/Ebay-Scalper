@@ -1,22 +1,26 @@
-from src.view.gui.gui_form_database import Ui_form_Database
-
-
 class SSHPresenter:
+    """Handles SSH-related UI interactions."""
+
     def __init__(
         self,
-        ui: Ui_form_Database
+        ssh_host_field, ssh_port_field, ssh_username_field, ssh_password_field,
+        ssh_host_label, ssh_port_label, ssh_username_label, ssh_password_label
     ):
-        self.ui = ui
-
-    @staticmethod
-    def toggle_elements(elements, visible: bool) -> None:
-        for element in elements:
-            element.setVisible(visible)
+        self.ssh_host_field = ssh_host_field
+        self.ssh_port_field = ssh_port_field
+        self.ssh_username_field = ssh_username_field
+        self.ssh_password_field = ssh_password_field
+        self.ssh_host_label = ssh_host_label
+        self.ssh_port_label = ssh_port_label
+        self.ssh_username_label = ssh_username_label
+        self.ssh_password_label = ssh_password_label
 
     def toggle_ssh_options(self, is_checked: bool) -> None:
-        ssh_elements = [
-            self.ui.text_SSH_Host, self.ui.text_SSH_Port, self.ui.text_SSH_Username,
-            self.ui.text_SSH_Password, self.ui.label_ssh_host, self.ui.label_ssh_port,
-            self.ui.label_ssh_username, self.ui.label_ssh_password
+        """Toggle visibility of SSH-related UI elements."""
+        elements = [
+            self.ssh_host_field, self.ssh_port_field, self.ssh_username_field,
+            self.ssh_password_field, self.ssh_host_label, self.ssh_port_label,
+            self.ssh_username_label, self.ssh_password_label
         ]
-        self.toggle_elements(ssh_elements, is_checked)
+        for element in elements:
+            element.setVisible(is_checked)

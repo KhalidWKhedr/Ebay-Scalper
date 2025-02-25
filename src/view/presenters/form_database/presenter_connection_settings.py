@@ -1,8 +1,23 @@
-from src.view.gui.gui_form_database import Ui_form_Database
-
 class ConnectionSettingsPresenter:
-    def __init__(self, ui: Ui_form_Database):
-        self.ui = ui
+    """Handles loading connection settings into the UI."""
+
+    def __init__(
+        self,
+        host_field, port_field, username_field, password_field,
+        db_name_field, auth_source_field, ssh_host_field, ssh_port_field,
+        ssh_username_field, ssh_password_field, ssh_checkbox
+    ):
+        self.host_field = host_field
+        self.port_field = port_field
+        self.username_field = username_field
+        self.password_field = password_field
+        self.db_name_field = db_name_field
+        self.auth_source_field = auth_source_field
+        self.ssh_host_field = ssh_host_field
+        self.ssh_port_field = ssh_port_field
+        self.ssh_username_field = ssh_username_field
+        self.ssh_password_field = ssh_password_field
+        self.ssh_checkbox = ssh_checkbox
 
     def load_connection_settings(self, connection_settings: dict) -> None:
         """Load connection settings into the UI with defaults if missing."""
@@ -22,21 +37,21 @@ class ConnectionSettingsPresenter:
 
         # Mapping of UI fields to dictionary keys
         ui_fields = {
-            "text_Host": "MONGO_HOST",
-            "text_Port": "MONGO_PORT",
-            "text_Username": "MONGO_USER",
-            "text_Password": "MONGO_PASSWORD",
-            "text_DbName": "MONGO_DB_NAME",
-            "text_AuthSource": "MONGO_AUTH_DB",
-            "text_SSH_Host": "SSH_HOST",
-            "text_SSH_Port": "SSH_PORT",
-            "text_SSH_Username": "SSH_USERNAME",
-            "text_SSH_Password": "SSH_PASSWORD"
+            self.host_field: "MONGO_HOST",
+            self.port_field: "MONGO_PORT",
+            self.username_field: "MONGO_USER",
+            self.password_field: "MONGO_PASSWORD",
+            self.db_name_field: "MONGO_DB_NAME",
+            self.auth_source_field: "MONGO_AUTH_DB",
+            self.ssh_host_field: "SSH_HOST",
+            self.ssh_port_field: "SSH_PORT",
+            self.ssh_username_field: "SSH_USERNAME",
+            self.ssh_password_field: "SSH_PASSWORD"
         }
 
         # Set UI fields dynamically
         for field, key in ui_fields.items():
-            getattr(self.ui, field).setPlainText(connection_settings.get(key, defaults[key]))
+            field.setPlainText(connection_settings.get(key, defaults[key]))
 
         # Handle checkbox separately
-        self.ui.checkbox_SSH.setChecked(str(connection_settings.get("SSH_TOGGLE", "False")).lower() in ["true", "1"])
+        self.ssh_checkbox.setChecked(str(connection_settings.get("SSH_TOGGLE", "False")).lower() in ["true", "1"])

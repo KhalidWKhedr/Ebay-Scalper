@@ -25,22 +25,30 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         self._init_presenters()
         self._setup_ui()
 
-    # ========== Initialization ==========
-
     def _init_presenters(self) -> None:
         """Initialize related presenters."""
-        self.connection_settings_presenter = ConnectionSettingsPresenter(self)
+        self.connection_settings_presenter = ConnectionSettingsPresenter(
+            self.text_Host, self.text_Port, self.text_Username, self.text_Password,
+            self.text_DbName, self.text_AuthSource, self.text_SSH_Host, self.text_SSH_Port,
+            self.text_SSH_Username, self.text_SSH_Password, self.checkbox_SSH
+        )
         self.authentication_presenter = AuthenticationPresenter(self)
-        self.mongo_uri_presenter = MongoURIPresenter(self)
-        self.ssh_presenter = SSHPresenter(self)
+        self.mongo_uri_presenter = MongoURIPresenter(
+            self.text_Host, self.text_Port, self.text_Username, self.text_Password,
+            self.text_DbName, self.text_AuthSource, self.text_MongoUri,
+            self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username, self.text_SSH_Password,
+            self
+        )
+        self.ssh_presenter = SSHPresenter(
+            self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username, self.text_SSH_Password,
+            self.label_ssh_host, self.label_ssh_port, self.label_ssh_username, self.label_ssh_password
+        )
 
     def _setup_ui(self) -> None:
         """Set up UI components and initialize settings."""
         self._load_connection_settings()
         self._setup_event_connections()
         self._initialize_ssh_ui()
-
-    # ========== UI Setup ==========
 
     def _load_connection_settings(self) -> None:
         """Load stored connection settings into the UI."""
@@ -62,8 +70,6 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         """Ensure SSH UI elements start in the correct state."""
         self.ssh_presenter.toggle_ssh_options(self.checkbox_SSH.isChecked())
 
-    # ========== UI Connections ==========
-
     def _connect_text_fields(self) -> None:
         """Connect text fields to dynamically update Mongo URI."""
         ssh_fields = [self.text_SSH_Host, self.text_SSH_Port, self.text_SSH_Username, self.text_SSH_Password]
@@ -80,8 +86,6 @@ class DatabaseWindowPresenter(QDialog, Ui_form_Database):
         ]
         for button in auth_buttons:
             button.toggled.connect(self.mongo_uri_presenter.update_mongo_uri)
-
-    # ========== Business Logic ==========
 
     def connect_to_db(self) -> None:
         """Attempt to connect to the database and display result."""
